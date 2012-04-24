@@ -29,124 +29,124 @@ import org.productivity.java.syslog4j.server.impl.event.SyslogServerEvent;
  * @version $Id: StructuredSyslogServerEvent.java,v 1.6 2011/01/11 05:11:13 cvs Exp $
  */
 public class StructuredSyslogServerEvent extends SyslogServerEvent {
-	private static final long serialVersionUID = 1676499796406044315L;
+    private static final long serialVersionUID = 1676499796406044315L;
 
-	protected String applicationName = SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
-	protected String processId = null;
-	protected DateTime dateTime = null;
-	protected DateTimeFormatter dateTimeFormatter = null;
+    protected String applicationName = SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
+    protected String processId = null;
+    protected DateTime dateTime = null;
+    protected DateTimeFormatter dateTimeFormatter = null;
 
-	public StructuredSyslogServerEvent(final byte[] message, int length, InetAddress inetAddress) {
-		super();
+    public StructuredSyslogServerEvent(final byte[] message, int length, InetAddress inetAddress) {
+        super();
 
-		initialize(message,length,inetAddress);
-		parse();
-	}
+        initialize(message,length,inetAddress);
+        parse();
+    }
 
-	public StructuredSyslogServerEvent(final String message, InetAddress inetAddress) {
-		super();
+    public StructuredSyslogServerEvent(final String message, InetAddress inetAddress) {
+        super();
 
-		initialize(message,inetAddress);
-		parse();
-	}
+        initialize(message,inetAddress);
+        parse();
+    }
 
-	public DateTimeFormatter getDateTimeFormatter() {
-		if (dateTimeFormatter == null) {
-			this.dateTimeFormatter = ISODateTimeFormat.dateTime();
-		}
+    public DateTimeFormatter getDateTimeFormatter() {
+        if (dateTimeFormatter == null) {
+            this.dateTimeFormatter = ISODateTimeFormat.dateTime();
+        }
 
-		return dateTimeFormatter;
-	}
+        return dateTimeFormatter;
+    }
 
-	public void setDateTimeFormatter(Object dateTimeFormatter) {
-		this.dateTimeFormatter = (DateTimeFormatter) dateTimeFormatter;
-	}
+    public void setDateTimeFormatter(Object dateTimeFormatter) {
+        this.dateTimeFormatter = (DateTimeFormatter) dateTimeFormatter;
+    }
 
-	protected void parseApplicationName() {
-		int i = this.message.indexOf(' ');
+    protected void parseApplicationName() {
+        int i = this.message.indexOf(' ');
 
-		if (i > -1) {
-			this.applicationName = StringUtils.trimToEmpty(this.message.substring(0, i));
-			this.message = this.message.substring(i + 1);
-			parseProcessId();
-		}
+        if (i > -1) {
+            this.applicationName = StringUtils.trimToEmpty(this.message.substring(0, i));
+            this.message = this.message.substring(i + 1);
+            parseProcessId();
+        }
 
-		if (SyslogConstants.STRUCTURED_DATA_NILVALUE.equals(this.applicationName)) {
-			this.applicationName = null;
-		}
-	}
+        if (SyslogConstants.STRUCTURED_DATA_NILVALUE.equals(this.applicationName)) {
+            this.applicationName = null;
+        }
+    }
 
-	protected void parseProcessId() {
-		int i = this.message.indexOf(' ');
+    protected void parseProcessId() {
+        int i = this.message.indexOf(' ');
 
-		if (i > -1) {
-			this.processId = StringUtils.trimToEmpty(this.message.substring(0, i));
-			this.message = this.message.substring(i + 1);
-		}
+        if (i > -1) {
+            this.processId = StringUtils.trimToEmpty(this.message.substring(0, i));
+            this.message = this.message.substring(i + 1);
+        }
 
-		if (SyslogConstants.STRUCTURED_DATA_NILVALUE.equals(this.processId)) {
-			this.processId = null;
-		}
-	}
+        if (SyslogConstants.STRUCTURED_DATA_NILVALUE.equals(this.processId)) {
+            this.processId = null;
+        }
+    }
 
-	protected void parseDate() {
-		// skip VERSION field
-		int i = this.message.indexOf(' ');
-		this.message = this.message.substring(i + 1);
+    protected void parseDate() {
+        // skip VERSION field
+        int i = this.message.indexOf(' ');
+        this.message = this.message.substring(i + 1);
 
-		// parse the date
-		i = this.message.indexOf(' ');
+        // parse the date
+        i = this.message.indexOf(' ');
 
-		if (i > -1) {
-			String dateString = StringUtils.trimToEmpty(this.message.substring(0, i));
+        if (i > -1) {
+            String dateString = StringUtils.trimToEmpty(this.message.substring(0, i));
 
-			try {
-				DateTimeFormatter formatter = getDateTimeFormatter();
+            try {
+                DateTimeFormatter formatter = getDateTimeFormatter();
 
-				this.dateTime = formatter.parseDateTime(dateString);
-				this.date = this.dateTime.toDate();
+                this.dateTime = formatter.parseDateTime(dateString);
+                this.date = this.dateTime.toDate();
 
-				this.message = this.message.substring(dateString.length() + 1);
+                this.message = this.message.substring(dateString.length() + 1);
 
-			} catch (Exception e) {
-				// Not structured date format, try super one
-				super.parseDate();
-			}
-		}
-	}
+            } catch (Exception e) {
+                // Not structured date format, try super one
+                super.parseDate();
+            }
+        }
+    }
 
-	protected void parseHost() {
-		int i = this.message.indexOf(' ');
+    protected void parseHost() {
+        int i = this.message.indexOf(' ');
 
-		if (i > -1) {
-			this.host = StringUtils.trimToEmpty(this.message.substring(0,i));
-			this.message = this.message.substring(i+1);
+        if (i > -1) {
+            this.host = StringUtils.trimToEmpty(this.message.substring(0,i));
+            this.message = this.message.substring(i+1);
 
-			parseApplicationName();
-		}
-	}
+            parseApplicationName();
+        }
+    }
 
-	public String getApplicationName() {
-		return this.applicationName;
-	}
+    public String getApplicationName() {
+        return this.applicationName;
+    }
 
-	public String getProcessId() {
-		return this.processId;
-	}
+    public String getProcessId() {
+        return this.processId;
+    }
 
-	public DateTime getDateTime() {
-		return this.dateTime;
-	}
+    public DateTime getDateTime() {
+        return this.dateTime;
+    }
 
-	public StructuredSyslogMessage getStructuredMessage() {
-		try {
-			return StructuredSyslogMessage.fromString(getMessage());
+    public StructuredSyslogMessage getStructuredMessage() {
+        try {
+            return StructuredSyslogMessage.fromString(getMessage());
 
-		} catch (IllegalArgumentException e) {
-			// throw new SyslogRuntimeException(
-			// "Message received is not a valid structured message: "
-			// + getMessage(), e);
-			return new StructuredSyslogMessage(null,null,getMessage());
-		}
-	}
+        } catch (IllegalArgumentException e) {
+            // throw new SyslogRuntimeException(
+            // "Message received is not a valid structured message: "
+            // + getMessage(), e);
+            return new StructuredSyslogMessage(null,null,getMessage());
+        }
+    }
 }

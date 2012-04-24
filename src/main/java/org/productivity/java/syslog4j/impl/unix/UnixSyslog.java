@@ -26,9 +26,9 @@ import com.sun.jna.Native;
 * @version $Id: UnixSyslog.java,v 1.27 2010/10/25 04:21:19 cvs Exp $
 */
 public class UnixSyslog extends AbstractSyslog {
-	private static final long serialVersionUID = 4973353204252276740L;
+    private static final long serialVersionUID = 4973353204252276740L;
 
-	protected UnixSyslogConfig unixSyslogConfig = null;
+    protected UnixSyslogConfig unixSyslogConfig = null;
 
     protected interface CLibrary extends Library {
         public void openlog(final Memory ident, int option, int facility);
@@ -36,91 +36,91 @@ public class UnixSyslog extends AbstractSyslog {
         public void closelog();
     }
 
-	protected static int currentFacility = -1;
+    protected static int currentFacility = -1;
     protected static boolean openlogCalled = false;
 
     protected static CLibrary libraryInstance = null;
 
-	protected static synchronized void loadLibrary(UnixSyslogConfig config) throws SyslogRuntimeException {
-		if (!OSDetectUtility.isUnix()) {
-			throw new SyslogRuntimeException("UnixSyslog not supported on non-Unix platforms");
-		}
+    protected static synchronized void loadLibrary(UnixSyslogConfig config) throws SyslogRuntimeException {
+        if (!OSDetectUtility.isUnix()) {
+            throw new SyslogRuntimeException("UnixSyslog not supported on non-Unix platforms");
+        }
 
-		if (libraryInstance == null) {
-			libraryInstance = (CLibrary) Native.loadLibrary(config.getLibrary(),CLibrary.class);
-		}
-	}
+        if (libraryInstance == null) {
+            libraryInstance = (CLibrary) Native.loadLibrary(config.getLibrary(),CLibrary.class);
+        }
+    }
 
-	public void initialize() throws SyslogRuntimeException {
-		try {
-			this.unixSyslogConfig = (UnixSyslogConfig) this.syslogConfig;
+    public void initialize() throws SyslogRuntimeException {
+        try {
+            this.unixSyslogConfig = (UnixSyslogConfig) this.syslogConfig;
 
-		} catch (ClassCastException cce) {
-			throw new SyslogRuntimeException("config must be of type UnixSyslogConfig");
-		}
+        } catch (ClassCastException cce) {
+            throw new SyslogRuntimeException("config must be of type UnixSyslogConfig");
+        }
 
-		loadLibrary(this.unixSyslogConfig);
-	}
+        loadLibrary(this.unixSyslogConfig);
+    }
 
-	protected static void write(int level, String message, UnixSyslogConfig config) throws SyslogRuntimeException {
-		synchronized(libraryInstance) {
-			if (currentFacility != config.getFacility()) {
-				if (openlogCalled) {
-					libraryInstance.closelog();
-					openlogCalled = false;
-				}
+    protected static void write(int level, String message, UnixSyslogConfig config) throws SyslogRuntimeException {
+        synchronized(libraryInstance) {
+            if (currentFacility != config.getFacility()) {
+                if (openlogCalled) {
+                    libraryInstance.closelog();
+                    openlogCalled = false;
+                }
 
-				currentFacility = config.getFacility();
-			}
+                currentFacility = config.getFacility();
+            }
 
-			if (!openlogCalled) {
-				String ident = config.getIdent();
+            if (!openlogCalled) {
+                String ident = config.getIdent();
 
-				if (!StringUtils.isBlank(ident)) {
-					ident = null;
-				}
+                if (!StringUtils.isBlank(ident)) {
+                    ident = null;
+                }
 
-				Memory identBuffer = null;
+                Memory identBuffer = null;
 
-				if (ident != null) {
-					identBuffer = new Memory(128);
-					identBuffer.setString(0, ident, false);
-				}
+                if (ident != null) {
+                    identBuffer = new Memory(128);
+                    identBuffer.setString(0, ident, false);
+                }
 
-				libraryInstance.openlog(identBuffer,config.getOption(),currentFacility);
-				openlogCalled = true;
-			}
+                libraryInstance.openlog(identBuffer,config.getOption(),currentFacility);
+                openlogCalled = true;
+            }
 
-			int priority = currentFacility | level;
+            int priority = currentFacility | level;
 
-			libraryInstance.syslog(priority,"%s",message);
-		}
-	}
+            libraryInstance.syslog(priority,"%s",message);
+        }
+    }
 
-	protected void write(int level, byte[] message) throws SyslogRuntimeException {
-		// NO-OP
-	}
+    protected void write(int level, byte[] message) throws SyslogRuntimeException {
+        // NO-OP
+    }
 
-	public void log(SyslogMessageProcessorIF messageProcessor, int level, String message) {
-		write(level,message,this.unixSyslogConfig);
-	}
+    public void log(SyslogMessageProcessorIF messageProcessor, int level, String message) {
+        write(level,message,this.unixSyslogConfig);
+    }
 
-	public void flush() throws SyslogRuntimeException {
-		synchronized(libraryInstance) {
-			libraryInstance.closelog();
-			openlogCalled = false;
-		}
-	}
+    public void flush() throws SyslogRuntimeException {
+        synchronized(libraryInstance) {
+            libraryInstance.closelog();
+            openlogCalled = false;
+        }
+    }
 
-	public void shutdown() throws SyslogRuntimeException {
-		flush();
-	}
+    public void shutdown() throws SyslogRuntimeException {
+        flush();
+    }
 
-	public AbstractSyslogWriter getWriter() {
-		return null;
-	}
+    public AbstractSyslogWriter getWriter() {
+        return null;
+    }
 
-	public void returnWriter(AbstractSyslogWriter syslogWriter) {
-		//
-	}
+    public void returnWriter(AbstractSyslogWriter syslogWriter) {
+        //
+    }
 }

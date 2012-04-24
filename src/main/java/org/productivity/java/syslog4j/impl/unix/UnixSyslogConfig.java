@@ -16,57 +16,57 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 * @version $Id: UnixSyslogConfig.java,v 1.13 2010/10/25 03:50:25 cvs Exp $
 */
 public class UnixSyslogConfig extends AbstractSyslogConfig {
-	private static final long serialVersionUID = -4805767812011660656L;
+    private static final long serialVersionUID = -4805767812011660656L;
 
-	protected String library = SYSLOG_LIBRARY_DEFAULT;
-	protected int option = OPTION_NONE;
+    protected String library = SYSLOG_LIBRARY_DEFAULT;
+    protected int option = OPTION_NONE;
 
-	public UnixSyslogConfig() {
-		// Unix-based syslog does not need localName sent
-		this.setSendLocalName(false);
-	}
+    public UnixSyslogConfig() {
+        // Unix-based syslog does not need localName sent
+        this.setSendLocalName(false);
+    }
 
-	public Class<? extends SyslogIF> getSyslogClass() {
-		return UnixSyslog.class;
-	}
+    public Class<? extends SyslogIF> getSyslogClass() {
+        return UnixSyslog.class;
+    }
 
-	public String getHost() {
-		return null;
-	}
+    public String getHost() {
+        return null;
+    }
 
-	public int getPort() {
-		return 0;
-	}
+    public int getPort() {
+        return 0;
+    }
 
-	public void setHost(String host) throws SyslogRuntimeException {
-		throw new SyslogRuntimeException("Host not appropriate for class \"" + this.getClass().getName() + "\"");
-	}
+    public void setHost(String host) throws SyslogRuntimeException {
+        throw new SyslogRuntimeException("Host not appropriate for class \"" + this.getClass().getName() + "\"");
+    }
 
-	public void setPort(int port) throws SyslogRuntimeException {
-		throw new SyslogRuntimeException("Port not appropriate for class \"" + this.getClass().getName() + "\"");
-	}
+    public void setPort(int port) throws SyslogRuntimeException {
+        throw new SyslogRuntimeException("Port not appropriate for class \"" + this.getClass().getName() + "\"");
+    }
 
-	public String getLibrary() {
-		return this.library;
-	}
+    public String getLibrary() {
+        return this.library;
+    }
 
-	public void setLibrary(String library) {
-		this.library = library;
-	}
+    public void setLibrary(String library) {
+        this.library = library;
+    }
 
-	public int getOption() {
-		return this.option;
-	}
+    public int getOption() {
+        return this.option;
+    }
 
-	public void setOption(int option) {
-		this.option = option;
-	}
+    public void setOption(int option) {
+        this.option = option;
+    }
 
-	public int getMaxQueueSize() {
-		throw new SyslogRuntimeException("UnixSyslog protocol does not uses a queueing mechanism");
-	}
+    public int getMaxQueueSize() {
+        throw new SyslogRuntimeException("UnixSyslog protocol does not uses a queueing mechanism");
+    }
 
-	public void setMaxQueueSize(int maxQueueSize) {
-		throw new SyslogRuntimeException("UnixSyslog protocol does not uses a queueing mechanism");
-	}
+    public void setMaxQueueSize(int maxQueueSize) {
+        throw new SyslogRuntimeException("UnixSyslog protocol does not uses a queueing mechanism");
+    }
 }

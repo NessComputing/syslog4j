@@ -18,33 +18,33 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 * @version $Id: SyslogServerConfigIF.java,v 1.12 2011/01/11 05:11:13 cvs Exp $
 */
 public interface SyslogServerConfigIF extends SyslogConstants, SyslogCharSetIF {
-	public Class<? extends SyslogServerIF> getSyslogServerClass();
+    public Class<? extends SyslogServerIF> getSyslogServerClass();
 
-	public String getHost();
-	public void setHost(String host) throws SyslogRuntimeException;
+    public String getHost();
+    public void setHost(String host) throws SyslogRuntimeException;
 
-	public int getPort();
-	public void setPort(int port) throws SyslogRuntimeException;
+    public int getPort();
+    public void setPort(int port) throws SyslogRuntimeException;
 
-	public boolean isUseDaemonThread();
-	public void setUseDaemonThread(boolean useDaemonThread);
+    public boolean isUseDaemonThread();
+    public void setUseDaemonThread(boolean useDaemonThread);
 
-	public int getThreadPriority();
-	public void setThreadPriority(int threadPriority);
+    public int getThreadPriority();
+    public void setThreadPriority(int threadPriority);
 
-	public List<? extends SyslogServerEventHandlerIF> getEventHandlers();
+    public List<? extends SyslogServerEventHandlerIF> getEventHandlers();
 
-	public long getShutdownWait();
-	public void setShutdownWait(long shutdownWait);
+    public long getShutdownWait();
+    public void setShutdownWait(long shutdownWait);
 
-	public void addEventHandler(SyslogServerEventHandlerIF eventHandler);
-	public void insertEventHandler(int pos, SyslogServerEventHandlerIF eventHandler);
-	public void removeEventHandler(SyslogServerEventHandlerIF eventHandler);
-	public void removeAllEventHandlers();
+    public void addEventHandler(SyslogServerEventHandlerIF eventHandler);
+    public void insertEventHandler(int pos, SyslogServerEventHandlerIF eventHandler);
+    public void removeEventHandler(SyslogServerEventHandlerIF eventHandler);
+    public void removeAllEventHandlers();
 
-	public boolean isUseStructuredData();
-	public void setUseStructuredData(boolean useStructuredData);
+    public boolean isUseStructuredData();
+    public void setUseStructuredData(boolean useStructuredData);
 
-	public Object getDateTimeFormatter();
-	public void setDateTimeFormatter(Object dateTimeFormatter);
+    public Object getDateTimeFormatter();
+    public void setDateTimeFormatter(Object dateTimeFormatter);
 }

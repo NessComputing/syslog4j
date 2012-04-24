@@ -11,37 +11,37 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 import com.google.common.collect.Lists;
 
 public class UDPPCISyslogMessageTest extends AbstractNetSyslog4jTest {
-	protected static int pause = 100;
+    protected static int pause = 100;
 
-	protected int getMessageCount() {
-		return -1;
-	}
+    protected int getMessageCount() {
+        return -1;
+    }
 
-	protected String getClientProtocol() {
-		return "udp";
-	}
+    protected String getClientProtocol() {
+        return "udp";
+    }
 
-	protected String getServerProtocol() {
-		return "udp";
-	}
+    protected String getServerProtocol() {
+        return "udp";
+    }
 
-	public void testPCISyslogMessage() {
-		// PREPARE
+    public void testPCISyslogMessage() {
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
 
-		message = new PCISyslogMessage("a","b",new Date(),"c","d","e").createMessage();
-		syslog.info("[TEST] " + message);
-		events.add("[TEST] " + message);
+        message = new PCISyslogMessage("a","b",new Date(),"c","d","e").createMessage();
+        syslog.info("[TEST] " + message);
+        events.add("[TEST] " + message);
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 }

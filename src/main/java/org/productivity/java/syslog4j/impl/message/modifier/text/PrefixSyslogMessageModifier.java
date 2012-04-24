@@ -16,45 +16,45 @@ import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 * @version $Id: PrefixSyslogMessageModifier.java,v 1.5 2010/10/28 05:10:57 cvs Exp $
 */
 public class PrefixSyslogMessageModifier implements SyslogMessageModifierIF {
-	private static final long serialVersionUID = 6718826215583513972L;
+    private static final long serialVersionUID = 6718826215583513972L;
 
-	protected String prefix = null;
-	protected String delimiter = " ";
+    protected String prefix = null;
+    protected String delimiter = " ";
 
-	public PrefixSyslogMessageModifier() {
-		//
-	}
+    public PrefixSyslogMessageModifier() {
+        //
+    }
 
-	public PrefixSyslogMessageModifier(String prefix) {
-		this.prefix = prefix;
-	}
+    public PrefixSyslogMessageModifier(String prefix) {
+        this.prefix = prefix;
+    }
 
-	public PrefixSyslogMessageModifier(String prefix, String delimiter) {
-		this.prefix = prefix;
-		if (delimiter != null) {
-			this.delimiter = delimiter;
-		}
-	}
+    public PrefixSyslogMessageModifier(String prefix, String delimiter) {
+        this.prefix = prefix;
+        if (delimiter != null) {
+            this.delimiter = delimiter;
+        }
+    }
 
-	public String getPrefix() {
-		return this.prefix;
-	}
+    public String getPrefix() {
+        return this.prefix;
+    }
 
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
 
-	public String modify(SyslogIF syslog, int facility, int level, String message) {
-		if (StringUtils.isBlank(prefix)) {
-			return message;
-		}
+    public String modify(SyslogIF syslog, int facility, int level, String message) {
+        if (StringUtils.isBlank(prefix)) {
+            return message;
+        }
 
-		return this.prefix + this.delimiter + message;
-	}
+        return this.prefix + this.delimiter + message;
+    }
 
-	public boolean verify(String message) {
-		// NO-OP
+    public boolean verify(String message) {
+        // NO-OP
 
-		return true;
-	}
+        return true;
+    }
 }

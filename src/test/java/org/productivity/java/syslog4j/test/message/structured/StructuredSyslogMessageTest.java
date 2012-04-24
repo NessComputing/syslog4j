@@ -63,11 +63,11 @@ public class StructuredSyslogMessageTest extends TestCase
       final String messageStr = "msgId1 [invalid SD] my message!!";
 
       try {
-    	  StructuredSyslogMessage.fromString(messageStr);
-    	  fail();
+          StructuredSyslogMessage.fromString(messageStr);
+          fail();
 
       } catch (IllegalArgumentException iae) {
-    	  //
+          //
       }
    }
 
@@ -76,12 +76,12 @@ public class StructuredSyslogMessageTest extends TestCase
       final String messageStr = "msgId1 [data1 a=b] my message!!";
 
       try {
-	      StructuredSyslogMessage.fromString(messageStr);
-		  fail();
+          StructuredSyslogMessage.fromString(messageStr);
+          fail();
 
-	   } catch (IllegalArgumentException iae) {
-	 	  //
-	   }
+       } catch (IllegalArgumentException iae) {
+           //
+       }
    }
 
    public void testFromString4()
@@ -89,12 +89,12 @@ public class StructuredSyslogMessageTest extends TestCase
       final String messageStr = "msgId1 [data1 a=\"b] my message!!";
 
       try {
-	      StructuredSyslogMessage.fromString(messageStr);
-		  fail();
+          StructuredSyslogMessage.fromString(messageStr);
+          fail();
 
-	   } catch (IllegalArgumentException iae) {
-	 	  //
-	   }
+       } catch (IllegalArgumentException iae) {
+           //
+       }
    }
 
    public void testFromString5()
@@ -102,11 +102,11 @@ public class StructuredSyslogMessageTest extends TestCase
       final String messageStr = "msgId1 [data1 a=b\"] my message!!";
 
       try {
-    	  StructuredSyslogMessage.fromString(messageStr);
-    	  fail();
+          StructuredSyslogMessage.fromString(messageStr);
+          fail();
 
       } catch (IllegalArgumentException iae) {
-    	  //
+          //
       }
 
    }

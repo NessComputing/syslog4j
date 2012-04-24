@@ -5,34 +5,34 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 
 public class NonPersistentTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
-	public static String instanceName = "tcp-non-persistent";
-	
-	public void setUp() {
-		TCPNetSyslogConfig config = new TCPNetSyslogConfig();
-		config.setPersistentConnection(false);
-		
-		Syslog.createInstance(instanceName,config);
+    public static String instanceName = "tcp-non-persistent";
 
-		super.setUp();
-	}
-	
-	protected int getMessageCount() {
-		return 100;
-	}
+    public void setUp() {
+        TCPNetSyslogConfig config = new TCPNetSyslogConfig();
+        config.setPersistentConnection(false);
 
-	protected String getClientProtocol() {
-		return instanceName;
-	}
+        Syslog.createInstance(instanceName,config);
 
-	protected String getServerProtocol() {
-		return "tcp";
-	}
-	
-	public void testSendReceive() {
-		super._testSendReceive(true,true);
-	}
+        super.setUp();
+    }
 
-	public void testThreadedSendReceive() {
-		super._testThreadedSendReceive(10,true,true);
-	}
+    protected int getMessageCount() {
+        return 100;
+    }
+
+    protected String getClientProtocol() {
+        return instanceName;
+    }
+
+    protected String getServerProtocol() {
+        return "tcp";
+    }
+
+    public void testSendReceive() {
+        super._testSendReceive(true,true);
+    }
+
+    public void testThreadedSendReceive() {
+        super._testThreadedSendReceive(10,true,true);
+    }
 }

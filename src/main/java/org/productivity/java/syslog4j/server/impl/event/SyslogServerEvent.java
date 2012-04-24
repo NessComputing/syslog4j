@@ -23,223 +23,223 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: SyslogServerEvent.java,v 1.9 2011/01/11 06:21:15 cvs Exp $
 */
 public class SyslogServerEvent implements SyslogServerEventIF {
-	private static final long serialVersionUID = 6136043067089899962L;
+    private static final long serialVersionUID = 6136043067089899962L;
 
-	public static final String DATE_FORMAT = "MMM dd HH:mm:ss yyyy";
+    public static final String DATE_FORMAT = "MMM dd HH:mm:ss yyyy";
 
-	protected String charSet = SyslogConstants.CHAR_SET_DEFAULT;
-	protected String rawString = null;
-	protected byte[] rawBytes = null;
-	protected int rawLength = -1;
-	protected Date date = null;
-	protected int level = -1;
-	protected int facility = -1;
-	protected String host = null;
-	protected boolean isHostStrippedFromMessage = false;
-	protected String message = null;
-	protected InetAddress inetAddress = null;
+    protected String charSet = SyslogConstants.CHAR_SET_DEFAULT;
+    protected String rawString = null;
+    protected byte[] rawBytes = null;
+    protected int rawLength = -1;
+    protected Date date = null;
+    protected int level = -1;
+    protected int facility = -1;
+    protected String host = null;
+    protected boolean isHostStrippedFromMessage = false;
+    protected String message = null;
+    protected InetAddress inetAddress = null;
 
-	protected SyslogServerEvent() { }
+    protected SyslogServerEvent() { }
 
-	public SyslogServerEvent(final String message, InetAddress inetAddress) {
-		initialize(message,inetAddress);
+    public SyslogServerEvent(final String message, InetAddress inetAddress) {
+        initialize(message,inetAddress);
 
-		parse();
-	}
+        parse();
+    }
 
-	public SyslogServerEvent(final byte[] message, int length, InetAddress inetAddress) {
-		initialize(message,length,inetAddress);
+    public SyslogServerEvent(final byte[] message, int length, InetAddress inetAddress) {
+        initialize(message,length,inetAddress);
 
-		parse();
-	}
+        parse();
+    }
 
-	protected void initialize(final String message, InetAddress inetAddress) {
-		this.rawString = message;
-		this.rawLength = message.length();
-		this.inetAddress = inetAddress;
+    protected void initialize(final String message, InetAddress inetAddress) {
+        this.rawString = message;
+        this.rawLength = message.length();
+        this.inetAddress = inetAddress;
 
-		this.message = message;
-	}
+        this.message = message;
+    }
 
-	protected void initialize(final byte[] message, int length, InetAddress inetAddress) {
-		this.rawBytes = message;
-		this.rawLength = length;
-		this.inetAddress = inetAddress;
-	}
+    protected void initialize(final byte[] message, int length, InetAddress inetAddress) {
+        this.rawBytes = message;
+        this.rawLength = length;
+        this.inetAddress = inetAddress;
+    }
 
-	protected void parseHost() {
-		int i = this.message.indexOf(' ');
+    protected void parseHost() {
+        int i = this.message.indexOf(' ');
 
-		if (i > -1) {
-			String hostAddress = null;
-			String hostName = null;
+        if (i > -1) {
+            String hostAddress = null;
+            String hostName = null;
 
-			String providedHost = StringUtils.trimToEmpty(this.message.substring(0,i));
+            String providedHost = StringUtils.trimToEmpty(this.message.substring(0,i));
 
-			hostAddress = this.inetAddress.getHostAddress();
+            hostAddress = this.inetAddress.getHostAddress();
 
-			if (providedHost.equalsIgnoreCase(hostAddress)) {
-				this.host = hostAddress;
-				this.message = this.message.substring(i+1);
-				isHostStrippedFromMessage = true;
-			}
+            if (providedHost.equalsIgnoreCase(hostAddress)) {
+                this.host = hostAddress;
+                this.message = this.message.substring(i+1);
+                isHostStrippedFromMessage = true;
+            }
 
-			if (this.host == null) {
-				hostName = this.inetAddress.getHostName();
+            if (this.host == null) {
+                hostName = this.inetAddress.getHostName();
 
-				if (!hostName.equalsIgnoreCase(hostAddress)) {
-					if (providedHost.equalsIgnoreCase(hostName)) {
-						this.host = hostName;
-						this.message = this.message.substring(i+1);
-						isHostStrippedFromMessage = true;
-					}
+                if (!hostName.equalsIgnoreCase(hostAddress)) {
+                    if (providedHost.equalsIgnoreCase(hostName)) {
+                        this.host = hostName;
+                        this.message = this.message.substring(i+1);
+                        isHostStrippedFromMessage = true;
+                    }
 
-					if (this.host == null) {
-						int j = hostName.indexOf('.');
+                    if (this.host == null) {
+                        int j = hostName.indexOf('.');
 
-						if (j > -1) {
-							hostName = hostName.substring(0,j);
-						}
+                        if (j > -1) {
+                            hostName = hostName.substring(0,j);
+                        }
 
-						if (providedHost.equalsIgnoreCase(hostName)) {
-							this.host = hostName;
-							this.message = this.message.substring(i+1);
-							isHostStrippedFromMessage = true;
-						}
-					}
-				}
-			}
+                        if (providedHost.equalsIgnoreCase(hostName)) {
+                            this.host = hostName;
+                            this.message = this.message.substring(i+1);
+                            isHostStrippedFromMessage = true;
+                        }
+                    }
+                }
+            }
 
-			if (this.host == null) {
-				this.host = (hostName != null) ? hostName : hostAddress;
-			}
-		}
-	}
+            if (this.host == null) {
+                this.host = (hostName != null) ? hostName : hostAddress;
+            }
+        }
+    }
 
-	protected void parseDate() {
-		if (this.message.length() >= 16 && this.message.charAt(3) == ' ' && this.message.charAt(6) == ' ') {
-			String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+    protected void parseDate() {
+        if (this.message.length() >= 16 && this.message.charAt(3) == ' ' && this.message.charAt(6) == ' ') {
+            String year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
-			String originalDate = this.message.substring(0,15) + " " + year;
+            String originalDate = this.message.substring(0,15) + " " + year;
 
-			DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-			try {
-				this.date = dateFormat.parse(originalDate);
+            DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+            try {
+                this.date = dateFormat.parse(originalDate);
 
-				this.message = this.message.substring(16);
+                this.message = this.message.substring(16);
 
-			} catch (ParseException pe) {
-				this.date = new Date();
-			}
-		}
+            } catch (ParseException pe) {
+                this.date = new Date();
+            }
+        }
 
-		parseHost();
-	}
+        parseHost();
+    }
 
-	protected void parsePriority() {
-		if (this.message.charAt(0) == '<') {
-			int i = this.message.indexOf(">");
+    protected void parsePriority() {
+        if (this.message.charAt(0) == '<') {
+            int i = this.message.indexOf(">");
 
-			if (i <= 4 && i > -1) {
-				String priorityStr = this.message.substring(1,i);
+            if (i <= 4 && i > -1) {
+                String priorityStr = this.message.substring(1,i);
 
-				int priority = 0;
-				try {
-					priority = Integer.parseInt(priorityStr);
-					this.facility = priority >> 3;
-					this.level = priority - (this.facility << 3);
+                int priority = 0;
+                try {
+                    priority = Integer.parseInt(priorityStr);
+                    this.facility = priority >> 3;
+                    this.level = priority - (this.facility << 3);
 
-					this.message = this.message.substring(i+1);
+                    this.message = this.message.substring(i+1);
 
-					parseDate();
+                    parseDate();
 
-				} catch (NumberFormatException nfe) {
-					//
-				}
+                } catch (NumberFormatException nfe) {
+                    //
+                }
 
-				parseHost();
-			}
-		}
-	}
+                parseHost();
+            }
+        }
+    }
 
-	protected void parse() {
-		if (this.message == null) {
-			this.message = SyslogUtility.newString(this,this.rawBytes,this.rawLength);
-		}
+    protected void parse() {
+        if (this.message == null) {
+            this.message = SyslogUtility.newString(this,this.rawBytes,this.rawLength);
+        }
 
-		parsePriority();
-	}
+        parsePriority();
+    }
 
-	public int getFacility() {
-		return this.facility;
-	}
+    public int getFacility() {
+        return this.facility;
+    }
 
-	public void setFacility(int facility) {
-		this.facility = facility;
-	}
+    public void setFacility(int facility) {
+        this.facility = facility;
+    }
 
-	public byte[] getRaw() {
-		if (this.rawString != null) {
-			byte[] rawStringBytes = SyslogUtility.getBytes(this,this.rawString);
+    public byte[] getRaw() {
+        if (this.rawString != null) {
+            byte[] rawStringBytes = SyslogUtility.getBytes(this,this.rawString);
 
-			return rawStringBytes;
+            return rawStringBytes;
 
-		} else if (this.rawBytes.length == this.rawLength) {
-			return this.rawBytes;
+        } else if (this.rawBytes.length == this.rawLength) {
+            return this.rawBytes;
 
-		} else {
-			byte[] newRawBytes = new byte[this.rawLength];
-			System.arraycopy(this.rawBytes,0,newRawBytes,0,this.rawLength);
+        } else {
+            byte[] newRawBytes = new byte[this.rawLength];
+            System.arraycopy(this.rawBytes,0,newRawBytes,0,this.rawLength);
 
-			return newRawBytes;
-		}
-	}
+            return newRawBytes;
+        }
+    }
 
-	public int getRawLength() {
-		return this.rawLength;
-	}
+    public int getRawLength() {
+        return this.rawLength;
+    }
 
-	public Date getDate() {
-		return this.date;
-	}
+    public Date getDate() {
+        return this.date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public int getLevel() {
-		return this.level;
-	}
+    public int getLevel() {
+        return this.level;
+    }
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-	public String getHost() {
-		return this.host;
-	}
+    public String getHost() {
+        return this.host;
+    }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-	public boolean isHostStrippedFromMessage() {
-		return isHostStrippedFromMessage;
-	}
+    public boolean isHostStrippedFromMessage() {
+        return isHostStrippedFromMessage;
+    }
 
-	public String getMessage() {
-		return this.message;
-	}
+    public String getMessage() {
+        return this.message;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public String getCharSet() {
-		return this.charSet;
-	}
+    public String getCharSet() {
+        return this.charSet;
+    }
 
-	public void setCharSet(String charSet) {
-		this.charSet = charSet;
-	}
+    public void setCharSet(String charSet) {
+        this.charSet = charSet;
+    }
 }

@@ -19,75 +19,75 @@ import org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogWriter;
 * @version $Id: PooledSSLTCPNetSyslogConfig.java,v 1.2 2009/03/29 17:38:58 cvs Exp $
 */
 public class PooledSSLTCPNetSyslogConfig extends PooledTCPNetSyslogConfig implements SSLTCPNetSyslogConfigIF {
-	private static final long serialVersionUID = 2092268298395023976L;
+    private static final long serialVersionUID = 2092268298395023976L;
 
-	protected String keyStore = null;
-	protected String keyStorePassword = null;
+    protected String keyStore = null;
+    protected String keyStorePassword = null;
 
-	protected String trustStore = null;
-	protected String trustStorePassword = null;
+    protected String trustStore = null;
+    protected String trustStorePassword = null;
 
-	public PooledSSLTCPNetSyslogConfig() {
-		super();
-	}
+    public PooledSSLTCPNetSyslogConfig() {
+        super();
+    }
 
-	public PooledSSLTCPNetSyslogConfig(int facility, String host, int port) {
-		super(facility, host, port);
-	}
+    public PooledSSLTCPNetSyslogConfig(int facility, String host, int port) {
+        super(facility, host, port);
+    }
 
-	public PooledSSLTCPNetSyslogConfig(int facility, String host) {
-		super(facility, host);
-	}
+    public PooledSSLTCPNetSyslogConfig(int facility, String host) {
+        super(facility, host);
+    }
 
-	public PooledSSLTCPNetSyslogConfig(int facility) {
-		super(facility);
-	}
+    public PooledSSLTCPNetSyslogConfig(int facility) {
+        super(facility);
+    }
 
-	public PooledSSLTCPNetSyslogConfig(String host, int port) {
-		super(host, port);
-	}
+    public PooledSSLTCPNetSyslogConfig(String host, int port) {
+        super(host, port);
+    }
 
-	public PooledSSLTCPNetSyslogConfig(String host) {
-		super(host);
-	}
+    public PooledSSLTCPNetSyslogConfig(String host) {
+        super(host);
+    }
 
-	public String getKeyStore() {
-		return this.keyStore;
-	}
+    public String getKeyStore() {
+        return this.keyStore;
+    }
 
-	public void setKeyStore(String keyStore) {
-		this.keyStore = keyStore;
-	}
+    public void setKeyStore(String keyStore) {
+        this.keyStore = keyStore;
+    }
 
-	public String getKeyStorePassword() {
-		return this.keyStorePassword;
-	}
+    public String getKeyStorePassword() {
+        return this.keyStorePassword;
+    }
 
-	public void setKeyStorePassword(String keyStorePassword) {
-		this.keyStorePassword = keyStorePassword;
-	}
+    public void setKeyStorePassword(String keyStorePassword) {
+        this.keyStorePassword = keyStorePassword;
+    }
 
-	public String getTrustStore() {
-		return this.trustStore;
-	}
+    public String getTrustStore() {
+        return this.trustStore;
+    }
 
-	public void setTrustStore(String trustStore) {
-		this.trustStore = trustStore;
-	}
+    public void setTrustStore(String trustStore) {
+        this.trustStore = trustStore;
+    }
 
-	public String getTrustStorePassword() {
-		return this.trustStorePassword;
-	}
+    public String getTrustStorePassword() {
+        return this.trustStorePassword;
+    }
 
-	public void setTrustStorePassword(String trustStorePassword) {
-		this.trustStorePassword = trustStorePassword;
-	}
+    public void setTrustStorePassword(String trustStorePassword) {
+        this.trustStorePassword = trustStorePassword;
+    }
 
-	public Class<? extends SyslogIF> getSyslogClass() {
-		return SSLTCPNetSyslog.class;
-	}
+    public Class<? extends SyslogIF> getSyslogClass() {
+        return SSLTCPNetSyslog.class;
+    }
 
-	public Class<? extends AbstractSyslogWriter> getSyslogWriterClass() {
-		return SSLTCPNetSyslogWriter.class;
-	}
+    public Class<? extends AbstractSyslogWriter> getSyslogWriterClass() {
+        return SSLTCPNetSyslogWriter.class;
+    }
 }

@@ -14,47 +14,47 @@ import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConf
 * @version $Id: SSLTCPNetSyslogServerConfig.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implements SSLTCPNetSyslogServerConfigIF {
-	private static final long serialVersionUID = -840102682868286462L;
+    private static final long serialVersionUID = -840102682868286462L;
 
-	protected String keyStore = null;
-	protected String keyStorePassword = null;
+    protected String keyStore = null;
+    protected String keyStorePassword = null;
 
-	protected String trustStore = null;
-	protected String trustStorePassword = null;
+    protected String trustStore = null;
+    protected String trustStorePassword = null;
 
-	public String getKeyStore() {
-		return this.keyStore;
-	}
+    public String getKeyStore() {
+        return this.keyStore;
+    }
 
-	public void setKeyStore(String keyStore) {
-		this.keyStore = keyStore;
-	}
+    public void setKeyStore(String keyStore) {
+        this.keyStore = keyStore;
+    }
 
-	public String getKeyStorePassword() {
-		return this.keyStorePassword;
-	}
+    public String getKeyStorePassword() {
+        return this.keyStorePassword;
+    }
 
-	public void setKeyStorePassword(String keyStorePassword) {
-		this.keyStorePassword = keyStorePassword;
-	}
+    public void setKeyStorePassword(String keyStorePassword) {
+        this.keyStorePassword = keyStorePassword;
+    }
 
-	public String getTrustStore() {
-		return this.trustStore;
-	}
+    public String getTrustStore() {
+        return this.trustStore;
+    }
 
-	public void setTrustStore(String trustStore) {
-		this.trustStore = trustStore;
-	}
+    public void setTrustStore(String trustStore) {
+        this.trustStore = trustStore;
+    }
 
-	public String getTrustStorePassword() {
-		return this.trustStorePassword;
-	}
+    public String getTrustStorePassword() {
+        return this.trustStorePassword;
+    }
 
-	public void setTrustStorePassword(String trustStorePassword) {
-		this.trustStorePassword = trustStorePassword;
-	}
+    public void setTrustStorePassword(String trustStorePassword) {
+        this.trustStorePassword = trustStorePassword;
+    }
 
-	public Class<? extends SyslogServerIF> getSyslogServerClass() {
-		return SSLTCPNetSyslogServer.class;
-	}
+    public Class<? extends SyslogServerIF> getSyslogServerClass() {
+        return SSLTCPNetSyslogServer.class;
+    }
 }

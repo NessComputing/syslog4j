@@ -25,296 +25,296 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
  * @version $Id: Syslog4jAppenderSkeleton.java,v 1.8 2011/01/23 20:49:12 cvs Exp $
  */
 public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implements SyslogConstants {
-	private static final long serialVersionUID = 5520555788232095628L;
-
-	protected SyslogIF syslog = null;
-
-	protected String ident = null;
-	protected String localName = null;
-	protected String protocol = null;
-	protected String facility = null;
-	protected String host = null;
-	protected String port = null;
-	protected String charSet = null;
-	protected String threaded = null;
-	protected String threadLoopInterval = null;
-	protected String splitMessageBeginText = null;
-	protected String splitMessageEndText = null;
-	protected String maxMessageLength = null;
-	protected String maxShutdownWait = null;
-	protected String writeRetries = null;
-	protected String truncateMessage = null;
-	protected String useStructuredData = null;
-
-	protected boolean initialized = false;
-
-	public abstract String initialize() throws SyslogRuntimeException;
-
-	protected static boolean isTrueOrOn(String inputValue) {
-	    boolean trueOrOn = false;
-	    final String value = StringUtils.trimToEmpty(inputValue);
-
-	    if ("true".equalsIgnoreCase(value) || "on".equalsIgnoreCase(value)) {
-	        trueOrOn = true;
-
-	    } else if ("false".equalsIgnoreCase(value) || "off".equalsIgnoreCase(value)) {
-	        trueOrOn = false;
-	    } else {
-	        LogLog.error("Value \"" + value + "\" not true, on, false, or off -- assuming false");
-	    }
-
-	    return trueOrOn;
-	}
-
-	protected void _initialize() {
-		String initializedProtocol = initialize();
-
-		if (initializedProtocol != null && this.protocol == null) {
-			this.protocol = initializedProtocol;
-		}
-
-		if (this.protocol != null) {
-			try {
-				this.syslog = Syslog.getInstance(this.protocol);
-				if (this.host != null) {
-					this.syslog.getConfig().setHost(this.host);
-				}
-				if (this.facility != null) {
-					this.syslog.getConfig().setFacility(SyslogUtility.getFacility(this.facility));
-				}
-				if (this.port != null) {
-					try {
-						int i = Integer.parseInt(this.port);
-						this.syslog.getConfig().setPort(i);
-
-					} catch (NumberFormatException nfe) {
-						LogLog.error(nfe.toString());
-					}
-				}
-				if (this.charSet != null) {
-					this.syslog.getConfig().setCharSet(this.charSet);
-				}
-				if (this.ident != null) {
-					this.syslog.getConfig().setIdent(this.ident);
-				}
-				if (this.localName != null) {
-					this.syslog.getConfig().setLocalName(this.localName);
-				}
-
-				this.syslog.getConfig().setTruncateMessage(isTrueOrOn(StringUtils.trimToEmpty(this.truncateMessage)));
-
-				try {
-				    int i = Integer.parseInt(StringUtils.trimToEmpty(this.maxMessageLength));
-					this.syslog.getConfig().setMaxMessageLength(i);
-
-				} catch (NumberFormatException nfe) {
-				    LogLog.error(nfe.toString());
-				}
-
-				if (this.useStructuredData != null) {
-					this.syslog.getConfig().setUseStructuredData(isTrueOrOn(this.useStructuredData));
-				}
-				if (this.syslog.getConfig() instanceof AbstractSyslogConfigIF) {
-					AbstractSyslogConfigIF abstractSyslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
-
-					abstractSyslogConfig.setThreaded(isTrueOrOn(StringUtils.trimToEmpty(this.threaded)));
-
-					try {
-					    long l = Long.parseLong(StringUtils.trimToEmpty(this.threadLoopInterval));
-					    abstractSyslogConfig.setThreadLoopInterval(l);
-					} catch (NumberFormatException nfe) {
-					    LogLog.error(nfe.toString());
-					}
-
-					if (this.splitMessageBeginText != null) {
-						abstractSyslogConfig.setSplitMessageBeginText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageBeginText));
-					}
+    private static final long serialVersionUID = 5520555788232095628L;
+
+    protected SyslogIF syslog = null;
+
+    protected String ident = null;
+    protected String localName = null;
+    protected String protocol = null;
+    protected String facility = null;
+    protected String host = null;
+    protected String port = null;
+    protected String charSet = null;
+    protected String threaded = null;
+    protected String threadLoopInterval = null;
+    protected String splitMessageBeginText = null;
+    protected String splitMessageEndText = null;
+    protected String maxMessageLength = null;
+    protected String maxShutdownWait = null;
+    protected String writeRetries = null;
+    protected String truncateMessage = null;
+    protected String useStructuredData = null;
+
+    protected boolean initialized = false;
+
+    public abstract String initialize() throws SyslogRuntimeException;
+
+    protected static boolean isTrueOrOn(String inputValue) {
+        boolean trueOrOn = false;
+        final String value = StringUtils.trimToEmpty(inputValue);
+
+        if ("true".equalsIgnoreCase(value) || "on".equalsIgnoreCase(value)) {
+            trueOrOn = true;
+
+        } else if ("false".equalsIgnoreCase(value) || "off".equalsIgnoreCase(value)) {
+            trueOrOn = false;
+        } else {
+            LogLog.error("Value \"" + value + "\" not true, on, false, or off -- assuming false");
+        }
+
+        return trueOrOn;
+    }
+
+    protected void _initialize() {
+        String initializedProtocol = initialize();
+
+        if (initializedProtocol != null && this.protocol == null) {
+            this.protocol = initializedProtocol;
+        }
+
+        if (this.protocol != null) {
+            try {
+                this.syslog = Syslog.getInstance(this.protocol);
+                if (this.host != null) {
+                    this.syslog.getConfig().setHost(this.host);
+                }
+                if (this.facility != null) {
+                    this.syslog.getConfig().setFacility(SyslogUtility.getFacility(this.facility));
+                }
+                if (this.port != null) {
+                    try {
+                        int i = Integer.parseInt(this.port);
+                        this.syslog.getConfig().setPort(i);
+
+                    } catch (NumberFormatException nfe) {
+                        LogLog.error(nfe.toString());
+                    }
+                }
+                if (this.charSet != null) {
+                    this.syslog.getConfig().setCharSet(this.charSet);
+                }
+                if (this.ident != null) {
+                    this.syslog.getConfig().setIdent(this.ident);
+                }
+                if (this.localName != null) {
+                    this.syslog.getConfig().setLocalName(this.localName);
+                }
+
+                this.syslog.getConfig().setTruncateMessage(isTrueOrOn(StringUtils.trimToEmpty(this.truncateMessage)));
+
+                try {
+                    int i = Integer.parseInt(StringUtils.trimToEmpty(this.maxMessageLength));
+                    this.syslog.getConfig().setMaxMessageLength(i);
+
+                } catch (NumberFormatException nfe) {
+                    LogLog.error(nfe.toString());
+                }
+
+                if (this.useStructuredData != null) {
+                    this.syslog.getConfig().setUseStructuredData(isTrueOrOn(this.useStructuredData));
+                }
+                if (this.syslog.getConfig() instanceof AbstractSyslogConfigIF) {
+                    AbstractSyslogConfigIF abstractSyslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
+
+                    abstractSyslogConfig.setThreaded(isTrueOrOn(StringUtils.trimToEmpty(this.threaded)));
+
+                    try {
+                        long l = Long.parseLong(StringUtils.trimToEmpty(this.threadLoopInterval));
+                        abstractSyslogConfig.setThreadLoopInterval(l);
+                    } catch (NumberFormatException nfe) {
+                        LogLog.error(nfe.toString());
+                    }
+
+                    if (this.splitMessageBeginText != null) {
+                        abstractSyslogConfig.setSplitMessageBeginText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageBeginText));
+                    }
 
-					if (this.splitMessageEndText != null) {
-						abstractSyslogConfig.setSplitMessageEndText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageEndText));
-					}
+                    if (this.splitMessageEndText != null) {
+                        abstractSyslogConfig.setSplitMessageEndText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageEndText));
+                    }
 
-					try {
-					    int i = Integer.parseInt(StringUtils.trimToEmpty(this.maxShutdownWait));
-					    abstractSyslogConfig.setMaxShutdownWait(i);
+                    try {
+                        int i = Integer.parseInt(StringUtils.trimToEmpty(this.maxShutdownWait));
+                        abstractSyslogConfig.setMaxShutdownWait(i);
 
-					} catch (NumberFormatException nfe) {
-					    LogLog.error(nfe.toString());
-					}
+                    } catch (NumberFormatException nfe) {
+                        LogLog.error(nfe.toString());
+                    }
 
-					try {
-					    int i = Integer.parseInt(StringUtils.trimToEmpty(this.writeRetries));
-					    abstractSyslogConfig.setWriteRetries(i);
+                    try {
+                        int i = Integer.parseInt(StringUtils.trimToEmpty(this.writeRetries));
+                        abstractSyslogConfig.setWriteRetries(i);
 
-					} catch (NumberFormatException nfe) {
-					    LogLog.error(nfe.toString());
-					}
-				}
+                    } catch (NumberFormatException nfe) {
+                        LogLog.error(nfe.toString());
+                    }
+                }
 
-				this.initialized = true;
+                this.initialized = true;
 
-			} catch (SyslogRuntimeException sre) {
-				LogLog.error(sre.toString());
-			}
-		}
-	}
+            } catch (SyslogRuntimeException sre) {
+                LogLog.error(sre.toString());
+            }
+        }
+    }
 
-	public String getProtocol() {
-		return this.protocol;
-	}
+    public String getProtocol() {
+        return this.protocol;
+    }
 
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
 
-	protected void append(LoggingEvent event) {
-		if (!this.initialized) {
-			_initialize();
-		}
+    protected void append(LoggingEvent event) {
+        if (!this.initialized) {
+            _initialize();
+        }
 
-		if (this.initialized) {
-			int level = event.getLevel().getSyslogEquivalent();
+        if (this.initialized) {
+            int level = event.getLevel().getSyslogEquivalent();
 
-			if (this.layout != null) {
-				String message = this.layout.format(event);
+            if (this.layout != null) {
+                String message = this.layout.format(event);
 
-				this.syslog.log(level,message);
+                this.syslog.log(level,message);
 
-			} else {
-				String message = event.getRenderedMessage();
+            } else {
+                String message = event.getRenderedMessage();
 
-				this.syslog.log(level,message);
-			}
-		}
-	}
+                this.syslog.log(level,message);
+            }
+        }
+    }
 
-	public void close() {
-		if (this.syslog != null) {
-			this.syslog.flush();
-		}
-	}
+    public void close() {
+        if (this.syslog != null) {
+            this.syslog.flush();
+        }
+    }
 
-	public String getFacility() {
-		return this.facility;
-	}
+    public String getFacility() {
+        return this.facility;
+    }
 
-	public void setFacility(String facility) {
-		this.facility = facility;
-	}
+    public void setFacility(String facility) {
+        this.facility = facility;
+    }
 
-	public String getHost() {
-		return this.host;
-	}
+    public String getHost() {
+        return this.host;
+    }
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+    public void setHost(String host) {
+        this.host = host;
+    }
 
-	public String getLocalName() {
-		return localName;
-	}
+    public String getLocalName() {
+        return localName;
+    }
 
-	public void setLocalName(String localName) {
-		this.localName = localName;
-	}
+    public void setLocalName(String localName) {
+        this.localName = localName;
+    }
 
-	public String getPort() {
-		return this.port;
-	}
+    public String getPort() {
+        return this.port;
+    }
 
-	public void setPort(String port) {
-		this.port = port;
-	}
+    public void setPort(String port) {
+        this.port = port;
+    }
 
-	public String getCharSet() {
-		return this.charSet;
-	}
+    public String getCharSet() {
+        return this.charSet;
+    }
 
-	public void setCharSet(String charSet) {
-		this.charSet = charSet;
-	}
+    public void setCharSet(String charSet) {
+        this.charSet = charSet;
+    }
 
-	public String getIdent() {
-		return this.ident;
-	}
+    public String getIdent() {
+        return this.ident;
+    }
 
-	public void setIdent(String ident) {
-		this.ident = ident;
-	}
+    public void setIdent(String ident) {
+        this.ident = ident;
+    }
 
-	public String getThreaded() {
-		return this.threaded;
-	}
+    public String getThreaded() {
+        return this.threaded;
+    }
 
-	public void setThreaded(String threaded) {
-		this.threaded = threaded;
-	}
+    public void setThreaded(String threaded) {
+        this.threaded = threaded;
+    }
 
-	public boolean requiresLayout() {
-		return false;
-	}
+    public boolean requiresLayout() {
+        return false;
+    }
 
-	public String getThreadLoopInterval() {
-		return this.threadLoopInterval;
-	}
+    public String getThreadLoopInterval() {
+        return this.threadLoopInterval;
+    }
 
-	public void setThreadLoopInterval(String threadLoopInterval) {
-		this.threadLoopInterval = threadLoopInterval;
-	}
+    public void setThreadLoopInterval(String threadLoopInterval) {
+        this.threadLoopInterval = threadLoopInterval;
+    }
 
-	public String getSplitMessageBeginText() {
-		return this.splitMessageBeginText;
-	}
+    public String getSplitMessageBeginText() {
+        return this.splitMessageBeginText;
+    }
 
-	public void setSplitMessageBeginText(String splitMessageBeginText) {
-		this.splitMessageBeginText = splitMessageBeginText;
-	}
+    public void setSplitMessageBeginText(String splitMessageBeginText) {
+        this.splitMessageBeginText = splitMessageBeginText;
+    }
 
-	public String getSplitMessageEndText() {
-		return this.splitMessageEndText;
-	}
+    public String getSplitMessageEndText() {
+        return this.splitMessageEndText;
+    }
 
-	public void setSplitMessageEndText(String splitMessageEndText) {
-		this.splitMessageEndText = splitMessageEndText;
-	}
+    public void setSplitMessageEndText(String splitMessageEndText) {
+        this.splitMessageEndText = splitMessageEndText;
+    }
 
-	public String getMaxMessageLength() {
-		return this.maxMessageLength;
-	}
+    public String getMaxMessageLength() {
+        return this.maxMessageLength;
+    }
 
-	public void setMaxMessageLength(String maxMessageLength) {
-		this.maxMessageLength = maxMessageLength;
-	}
+    public void setMaxMessageLength(String maxMessageLength) {
+        this.maxMessageLength = maxMessageLength;
+    }
 
-	public String getMaxShutdownWait() {
-		return this.maxShutdownWait;
-	}
+    public String getMaxShutdownWait() {
+        return this.maxShutdownWait;
+    }
 
-	public void setMaxShutdownWait(String maxShutdownWait) {
-		this.maxShutdownWait = maxShutdownWait;
-	}
+    public void setMaxShutdownWait(String maxShutdownWait) {
+        this.maxShutdownWait = maxShutdownWait;
+    }
 
-	public String getWriteRetries() {
-		return this.writeRetries;
-	}
+    public String getWriteRetries() {
+        return this.writeRetries;
+    }
 
-	public void setWriteRetries(String writeRetries) {
-		this.writeRetries = writeRetries;
-	}
+    public void setWriteRetries(String writeRetries) {
+        this.writeRetries = writeRetries;
+    }
 
-	public String getTruncateMessage() {
-		return this.truncateMessage;
-	}
+    public String getTruncateMessage() {
+        return this.truncateMessage;
+    }
 
-	public void setTruncateMessage(String truncateMessage) {
-		this.truncateMessage = truncateMessage;
-	}
+    public void setTruncateMessage(String truncateMessage) {
+        this.truncateMessage = truncateMessage;
+    }
 
-	public String getUseStructuredData() {
-		return useStructuredData;
-	}
+    public String getUseStructuredData() {
+        return useStructuredData;
+    }
 
-	public void setUseStructuredData(String useStructuredData) {
-		this.useStructuredData = useStructuredData;
-	}
+    public void setUseStructuredData(String useStructuredData) {
+        this.useStructuredData = useStructuredData;
+    }
 }

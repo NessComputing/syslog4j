@@ -24,87 +24,87 @@ import com.google.common.collect.Lists;
 * @version $Id: AbstractSyslogWriter.java,v 1.9 2010/10/25 03:50:25 cvs Exp $
 */
 public abstract class AbstractSyslogWriter implements Runnable, Serializable {
-	private static final long serialVersionUID = 836468466009035847L;
+    private static final long serialVersionUID = 836468466009035847L;
 
-	protected AbstractSyslog syslog = null;
+    protected AbstractSyslog syslog = null;
 
-	protected List<byte []> queuedMessages = null;
+    protected List<byte []> queuedMessages = null;
 
-	protected Thread thread = null;
+    protected Thread thread = null;
 
-	protected AbstractSyslogConfigIF syslogConfig = null;
+    protected AbstractSyslogConfigIF syslogConfig = null;
 
-	protected boolean shutdown = false;
+    protected boolean shutdown = false;
 
-	public void initialize(AbstractSyslog abstractSyslog) {
-		this.syslog = abstractSyslog;
+    public void initialize(AbstractSyslog abstractSyslog) {
+        this.syslog = abstractSyslog;
 
-		try {
-			this.syslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
+        try {
+            this.syslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
 
-		} catch (ClassCastException cce) {
-			throw new SyslogRuntimeException("config must implement interface AbstractSyslogConfigIF");
-		}
+        } catch (ClassCastException cce) {
+            throw new SyslogRuntimeException("config must implement interface AbstractSyslogConfigIF");
+        }
 
-		if (this.syslogConfig.isThreaded()) {
-			this.queuedMessages = Lists.newLinkedList();
-		}
-	}
+        if (this.syslogConfig.isThreaded()) {
+            this.queuedMessages = Lists.newLinkedList();
+        }
+    }
 
-	public void queue(int level, byte[] message) {
-		synchronized(this.queuedMessages) {
-			if (this.syslogConfig.getMaxQueueSize() == -1 || this.queuedMessages.size() < this.syslogConfig.getMaxQueueSize()) {
-				this.queuedMessages.add(message);
+    public void queue(int level, byte[] message) {
+        synchronized(this.queuedMessages) {
+            if (this.syslogConfig.getMaxQueueSize() == -1 || this.queuedMessages.size() < this.syslogConfig.getMaxQueueSize()) {
+                this.queuedMessages.add(message);
 
-			} else {
-				this.syslog.backLog(level,SyslogUtility.newString(syslogConfig,message),"MaxQueueSize (" + this.syslogConfig.getMaxQueueSize() + ") reached");
-			}
-		}
-	}
+            } else {
+                this.syslog.backLog(level,SyslogUtility.newString(syslogConfig,message),"MaxQueueSize (" + this.syslogConfig.getMaxQueueSize() + ") reached");
+            }
+        }
+    }
 
-	public void setThread(Thread thread) {
-		this.thread = thread;
-	}
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
 
-	public boolean hasThread() {
-		return this.thread != null && this.thread.isAlive();
-	}
+    public boolean hasThread() {
+        return this.thread != null && this.thread.isAlive();
+    }
 
-	public abstract void write(byte[] message);
+    public abstract void write(byte[] message);
 
-	public abstract void flush();
+    public abstract void flush();
 
-	public abstract void shutdown();
+    public abstract void shutdown();
 
-	protected abstract void runCompleted();
+    protected abstract void runCompleted();
 
-	public void run() {
-		while(!this.shutdown || !this.queuedMessages.isEmpty()) {
-			List<byte []> queuedMessagesCopy = null;
+    public void run() {
+        while(!this.shutdown || !this.queuedMessages.isEmpty()) {
+            List<byte []> queuedMessagesCopy = null;
 
-			synchronized(this.queuedMessages) {
-				queuedMessagesCopy = Lists.newLinkedList(this.queuedMessages);
-				this.queuedMessages.clear();
-			}
+            synchronized(this.queuedMessages) {
+                queuedMessagesCopy = Lists.newLinkedList(this.queuedMessages);
+                this.queuedMessages.clear();
+            }
 
-			if (queuedMessagesCopy != null) {
-				while(!queuedMessagesCopy.isEmpty()) {
-					byte[] message = (byte[]) queuedMessagesCopy.remove(0);
+            if (queuedMessagesCopy != null) {
+                while(!queuedMessagesCopy.isEmpty()) {
+                    byte[] message = (byte[]) queuedMessagesCopy.remove(0);
 
-					try {
-						write(message);
+                    try {
+                        write(message);
 
-						this.syslog.setBackLogStatus(false);
+                        this.syslog.setBackLogStatus(false);
 
-					} catch (SyslogRuntimeException sre) {
-						this.syslog.backLog(SyslogConstants.LEVEL_INFO,SyslogUtility.newString(this.syslog.getConfig(),message),sre);
-					}
-				}
-			}
+                    } catch (SyslogRuntimeException sre) {
+                        this.syslog.backLog(SyslogConstants.LEVEL_INFO,SyslogUtility.newString(this.syslog.getConfig(),message),sre);
+                    }
+                }
+            }
 
-			SyslogUtility.sleep(this.syslogConfig.getThreadLoopInterval());
-		}
+            SyslogUtility.sleep(this.syslogConfig.getThreadLoopInterval());
+        }
 
-		runCompleted();
-	}
+        runCompleted();
+    }
 }

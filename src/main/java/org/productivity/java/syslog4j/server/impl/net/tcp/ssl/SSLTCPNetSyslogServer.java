@@ -21,39 +21,39 @@ import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServer;
 * @version $Id: SSLTCPNetSyslogServer.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslogServer extends TCPNetSyslogServer {
-	public void initialize() throws SyslogRuntimeException {
-		super.initialize();
+    public void initialize() throws SyslogRuntimeException {
+        super.initialize();
 
-		SSLTCPNetSyslogServerConfigIF sslTcpNetSyslogServerConfig = (SSLTCPNetSyslogServerConfigIF) this.tcpNetSyslogServerConfig;
+        SSLTCPNetSyslogServerConfigIF sslTcpNetSyslogServerConfig = (SSLTCPNetSyslogServerConfigIF) this.tcpNetSyslogServerConfig;
 
-		String keyStore = sslTcpNetSyslogServerConfig.getKeyStore();
+        String keyStore = sslTcpNetSyslogServerConfig.getKeyStore();
 
-		if (!StringUtils.isBlank(keyStore)) {
-			System.setProperty("javax.net.ssl.keyStore",keyStore);
-		}
+        if (!StringUtils.isBlank(keyStore)) {
+            System.setProperty("javax.net.ssl.keyStore",keyStore);
+        }
 
-		String keyStorePassword = sslTcpNetSyslogServerConfig.getKeyStorePassword();
+        String keyStorePassword = sslTcpNetSyslogServerConfig.getKeyStorePassword();
 
-		if (!StringUtils.isBlank(keyStorePassword)) {
-			System.setProperty("javax.net.ssl.keyStorePassword",keyStorePassword);
-		}
+        if (!StringUtils.isBlank(keyStorePassword)) {
+            System.setProperty("javax.net.ssl.keyStorePassword",keyStorePassword);
+        }
 
-		String trustStore = sslTcpNetSyslogServerConfig.getTrustStore();
+        String trustStore = sslTcpNetSyslogServerConfig.getTrustStore();
 
-		if (!StringUtils.isBlank(trustStore)) {
-			System.setProperty("javax.net.ssl.trustStore",trustStore);
-		}
+        if (!StringUtils.isBlank(trustStore)) {
+            System.setProperty("javax.net.ssl.trustStore",trustStore);
+        }
 
-		String trustStorePassword = sslTcpNetSyslogServerConfig.getTrustStorePassword();
+        String trustStorePassword = sslTcpNetSyslogServerConfig.getTrustStorePassword();
 
-		if (!StringUtils.isBlank(trustStorePassword)) {
-			System.setProperty("javax.net.ssl.trustStorePassword",trustStorePassword);
-		}
-	}
+        if (!StringUtils.isBlank(trustStorePassword)) {
+            System.setProperty("javax.net.ssl.trustStorePassword",trustStorePassword);
+        }
+    }
 
-	protected ServerSocketFactory getServerSocketFactory() throws IOException {
-		ServerSocketFactory serverSocketFactory = SSLServerSocketFactory.getDefault();
+    protected ServerSocketFactory getServerSocketFactory() throws IOException {
+        ServerSocketFactory serverSocketFactory = SSLServerSocketFactory.getDefault();
 
-		return serverSocketFactory;
-	}
+        return serverSocketFactory;
+    }
 }

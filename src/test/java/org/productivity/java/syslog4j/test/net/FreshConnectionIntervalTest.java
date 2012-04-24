@@ -17,71 +17,71 @@ import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConf
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class FreshConnectionIntervalTest extends TestCase {
-	public class SocketCounter implements SyslogServerSessionEventHandlerIF {
-		private static final long serialVersionUID = 7166226890012336710L;
-		
-		public int openCounter = 0;
-		public int eventCounter = 0;
-		public int closeCounter = 0;
+    public class SocketCounter implements SyslogServerSessionEventHandlerIF {
+        private static final long serialVersionUID = 7166226890012336710L;
 
-		public void initialize(SyslogServerIF syslogServer) {
-			//
-		}
-		
-		public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
-			openCounter++;
-			return null;
-		}
-		
-		public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
-			eventCounter++;
-			System.out.println(openCounter + "/" + eventCounter + "/" + closeCounter + " " + event.getMessage() + " " + (event.isHostStrippedFromMessage() ? "host_stripped" : "host_not_stripped"));
-		}
+        public int openCounter = 0;
+        public int eventCounter = 0;
+        public int closeCounter = 0;
 
-		public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
-			//
-		}
+        public void initialize(SyslogServerIF syslogServer) {
+            //
+        }
 
-		public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
-			closeCounter++;
-		}
+        public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
+            openCounter++;
+            return null;
+        }
 
-		public void destroy(SyslogServerIF syslogServer) {
-			//			
-		}
-	}
-	
-	public void testFreshConnectionInterval() {
-		TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig();
-		serverConfig.setPort(8888);
-		
-		SocketCounter counter = new SocketCounter();
-		serverConfig.addEventHandler(counter);
-		
-		SyslogServerIF server = SyslogServer.createThreadedInstance("tcp_8888",serverConfig);
+        public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
+            eventCounter++;
+            System.out.println(openCounter + "/" + eventCounter + "/" + closeCounter + " " + event.getMessage() + " " + (event.isHostStrippedFromMessage() ? "host_stripped" : "host_not_stripped"));
+        }
 
-		SyslogUtility.sleep(100);
+        public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
+            //
+        }
 
-		TCPNetSyslogConfigIF config = new TCPNetSyslogConfig();
-		config.setPort(8888);
-		config.setFreshConnectionInterval(300);
-		
-		SyslogIF syslog = Syslog.createInstance("tcp_8888",config);
+        public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
+            closeCounter++;
+        }
 
-		for(int i=0; i<10; i++) {
-			syslog.info("message " + i);
-			SyslogUtility.sleep(100);
-		}
-		
-		SyslogUtility.sleep(100);
-		
-		SyslogServer.destroyInstance(server);
-		Syslog.destroyInstance(syslog);
+        public void destroy(SyslogServerIF syslogServer) {
+            //
+        }
+    }
 
-		SyslogUtility.sleep(100);
+    public void testFreshConnectionInterval() {
+        TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig();
+        serverConfig.setPort(8888);
 
-		assertEquals("OpenCounter",3,counter.openCounter);
-		assertEquals("EventCounter",10,counter.eventCounter);
-		assertEquals("CloseCounter",3,counter.closeCounter);
-	}
+        SocketCounter counter = new SocketCounter();
+        serverConfig.addEventHandler(counter);
+
+        SyslogServerIF server = SyslogServer.createThreadedInstance("tcp_8888",serverConfig);
+
+        SyslogUtility.sleep(100);
+
+        TCPNetSyslogConfigIF config = new TCPNetSyslogConfig();
+        config.setPort(8888);
+        config.setFreshConnectionInterval(300);
+
+        SyslogIF syslog = Syslog.createInstance("tcp_8888",config);
+
+        for(int i=0; i<10; i++) {
+            syslog.info("message " + i);
+            SyslogUtility.sleep(100);
+        }
+
+        SyslogUtility.sleep(100);
+
+        SyslogServer.destroyInstance(server);
+        Syslog.destroyInstance(syslog);
+
+        SyslogUtility.sleep(100);
+
+        assertEquals("OpenCounter",3,counter.openCounter);
+        assertEquals("EventCounter",10,counter.eventCounter);
+        assertEquals("CloseCounter",3,counter.closeCounter);
+    }
 }

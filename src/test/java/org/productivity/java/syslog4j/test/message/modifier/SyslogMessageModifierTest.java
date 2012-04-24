@@ -29,677 +29,677 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 import com.google.common.collect.Lists;
 
 public class SyslogMessageModifierTest extends AbstractNetSyslog4jTest {
-	protected static int pause = 100;
+    protected static int pause = 100;
 
-	protected int getMessageCount() {
-		return -1;
-	}
+    protected int getMessageCount() {
+        return -1;
+    }
 
-	protected String getClientProtocol() {
-		return "udp";
-	}
+    protected String getClientProtocol() {
+        return "udp";
+    }
 
-	protected String getServerProtocol() {
-		return "udp";
-	}
+    protected String getServerProtocol() {
+        return "udp";
+    }
 
-	public void testStringCase() {
-		// CHECK OUT OF BOUNDS
+    public void testStringCase() {
+        // CHECK OUT OF BOUNDS
 
-		try {
-			new StringCaseSyslogMessageModifier((byte) 3);
-			fail("Should not be able to construct with an invalid byte value");
+        try {
+            new StringCaseSyslogMessageModifier((byte) 3);
+            fail("Should not be able to construct with an invalid byte value");
 
-		} catch (SyslogRuntimeException sre) {
-			assertTrue(true);
-		}
+        } catch (SyslogRuntimeException sre) {
+            assertTrue(true);
+        }
 
-		// PREPARE
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		List<SyslogMessageModifierIF> list = Lists.newArrayList();
-		((AbstractSyslogConfig) syslog.getConfig()).setMessageModifiers(list);
+        List<SyslogMessageModifierIF> list = Lists.newArrayList();
+        ((AbstractSyslogConfig) syslog.getConfig()).setMessageModifiers(list);
 
-		// UPPER SET UP
+        // UPPER SET UP
 
-		list.add(StringCaseSyslogMessageModifier.UPPER);
+        list.add(StringCaseSyslogMessageModifier.UPPER);
 
-		// UPPER
+        // UPPER
 
-		message = "[TEST] abcDEF Abc deF eFg";
-		syslog.debug(message);
-		events.add(message.toUpperCase());
+        message = "[TEST] abcDEF Abc deF eFg";
+        syslog.debug(message);
+        events.add(message.toUpperCase());
 
-		// LOWER SET UP
+        // LOWER SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(StringCaseSyslogMessageModifier.LOWER);
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(StringCaseSyslogMessageModifier.LOWER);
 
-		// LOWER
+        // LOWER
 
-		message = "[TEST] ABCdef aBC DEf EfG";
-		syslog.warn(message);
-		events.add(message.toLowerCase());
+        message = "[TEST] ABCdef aBC DEf EfG";
+        syslog.warn(message);
+        events.add(message.toLowerCase());
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testPrefixSuffix() {
-		// PREPARE
+    public void testPrefixSuffix() {
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// PREFIX SET UP
+        // PREFIX SET UP
 
-		PrefixSyslogMessageModifier prefixModifier = new PrefixSyslogMessageModifier("[TEST]");
-		assertEquals("[TEST]",prefixModifier.getPrefix());
-		syslog.getConfig().addMessageModifier(prefixModifier);
+        PrefixSyslogMessageModifier prefixModifier = new PrefixSyslogMessageModifier("[TEST]");
+        assertEquals("[TEST]",prefixModifier.getPrefix());
+        syslog.getConfig().addMessageModifier(prefixModifier);
 
-		// PREFIX
+        // PREFIX
 
-		message = "abcDEF Abc deF eFg";
-		syslog.error(message);
-		events.add("[TEST] abcDEF Abc deF eFg");
+        message = "abcDEF Abc deF eFg";
+        syslog.error(message);
+        events.add("[TEST] abcDEF Abc deF eFg");
 
-		// PREFIX SET UP
+        // PREFIX SET UP
 
-		prefixModifier = new PrefixSyslogMessageModifier("[TEST]","|");
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(prefixModifier);
+        prefixModifier = new PrefixSyslogMessageModifier("[TEST]","|");
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(prefixModifier);
 
-		// PREFIX
+        // PREFIX
 
-		message = "abcDEF Abc deF eFg";
-		syslog.notice(message);
-		events.add("[TEST]|abcDEF Abc deF eFg");
+        message = "abcDEF Abc deF eFg";
+        syslog.notice(message);
+        events.add("[TEST]|abcDEF Abc deF eFg");
 
-		// PREFIX SET UP
+        // PREFIX SET UP
 
-		prefixModifier = new PrefixSyslogMessageModifier();
-		prefixModifier.setPrefix("[TEST] xx");
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(prefixModifier);
+        prefixModifier = new PrefixSyslogMessageModifier();
+        prefixModifier.setPrefix("[TEST] xx");
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(prefixModifier);
 
-		// PREFIX
+        // PREFIX
 
-		message = "abcDEF Abc deF eFg hIj";
-		syslog.error(message);
-		events.add("[TEST] xx abcDEF Abc deF eFg hIj");
+        message = "abcDEF Abc deF eFg hIj";
+        syslog.error(message);
+        events.add("[TEST] xx abcDEF Abc deF eFg hIj");
 
-		// PREFIX SET UP
+        // PREFIX SET UP
 
-		prefixModifier = new PrefixSyslogMessageModifier();
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(prefixModifier);
+        prefixModifier = new PrefixSyslogMessageModifier();
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(prefixModifier);
 
-		// PREFIX
+        // PREFIX
 
-		message = "[TEST] abcDEF Abc deF eFg hIj";
-		syslog.error(message);
-		events.add(message);
+        message = "[TEST] abcDEF Abc deF eFg hIj";
+        syslog.error(message);
+        events.add(message);
 
-		// SUFFIX SET UP
+        // SUFFIX SET UP
 
-		SuffixSyslogMessageModifier suffixModifier = new SuffixSyslogMessageModifier("[END]");
-		assertEquals("[END]",suffixModifier.getSuffix());
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(suffixModifier);
+        SuffixSyslogMessageModifier suffixModifier = new SuffixSyslogMessageModifier("[END]");
+        assertEquals("[END]",suffixModifier.getSuffix());
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(suffixModifier);
 
-		// SUFFIX
+        // SUFFIX
 
-		message = "[TEST] ABCdef aBC DEf EfG";
-		syslog.emergency(message);
-		events.add(message + " [END]");
+        message = "[TEST] ABCdef aBC DEf EfG";
+        syslog.emergency(message);
+        events.add(message + " [END]");
 
-		// SUFFIX SET UP
+        // SUFFIX SET UP
 
-		suffixModifier = new SuffixSyslogMessageModifier("[END]","|");
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(suffixModifier);
+        suffixModifier = new SuffixSyslogMessageModifier("[END]","|");
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(suffixModifier);
 
-		// SUFFIX
+        // SUFFIX
 
-		message = "[TEST] ABCdef aBC DEf EfG";
-		syslog.critical(message);
-		events.add(message + "|[END]");
+        message = "[TEST] ABCdef aBC DEf EfG";
+        syslog.critical(message);
+        events.add(message + "|[END]");
 
-		// SUFFIX SET UP
+        // SUFFIX SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		suffixModifier = new SuffixSyslogMessageModifier();
-		suffixModifier.setSuffix("yy [END]");
-		syslog.getConfig().addMessageModifier(suffixModifier);
+        syslog.getConfig().removeAllMessageModifiers();
+        suffixModifier = new SuffixSyslogMessageModifier();
+        suffixModifier.setSuffix("yy [END]");
+        syslog.getConfig().addMessageModifier(suffixModifier);
 
-		// SUFFIX
+        // SUFFIX
 
-		message = "[TEST] ABCdef aBC DEf EfG HiJ";
-		syslog.alert(message);
-		events.add(message + " yy [END]");
+        message = "[TEST] ABCdef aBC DEf EfG HiJ";
+        syslog.alert(message);
+        events.add(message + " yy [END]");
 
-		// SUFFIX SET UP
+        // SUFFIX SET UP
 
-		suffixModifier = new SuffixSyslogMessageModifier();
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(suffixModifier);
+        suffixModifier = new SuffixSyslogMessageModifier();
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(suffixModifier);
 
-		// SUFFIX
+        // SUFFIX
 
-		message = "[TEST] ABCdef aBC DEf EfG HiJ";
-		syslog.emergency(message);
-		events.add(message);
+        message = "[TEST] ABCdef aBC DEf EfG HiJ";
+        syslog.emergency(message);
+        events.add(message);
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testSequential() {
-		// PREPARE
+    public void testSequential() {
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// SET UP
+        // SET UP
 
-		SequentialSyslogMessageModifier sequentialModifier = SequentialSyslogMessageModifier.createDefault();
-		syslog.getConfig().addMessageModifier(sequentialModifier);
-		assertEquals(sequentialModifier.getConfig().getFirstNumber(),SequentialSyslogMessageModifierConfig.createDefault().getFirstNumber());
+        SequentialSyslogMessageModifier sequentialModifier = SequentialSyslogMessageModifier.createDefault();
+        syslog.getConfig().addMessageModifier(sequentialModifier);
+        assertEquals(sequentialModifier.getConfig().getFirstNumber(),SequentialSyslogMessageModifierConfig.createDefault().getFirstNumber());
 
-		// ZERO
+        // ZERO
 
-		message = "[TEST] Sequence Test";
-		syslog.info(message);
-		events.add(message + " #0000");
+        message = "[TEST] Sequence Test";
+        syslog.info(message);
+        events.add(message + " #0000");
 
-		// ONE
+        // ONE
 
-		message = "[TEST] Sequence Test";
-		syslog.info(message);
-		events.add(message + " #0001");
+        message = "[TEST] Sequence Test";
+        syslog.info(message);
+        events.add(message + " #0001");
 
-		// NINE THOUSAND NINE HUNDRED NIGHTY EIGHT
+        // NINE THOUSAND NINE HUNDRED NIGHTY EIGHT
 
-		sequentialModifier.setNextSequence(SyslogConstants.LEVEL_INFO,9998);
+        sequentialModifier.setNextSequence(SyslogConstants.LEVEL_INFO,9998);
 
-		message = "[TEST] Sequence Test";
-		syslog.info(message);
-		events.add(message + " #9998");
+        message = "[TEST] Sequence Test";
+        syslog.info(message);
+        events.add(message + " #9998");
 
-		// NINE THOUSAND NINE HUNDRED NIGHTY NINE
+        // NINE THOUSAND NINE HUNDRED NIGHTY NINE
 
-		message = "[TEST] Sequence Test";
-		syslog.info(message);
-		events.add(message + " #9999");
+        message = "[TEST] Sequence Test";
+        syslog.info(message);
+        events.add(message + " #9999");
 
-		// ZERO
+        // ZERO
 
-		message = "[TEST] Sequence Test";
-		syslog.info(message);
-		events.add(message + " #0000");
+        message = "[TEST] Sequence Test";
+        syslog.info(message);
+        events.add(message + " #0000");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testChecksum() {
-		try {
-			new ChecksumSyslogMessageModifier(null);
-			fail("Should not allow an empty config into a modifier");
+    public void testChecksum() {
+        try {
+            new ChecksumSyslogMessageModifier(null);
+            fail("Should not allow an empty config into a modifier");
 
-		} catch (SyslogRuntimeException sre) {
-			assertTrue(true);
-		}
+        } catch (SyslogRuntimeException sre) {
+            assertTrue(true);
+        }
 
-		// PREPARE
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// CRC32 SET UP
+        // CRC32 SET UP
 
-		syslog.getConfig().addMessageModifier(ChecksumSyslogMessageModifier.createCRC32());
+        syslog.getConfig().addMessageModifier(ChecksumSyslogMessageModifier.createCRC32());
 
-		// CRC32
+        // CRC32
 
-		message = "[TEST] This Line Will Have a CRC32 Checksum";
-		syslog.info(message);
-		events.add(message + " {F8E7A4E4}");
+        message = "[TEST] This Line Will Have a CRC32 Checksum";
+        syslog.info(message);
+        events.add(message + " {F8E7A4E4}");
 
-		// ADLER32 SET UP
+        // ADLER32 SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		ChecksumSyslogMessageModifier adler32Modifier = ChecksumSyslogMessageModifier.createADLER32();
-		syslog.getConfig().addMessageModifier(adler32Modifier);
+        syslog.getConfig().removeAllMessageModifiers();
+        ChecksumSyslogMessageModifier adler32Modifier = ChecksumSyslogMessageModifier.createADLER32();
+        syslog.getConfig().addMessageModifier(adler32Modifier);
 
-		// ADLER32
+        // ADLER32
 
-		message = "[TEST] This Line Will Have an ADLER32 Checksum";
-		syslog.info(message);
-		events.add(message + " {5AD70EE4}");
+        message = "[TEST] This Line Will Have an ADLER32 Checksum";
+        syslog.info(message);
+        events.add(message + " {5AD70EE4}");
 
-		// ADLER32 SET UP with LOWER FIRST
+        // ADLER32 SET UP with LOWER FIRST
 
-		syslog.getConfig().insertMessageModifier(0,StringCaseSyslogMessageModifier.LOWER);
+        syslog.getConfig().insertMessageModifier(0,StringCaseSyslogMessageModifier.LOWER);
 
-		// ADLER32 with LOWER FIRST
+        // ADLER32 with LOWER FIRST
 
-		message = "[TEST] This Line Will Have an ADLER32 Checksum";
-		syslog.info(message);
-		events.add(message.toLowerCase() + " {8A1710A4}");
+        message = "[TEST] This Line Will Have an ADLER32 Checksum";
+        syslog.info(message);
+        events.add(message.toLowerCase() + " {8A1710A4}");
 
-		// ADLER32
+        // ADLER32
 
-		adler32Modifier.getConfig().setChecksum(new Adler32());
-		message = "[TEST] This Line Will Have an ADLER32 Checksum 2";
-		syslog.info(message);
-		events.add(message.toLowerCase() + " {ABD110F6}");
+        adler32Modifier.getConfig().setChecksum(new Adler32());
+        message = "[TEST] This Line Will Have an ADLER32 Checksum 2";
+        syslog.info(message);
+        events.add(message.toLowerCase() + " {ABD110F6}");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testContinousChecksum() {
-		try {
-			new ChecksumSyslogMessageModifier(null);
-			fail("Should not allow an empty config into a modifier");
+    public void testContinousChecksum() {
+        try {
+            new ChecksumSyslogMessageModifier(null);
+            fail("Should not allow an empty config into a modifier");
 
-		} catch (SyslogRuntimeException sre) {
-			assertTrue(true);
-		}
+        } catch (SyslogRuntimeException sre) {
+            assertTrue(true);
+        }
 
-		// PREPARE
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// CRC32 SET UP
+        // CRC32 SET UP
 
-		ChecksumSyslogMessageModifierConfig config = ChecksumSyslogMessageModifierConfig.createCRC32();
-		assertFalse(config.isContinuous());
-		config.setContinuous(true);
-		assertTrue(config.isContinuous());
+        ChecksumSyslogMessageModifierConfig config = ChecksumSyslogMessageModifierConfig.createCRC32();
+        assertFalse(config.isContinuous());
+        config.setContinuous(true);
+        assertTrue(config.isContinuous());
 
-		ChecksumSyslogMessageModifier modifier = new ChecksumSyslogMessageModifier(config);
-		syslog.getConfig().addMessageModifier(modifier);
+        ChecksumSyslogMessageModifier modifier = new ChecksumSyslogMessageModifier(config);
+        syslog.getConfig().addMessageModifier(modifier);
 
-		// CRC32 Message #1
+        // CRC32 Message #1
 
-		message = "[TEST] This Line Will Have a CRC32 Checksum 1";
-		syslog.info(message);
-		events.add(message + " {6E2A9F99}");
+        message = "[TEST] This Line Will Have a CRC32 Checksum 1";
+        syslog.info(message);
+        events.add(message + " {6E2A9F99}");
 
-		// CRC32 Message #2
+        // CRC32 Message #2
 
-		message = "[TEST] This Line Will Have a CRC32 Checksum 2";
-		syslog.info(message);
-		events.add(message + " {7E736783}");
+        message = "[TEST] This Line Will Have a CRC32 Checksum 2";
+        syslog.info(message);
+        events.add(message + " {7E736783}");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testHash() {
-		try {
-			new HashSyslogMessageModifier(null);
-			fail("Should not allow an empty config into a modifier");
+    public void testHash() {
+        try {
+            new HashSyslogMessageModifier(null);
+            fail("Should not allow an empty config into a modifier");
 
-		} catch (SyslogRuntimeException sre) {
-			assertTrue(true);
-		}
-		// PREPARE
+        } catch (SyslogRuntimeException sre) {
+            assertTrue(true);
+        }
+        // PREPARE
 
-		try {
-			HashSyslogMessageModifierConfig config = new HashSyslogMessageModifierConfig("FakeAlgorithm");
-			new HashSyslogMessageModifier(config);
-			fail("Should not allow an unsupported algorithm");
+        try {
+            HashSyslogMessageModifierConfig config = new HashSyslogMessageModifierConfig("FakeAlgorithm");
+            new HashSyslogMessageModifier(config);
+            fail("Should not allow an unsupported algorithm");
 
-		} catch (SyslogRuntimeException sre) {
-			assertTrue(true);
-		}
+        } catch (SyslogRuntimeException sre) {
+            assertTrue(true);
+        }
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// SHA1 (SHA-160) SET UP
+        // SHA1 (SHA-160) SET UP
 
-		syslog.getConfig().addMessageModifier(HashSyslogMessageModifier.createSHA1());
+        syslog.getConfig().addMessageModifier(HashSyslogMessageModifier.createSHA1());
 
-		// SHA1 (SHA-160)
+        // SHA1 (SHA-160)
 
-		message = "[TEST] This Line Will Have a SHA1 Hash";
-		syslog.info(message);
-		events.add(message + " {fb7Jl0VGnzY5ehJCpmkf7bSZ5Vk=}");
+        message = "[TEST] This Line Will Have a SHA1 Hash";
+        syslog.info(message);
+        events.add(message + " {fb7Jl0VGnzY5ehJCpmkf7bSZ5Vk=}");
 
-		// SHA1 (SHA-160) SET UP
+        // SHA1 (SHA-160) SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(HashSyslogMessageModifier.createSHA160());
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(HashSyslogMessageModifier.createSHA160());
 
-		// SHA1 (SHA-160)
+        // SHA1 (SHA-160)
 
-		message = "[TEST] This Line Will Have a SHA1 Hash";
-		syslog.info(message);
-		events.add(message + " {fb7Jl0VGnzY5ehJCpmkf7bSZ5Vk=}");
+        message = "[TEST] This Line Will Have a SHA1 Hash";
+        syslog.info(message);
+        events.add(message + " {fb7Jl0VGnzY5ehJCpmkf7bSZ5Vk=}");
 
-		// SHA1 (SHA-160) SET UP
+        // SHA1 (SHA-160) SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(new HashSyslogMessageModifier(HashSyslogMessageModifierConfig.createSHA160()));
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(new HashSyslogMessageModifier(HashSyslogMessageModifierConfig.createSHA160()));
 
-		// SHA1 (SHA-160)
+        // SHA1 (SHA-160)
 
-		message = "[TEST] This Line Will Have a SHA1 Hash";
-		syslog.info(message);
-		events.add(message + " {fb7Jl0VGnzY5ehJCpmkf7bSZ5Vk=}");
+        message = "[TEST] This Line Will Have a SHA1 Hash";
+        syslog.info(message);
+        events.add(message + " {fb7Jl0VGnzY5ehJCpmkf7bSZ5Vk=}");
 
-		// SHA256 SET UP
+        // SHA256 SET UP
 
-		HashSyslogMessageModifierConfig hashConfig = HashSyslogMessageModifierConfig.createSHA256();
-		HashSyslogMessageModifier hash = new HashSyslogMessageModifier(hashConfig);
-		assertTrue(hashConfig == hash.getConfig());
+        HashSyslogMessageModifierConfig hashConfig = HashSyslogMessageModifierConfig.createSHA256();
+        HashSyslogMessageModifier hash = new HashSyslogMessageModifier(hashConfig);
+        assertTrue(hashConfig == hash.getConfig());
 
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(hash);
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(hash);
 
-		// SHA256
+        // SHA256
 
-		message = "[TEST] This Line Will Have a SHA256 Hash";
-		syslog.info(message);
-		events.add(message + " {aWcyqL9rCPpKzAsQ89msFUmKxDWM3Pk7gUi4vWfJ35I=}");
+        message = "[TEST] This Line Will Have a SHA256 Hash";
+        syslog.info(message);
+        events.add(message + " {aWcyqL9rCPpKzAsQ89msFUmKxDWM3Pk7gUi4vWfJ35I=}");
 
-		// SHA256 SET UP
+        // SHA256 SET UP
 
-		hash = HashSyslogMessageModifier.createSHA256();
+        hash = HashSyslogMessageModifier.createSHA256();
 
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(hash);
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(hash);
 
-		// SHA256
+        // SHA256
 
-		message = "[TEST] This Line Will Have a SHA256 Hash";
-		syslog.info(message);
-		events.add(message + " {aWcyqL9rCPpKzAsQ89msFUmKxDWM3Pk7gUi4vWfJ35I=}");
+        message = "[TEST] This Line Will Have a SHA256 Hash";
+        syslog.info(message);
+        events.add(message + " {aWcyqL9rCPpKzAsQ89msFUmKxDWM3Pk7gUi4vWfJ35I=}");
 
-		// SHA384 SET UP
+        // SHA384 SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		syslog.getConfig().addMessageModifier(HashSyslogMessageModifier.createSHA384());
+        syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().addMessageModifier(HashSyslogMessageModifier.createSHA384());
 
-		// SHA384
+        // SHA384
 
-		message = "[TEST] This Line Will Have a SHA384 Hash";
-		syslog.info(message);
-		events.add(message + " {HTsuBfjU2efWCVUzy7isUirJRQIjoJu4CVsUMIEcH0EDbItt3nPZ07d2Y5tZfw/S}");
+        message = "[TEST] This Line Will Have a SHA384 Hash";
+        syslog.info(message);
+        events.add(message + " {HTsuBfjU2efWCVUzy7isUirJRQIjoJu4CVsUMIEcH0EDbItt3nPZ07d2Y5tZfw/S}");
 
-		// SHA512 SET UP
+        // SHA512 SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
-		HashSyslogMessageModifier sha512 = HashSyslogMessageModifier.createSHA512();
-		syslog.getConfig().addMessageModifier(sha512);
+        syslog.getConfig().removeAllMessageModifiers();
+        HashSyslogMessageModifier sha512 = HashSyslogMessageModifier.createSHA512();
+        syslog.getConfig().addMessageModifier(sha512);
 
-		// SHA512
+        // SHA512
 
-		message = "[TEST] This Line Will Have a SHA512 Hash";
-		syslog.info(message);
-		events.add(message + " {YS5eWX0TKbMK74t8aduMdhiOAjo1j9L49+AzVBEyRSMn7xlSjlQ0nx69LkheZgU+I+8r4PuIehr8aux4Y0oIPg==}");
+        message = "[TEST] This Line Will Have a SHA512 Hash";
+        syslog.info(message);
+        events.add(message + " {YS5eWX0TKbMK74t8aduMdhiOAjo1j9L49+AzVBEyRSMn7xlSjlQ0nx69LkheZgU+I+8r4PuIehr8aux4Y0oIPg==}");
 
-		// MD5 SET UP
+        // MD5 SET UP
 
-		syslog.getConfig().removeMessageModifier(sha512);
-		HashSyslogMessageModifier md5 = HashSyslogMessageModifier.createMD5();
-		syslog.getConfig().addMessageModifier(md5);
+        syslog.getConfig().removeMessageModifier(sha512);
+        HashSyslogMessageModifier md5 = HashSyslogMessageModifier.createMD5();
+        syslog.getConfig().addMessageModifier(md5);
 
-		// MD5
+        // MD5
 
-		message = "[TEST] This Line Will Have an MD5 Hash";
-		syslog.info(message);
-		events.add(message + " {/ZswXan2FLE6OQHl2yrYEA==}");
+        message = "[TEST] This Line Will Have an MD5 Hash";
+        syslog.info(message);
+        events.add(message + " {/ZswXan2FLE6OQHl2yrYEA==}");
 
-		// MD5 SET UP with Custom Prefix/Suffix
+        // MD5 SET UP with Custom Prefix/Suffix
 
-		syslog.getConfig().removeMessageModifier(md5);
+        syslog.getConfig().removeMessageModifier(md5);
 
-		HashSyslogMessageModifierConfig messageModifierConfig = new HashSyslogMessageModifierConfig("MD5");
-		messageModifierConfig.setPrefix(null);
-		messageModifierConfig.setPrefix(" [");
-		messageModifierConfig.setSuffix(null);
-		messageModifierConfig.setSuffix("]");
+        HashSyslogMessageModifierConfig messageModifierConfig = new HashSyslogMessageModifierConfig("MD5");
+        messageModifierConfig.setPrefix(null);
+        messageModifierConfig.setPrefix(" [");
+        messageModifierConfig.setSuffix(null);
+        messageModifierConfig.setSuffix("]");
 
-		SyslogMessageModifierIF messageModifier = new HashSyslogMessageModifier(messageModifierConfig);
+        SyslogMessageModifierIF messageModifier = new HashSyslogMessageModifier(messageModifierConfig);
 
-		syslog.getConfig().addMessageModifier(messageModifier);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// MD5
+        // MD5
 
-		message = "[TEST] This Line Will Have an MD5 Hash with Custom Prefix";
-		syslog.info(message);
-		events.add(message + " [+SuV7QIkt2jWZgoFnVkcZg==]");
+        message = "[TEST] This Line Will Have an MD5 Hash with Custom Prefix";
+        syslog.info(message);
+        events.add(message + " [+SuV7QIkt2jWZgoFnVkcZg==]");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testMac() {
-		// PREPARE
+    public void testMac() {
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// HmacSHA1 SET UP
+        // HmacSHA1 SET UP
 
-		String base64Key = "fb7Jl0VGnzY5ehJCabcf7bSZ5Vk=";
-		SyslogMessageModifierIF messageModifier = MacSyslogMessageModifier.createHmacSHA1(base64Key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        String base64Key = "fb7Jl0VGnzY5ehJCabcf7bSZ5Vk=";
+        SyslogMessageModifierIF messageModifier = MacSyslogMessageModifier.createHmacSHA1(base64Key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacSHA1
+        // HmacSHA1
 
-		message = "[TEST] This Line Will Have an HmacSHA1 Hash";
-		syslog.info(message);
-		events.add(message + " {6CIz39WE8wgxwpsqPievrtDWaXM=}");
+        message = "[TEST] This Line Will Have an HmacSHA1 Hash";
+        syslog.info(message);
+        events.add(message + " {6CIz39WE8wgxwpsqPievrtDWaXM=}");
 
-		// HmacSHA256 SET UP
+        // HmacSHA256 SET UP
 
-		base64Key = "+v2mHoOx6QGLqYFa/Tx0J7BkXSK4HEVMtGHtG66vQ54=";
-		syslog.getConfig().removeAllMessageModifiers();
-		messageModifier = MacSyslogMessageModifier.createHmacSHA256(base64Key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        base64Key = "+v2mHoOx6QGLqYFa/Tx0J7BkXSK4HEVMtGHtG66vQ54=";
+        syslog.getConfig().removeAllMessageModifiers();
+        messageModifier = MacSyslogMessageModifier.createHmacSHA256(base64Key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacSHA256
+        // HmacSHA256
 
-		message = "[TEST] This Line Will Have an HmacSHA256 Hash";
-		syslog.info(message);
-		events.add(message + " {sEpaXO6fvnO7szaJSjcqoIVl0C180/oWSP0rs6RFfB8=}");
+        message = "[TEST] This Line Will Have an HmacSHA256 Hash";
+        syslog.info(message);
+        events.add(message + " {sEpaXO6fvnO7szaJSjcqoIVl0C180/oWSP0rs6RFfB8=}");
 
-		// HmacSHA512 SET UP
+        // HmacSHA512 SET UP
 
-		base64Key = "w5sn5tOHpk/jBTWAQ4doTlSbtE1GQZC2RCe2/ayTy67zscXFEdlT/Zwsm5GFrjOwxlZITrAaq+s2KFCNpBTDig==";
-		syslog.getConfig().removeAllMessageModifiers();
-		messageModifier = MacSyslogMessageModifier.createHmacSHA512(base64Key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        base64Key = "w5sn5tOHpk/jBTWAQ4doTlSbtE1GQZC2RCe2/ayTy67zscXFEdlT/Zwsm5GFrjOwxlZITrAaq+s2KFCNpBTDig==";
+        syslog.getConfig().removeAllMessageModifiers();
+        messageModifier = MacSyslogMessageModifier.createHmacSHA512(base64Key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacSHA512
+        // HmacSHA512
 
-		message = "[TEST] This Line Will Have an HmacSHA512 Hash";
-		syslog.info(message);
-		events.add(message + " {Ddx+6JegzcifzT5H82BISGeGQ9FCA5biW51qItH9y95tJvFnFv+0+Tx/Kv0HAms2jv6iq08tlL7IFI1gMUWBtA==}");
+        message = "[TEST] This Line Will Have an HmacSHA512 Hash";
+        syslog.info(message);
+        events.add(message + " {Ddx+6JegzcifzT5H82BISGeGQ9FCA5biW51qItH9y95tJvFnFv+0+Tx/Kv0HAms2jv6iq08tlL7IFI1gMUWBtA==}");
 
-		// HmacMD5 SET UP
+        // HmacMD5 SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().removeAllMessageModifiers();
 
-		base64Key = "fb7Jl0VGnzY5ehJCdeff7bSZ5Vk=";
-		messageModifier = MacSyslogMessageModifier.createHmacMD5(base64Key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        base64Key = "fb7Jl0VGnzY5ehJCdeff7bSZ5Vk=";
+        messageModifier = MacSyslogMessageModifier.createHmacMD5(base64Key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacMD5
+        // HmacMD5
 
-		message = "[TEST] This Line Will Have an HmacMD5 Hash";
-		syslog.info(message);
-		events.add(message + " {Z+BBv07/AlQ55a6d88OuGg==}");
+        message = "[TEST] This Line Will Have an HmacMD5 Hash";
+        syslog.info(message);
+        events.add(message + " {Z+BBv07/AlQ55a6d88OuGg==}");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	protected Key createKey(String base64,String algorithm) {
-		byte[] keyBytes = Base64.decode(base64);
+    protected Key createKey(String base64,String algorithm) {
+        byte[] keyBytes = Base64.decode(base64);
 
-		Key key = new SecretKeySpec(keyBytes,algorithm);
+        Key key = new SecretKeySpec(keyBytes,algorithm);
 
-		return key;
-	}
+        return key;
+    }
 
-	public void testMacWithKeys() {
-		// PREPARE
+    public void testMacWithKeys() {
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		// HmacSHA1 SET UP
+        // HmacSHA1 SET UP
 
-		Key key = createKey("fb7Jl0VGnzY5ehJCabcf7bSZ5Vk=","SHA1");
-		SyslogMessageModifierIF messageModifier = MacSyslogMessageModifier.createHmacSHA1(key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        Key key = createKey("fb7Jl0VGnzY5ehJCabcf7bSZ5Vk=","SHA1");
+        SyslogMessageModifierIF messageModifier = MacSyslogMessageModifier.createHmacSHA1(key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacSHA1
+        // HmacSHA1
 
-		message = "[TEST] This Line Will Have an HmacSHA1 Hash";
-		syslog.info(message);
-		events.add(message + " {6CIz39WE8wgxwpsqPievrtDWaXM=}");
+        message = "[TEST] This Line Will Have an HmacSHA1 Hash";
+        syslog.info(message);
+        events.add(message + " {6CIz39WE8wgxwpsqPievrtDWaXM=}");
 
-		// HmacSHA256 SET UP
+        // HmacSHA256 SET UP
 
-		key = createKey("+v2mHoOx6QGLqYFa/Tx0J7BkXSK4HEVMtGHtG66vQ54=","SHA256");
-		syslog.getConfig().removeAllMessageModifiers();
-		messageModifier = MacSyslogMessageModifier.createHmacSHA256(key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        key = createKey("+v2mHoOx6QGLqYFa/Tx0J7BkXSK4HEVMtGHtG66vQ54=","SHA256");
+        syslog.getConfig().removeAllMessageModifiers();
+        messageModifier = MacSyslogMessageModifier.createHmacSHA256(key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacSHA256
+        // HmacSHA256
 
-		message = "[TEST] This Line Will Have an HmacSHA256 Hash";
-		syslog.info(message);
-		events.add(message + " {sEpaXO6fvnO7szaJSjcqoIVl0C180/oWSP0rs6RFfB8=}");
+        message = "[TEST] This Line Will Have an HmacSHA256 Hash";
+        syslog.info(message);
+        events.add(message + " {sEpaXO6fvnO7szaJSjcqoIVl0C180/oWSP0rs6RFfB8=}");
 
-		// HmacSHA512 SET UP
+        // HmacSHA512 SET UP
 
-		key = createKey("w5sn5tOHpk/jBTWAQ4doTlSbtE1GQZC2RCe2/ayTy67zscXFEdlT/Zwsm5GFrjOwxlZITrAaq+s2KFCNpBTDig==","SHA512");
-		syslog.getConfig().removeAllMessageModifiers();
-		messageModifier = MacSyslogMessageModifier.createHmacSHA512(key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        key = createKey("w5sn5tOHpk/jBTWAQ4doTlSbtE1GQZC2RCe2/ayTy67zscXFEdlT/Zwsm5GFrjOwxlZITrAaq+s2KFCNpBTDig==","SHA512");
+        syslog.getConfig().removeAllMessageModifiers();
+        messageModifier = MacSyslogMessageModifier.createHmacSHA512(key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacSHA512
+        // HmacSHA512
 
-		message = "[TEST] This Line Will Have an HmacSHA512 Hash";
-		syslog.info(message);
-		events.add(message + " {Ddx+6JegzcifzT5H82BISGeGQ9FCA5biW51qItH9y95tJvFnFv+0+Tx/Kv0HAms2jv6iq08tlL7IFI1gMUWBtA==}");
+        message = "[TEST] This Line Will Have an HmacSHA512 Hash";
+        syslog.info(message);
+        events.add(message + " {Ddx+6JegzcifzT5H82BISGeGQ9FCA5biW51qItH9y95tJvFnFv+0+Tx/Kv0HAms2jv6iq08tlL7IFI1gMUWBtA==}");
 
-		// HmacMD5 SET UP
+        // HmacMD5 SET UP
 
-		syslog.getConfig().removeAllMessageModifiers();
+        syslog.getConfig().removeAllMessageModifiers();
 
-		key = createKey("fb7Jl0VGnzY5ehJCdeff7bSZ5Vk=","MD5");
-		messageModifier = MacSyslogMessageModifier.createHmacMD5(key);
-		syslog.getConfig().addMessageModifier(messageModifier);
+        key = createKey("fb7Jl0VGnzY5ehJCdeff7bSZ5Vk=","MD5");
+        messageModifier = MacSyslogMessageModifier.createHmacMD5(key);
+        syslog.getConfig().addMessageModifier(messageModifier);
 
-		// HmacMD5
+        // HmacMD5
 
-		message = "[TEST] This Line Will Have an HmacMD5 Hash";
-		syslog.info(message);
-		events.add(message + " {Z+BBv07/AlQ55a6d88OuGg==}");
+        message = "[TEST] This Line Will Have an HmacMD5 Hash";
+        syslog.info(message);
+        events.add(message + " {Z+BBv07/AlQ55a6d88OuGg==}");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 
-	public void testHTMLEntityEscapeMessageModifier() {
-		SyslogMessageModifierIF messageModifier = new HTMLEntityEscapeSyslogMessageModifier();
+    public void testHTMLEntityEscapeMessageModifier() {
+        SyslogMessageModifierIF messageModifier = new HTMLEntityEscapeSyslogMessageModifier();
 
-		String nullHtml = messageModifier.modify(null,0,0,null);
-		assertNull(nullHtml);
+        String nullHtml = messageModifier.modify(null,0,0,null);
+        assertNull(nullHtml);
 
-		String emptyHtml = messageModifier.modify(null,0,0,"");
-		assertEquals("",emptyHtml);
+        String emptyHtml = messageModifier.modify(null,0,0,"");
+        assertEquals("",emptyHtml);
 
-		// PREPARE
+        // PREPARE
 
-		List<String> events = Lists.newArrayList();
-		String message = null;
+        List<String> events = Lists.newArrayList();
+        String message = null;
 
-		String protocol = getClientProtocol();
-		SyslogIF syslog = getSyslog(protocol);
-		syslog.getConfig().removeAllMessageModifiers();
+        String protocol = getClientProtocol();
+        SyslogIF syslog = getSyslog(protocol);
+        syslog.getConfig().removeAllMessageModifiers();
 
-		syslog.getConfig().addMessageModifier(HTMLEntityEscapeSyslogMessageModifier.createDefault());
+        syslog.getConfig().addMessageModifier(HTMLEntityEscapeSyslogMessageModifier.createDefault());
 
-		// SEND HTML
+        // SEND HTML
 
-		message = "[TEST] <html>&\"test\"&'" + "\t" + "</html>" + (char) 255;
-		syslog.info(message);
-		events.add("[TEST] &lt;html&gt;&amp;&quot;test&quot;&amp;&#39;&#9;&lt;/html&gt;&#255;");
+        message = "[TEST] <html>&\"test\"&'" + "\t" + "</html>" + (char) 255;
+        syslog.info(message);
+        events.add("[TEST] &lt;html&gt;&amp;&quot;test&quot;&amp;&#39;&#9;&lt;/html&gt;&#255;");
 
-		// VERIFY
+        // VERIFY
 
-		SyslogUtility.sleep(pause);
-		syslog.flush();
-		verifySendReceive(events,false,false);
-	}
+        SyslogUtility.sleep(pause);
+        syslog.flush();
+        verifySendReceive(events,false,false);
+    }
 }

@@ -16,35 +16,35 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslog;
 * @version $Id: SSLTCPNetSyslog.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslog extends TCPNetSyslog {
-	private static final long serialVersionUID = 2766654802524487317L;
+    private static final long serialVersionUID = 2766654802524487317L;
 
-	public void initialize() throws SyslogRuntimeException {
-		super.initialize();
+    public void initialize() throws SyslogRuntimeException {
+        super.initialize();
 
-		SSLTCPNetSyslogConfigIF sslTcpNetSyslogConfig = (SSLTCPNetSyslogConfigIF) this.tcpNetSyslogConfig;
+        SSLTCPNetSyslogConfigIF sslTcpNetSyslogConfig = (SSLTCPNetSyslogConfigIF) this.tcpNetSyslogConfig;
 
-		String keyStore = sslTcpNetSyslogConfig.getKeyStore();
+        String keyStore = sslTcpNetSyslogConfig.getKeyStore();
 
-		if (!StringUtils.isBlank(keyStore)) {
-			System.setProperty("javax.net.ssl.keyStore",keyStore);
-		}
+        if (!StringUtils.isBlank(keyStore)) {
+            System.setProperty("javax.net.ssl.keyStore",keyStore);
+        }
 
-		String keyStorePassword = sslTcpNetSyslogConfig.getKeyStorePassword();
+        String keyStorePassword = sslTcpNetSyslogConfig.getKeyStorePassword();
 
-		if (!StringUtils.isBlank(keyStorePassword)) {
-			System.setProperty("javax.net.ssl.keyStorePassword",keyStorePassword);
-		}
+        if (!StringUtils.isBlank(keyStorePassword)) {
+            System.setProperty("javax.net.ssl.keyStorePassword",keyStorePassword);
+        }
 
-		String trustStore = sslTcpNetSyslogConfig.getTrustStore();
+        String trustStore = sslTcpNetSyslogConfig.getTrustStore();
 
-		if (!StringUtils.isBlank(trustStore)) {
-			System.setProperty("javax.net.ssl.trustStore",trustStore);
-		}
+        if (!StringUtils.isBlank(trustStore)) {
+            System.setProperty("javax.net.ssl.trustStore",trustStore);
+        }
 
-		String trustStorePassword = sslTcpNetSyslogConfig.getTrustStorePassword();
+        String trustStorePassword = sslTcpNetSyslogConfig.getTrustStorePassword();
 
-		if (!StringUtils.isBlank(trustStorePassword)) {
-			System.setProperty("javax.net.ssl.trustStorePassword",trustStorePassword);
-		}
-	}
+        if (!StringUtils.isBlank(trustStorePassword)) {
+            System.setProperty("javax.net.ssl.trustStorePassword",trustStorePassword);
+        }
+    }
 }

@@ -18,139 +18,139 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 import com.google.common.collect.Lists;
 
 public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
-	protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
-		private static final long serialVersionUID = 8040266564168724L;
+    protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
+        private static final long serialVersionUID = 8040266564168724L;
 
-		protected List<String> recordedEvents = Lists.newArrayList();
+        protected List<String> recordedEvents = Lists.newArrayList();
 
-		public List<String> getRecordedEvents() {
-			return this.recordedEvents;
-		}
+        public List<String> getRecordedEvents() {
+            return this.recordedEvents;
+        }
 
-		public void initialize(SyslogServerIF syslogServer) {
-			//
-		}
+        public void initialize(SyslogServerIF syslogServer) {
+            //
+        }
 
-		public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
-			return null;
-		}
+        public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
+            return null;
+        }
 
-		public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
-			String recordedEvent = SyslogUtility.newString(syslogServer.getConfig(),event.getRaw());
+        public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
+            String recordedEvent = SyslogUtility.newString(syslogServer.getConfig(),event.getRaw());
 
-			recordedEvent = recordedEvent.substring(recordedEvent.toUpperCase().indexOf("[TEST] "));
+            recordedEvent = recordedEvent.substring(recordedEvent.toUpperCase().indexOf("[TEST] "));
 
-			this.recordedEvents.add(recordedEvent);
-		}
+            this.recordedEvents.add(recordedEvent);
+        }
 
-		public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
-			fail(exception.getMessage());
-		}
+        public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
+            fail(exception.getMessage());
+        }
 
-		public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
-			//
-		}
+        public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
+            //
+        }
 
-		public void destroy(SyslogServerIF syslogServer) {
-			//
-		}
-	}
+        public void destroy(SyslogServerIF syslogServer) {
+            //
+        }
+    }
 
-	public static final int TEST_PORT = 10514;
+    public static final int TEST_PORT = 10514;
 
-	protected SyslogServerIF server = null;
+    protected SyslogServerIF server = null;
 
-	protected abstract String getServerProtocol();
+    protected abstract String getServerProtocol();
 
-	protected abstract int getMessageCount();
+    protected abstract int getMessageCount();
 
-	protected RecorderHandler recorderEventHandler = new RecorderHandler();
+    protected RecorderHandler recorderEventHandler = new RecorderHandler();
 
-	protected void startServerThread(String protocol) {
-		this.server = SyslogServer.getInstance(protocol);
+    protected void startServerThread(String protocol) {
+        this.server = SyslogServer.getInstance(protocol);
 
-		AbstractNetSyslogServerConfig config = (AbstractNetSyslogServerConfig) this.server.getConfig();
-		config.setPort(TEST_PORT);
-		config.addEventHandler(this.recorderEventHandler);
+        AbstractNetSyslogServerConfig config = (AbstractNetSyslogServerConfig) this.server.getConfig();
+        config.setPort(TEST_PORT);
+        config.addEventHandler(this.recorderEventHandler);
 
-		this.server = SyslogServer.getThreadedInstance(protocol);
-	}
+        this.server = SyslogServer.getThreadedInstance(protocol);
+    }
 
-	public void setUp() {
-		UDPNetSyslogConfig config = new UDPNetSyslogConfig();
+    public void setUp() {
+        UDPNetSyslogConfig config = new UDPNetSyslogConfig();
 
-		assertTrue(config.isCacheHostAddress());
-		config.setCacheHostAddress(false);
-		assertFalse(config.isCacheHostAddress());
+        assertTrue(config.isCacheHostAddress());
+        config.setCacheHostAddress(false);
+        assertFalse(config.isCacheHostAddress());
 
-		assertTrue(config.isThrowExceptionOnInitialize());
-		config.setThrowExceptionOnInitialize(false);
-		assertFalse(config.isThrowExceptionOnInitialize());
+        assertTrue(config.isThrowExceptionOnInitialize());
+        config.setThrowExceptionOnInitialize(false);
+        assertFalse(config.isThrowExceptionOnInitialize());
 
-		assertFalse(config.isThrowExceptionOnWrite());
-		config.setThrowExceptionOnWrite(true);
-		assertTrue(config.isThrowExceptionOnWrite());
+        assertFalse(config.isThrowExceptionOnWrite());
+        config.setThrowExceptionOnWrite(true);
+        assertTrue(config.isThrowExceptionOnWrite());
 
-		Syslog.createInstance("log4jUdp",config);
+        Syslog.createInstance("log4jUdp",config);
 
-		String protocol = getServerProtocol();
+        String protocol = getServerProtocol();
 
-		startServerThread(protocol);
-		SyslogUtility.sleep(100);
-	}
+        startServerThread(protocol);
+        SyslogUtility.sleep(100);
+    }
 
-	protected void verifySendReceive(List<String> events, boolean sort) {
-		if (sort) {
-			Collections.sort(events);
-		}
+    protected void verifySendReceive(List<String> events, boolean sort) {
+        if (sort) {
+            Collections.sort(events);
+        }
 
-		List<String> recordedEvents = this.recorderEventHandler.getRecordedEvents();
+        List<String> recordedEvents = this.recorderEventHandler.getRecordedEvents();
 
-		if (sort) {
-			Collections.sort(recordedEvents);
-		}
+        if (sort) {
+            Collections.sort(recordedEvents);
+        }
 
-		for(int i=0; i < events.size(); i++) {
-			String sentEvent = (String) events.get(i);
+        for(int i=0; i < events.size(); i++) {
+            String sentEvent = (String) events.get(i);
 
-			String recordedEvent = (String) recordedEvents.get(i);
+            String recordedEvent = (String) recordedEvents.get(i);
 
-			if (!sentEvent.equals(recordedEvent)) {
-				System.out.println("SENT: " + sentEvent);
-				System.out.println("RCVD: " + recordedEvent);
+            if (!sentEvent.equals(recordedEvent)) {
+                System.out.println("SENT: " + sentEvent);
+                System.out.println("RCVD: " + recordedEvent);
 
-				fail("Sent and recorded events do not match");
-			}
-		}
-	}
+                fail("Sent and recorded events do not match");
+            }
+        }
+    }
 
-	public void _testSendReceive(){
-		Logger logger = Logger.getLogger(this.getClass());
+    public void _testSendReceive(){
+        Logger logger = Logger.getLogger(this.getClass());
 
-		List<String> events = Lists.newArrayList();
+        List<String> events = Lists.newArrayList();
 
-		for(int i=0; i<getMessageCount(); i++) {
-			String message = "[TEST] " + i + " / " + System.currentTimeMillis();
+        for(int i=0; i<getMessageCount(); i++) {
+            String message = "[TEST] " + i + " / " + System.currentTimeMillis();
 
-			logger.info(message);
-			events.add(message);
-		}
+            logger.info(message);
+            events.add(message);
+        }
 
-		SyslogUtility.sleep(100);
+        SyslogUtility.sleep(100);
 
-		verifySendReceive(events,true);
-	}
+        verifySendReceive(events,true);
+    }
 
-	public void tearDown() {
-		Syslog.shutdown();
+    public void tearDown() {
+        Syslog.shutdown();
 
-		SyslogUtility.sleep(100);
+        SyslogUtility.sleep(100);
 
-		SyslogServer.shutdown();
+        SyslogServer.shutdown();
 
-		SyslogUtility.sleep(100);
+        SyslogUtility.sleep(100);
 
-		Syslog.initialize();
-		SyslogServer.initialize();
-	}
+        Syslog.initialize();
+        SyslogServer.initialize();
+    }
 }

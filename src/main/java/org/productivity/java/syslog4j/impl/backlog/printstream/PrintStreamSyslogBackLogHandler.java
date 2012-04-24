@@ -19,52 +19,52 @@ import org.productivity.java.syslog4j.impl.backlog.AbstractSyslogBackLogHandler;
 * @version $Id: PrintStreamSyslogBackLogHandler.java,v 1.1 2009/01/24 22:00:18 cvs Exp $
 */
 public class PrintStreamSyslogBackLogHandler extends AbstractSyslogBackLogHandler {
-	protected PrintStream printStream = null;
-	protected boolean appendLinefeed = false;
+    protected PrintStream printStream = null;
+    protected boolean appendLinefeed = false;
 
-	public PrintStreamSyslogBackLogHandler(PrintStream printStream) {
-		this.printStream = printStream;
+    public PrintStreamSyslogBackLogHandler(PrintStream printStream) {
+        this.printStream = printStream;
 
-		initialize();
-	}
+        initialize();
+    }
 
-	public PrintStreamSyslogBackLogHandler(PrintStream printStream, boolean appendLinefeed) {
-		this.printStream = printStream;
-		this.appendLinefeed = appendLinefeed;
+    public PrintStreamSyslogBackLogHandler(PrintStream printStream, boolean appendLinefeed) {
+        this.printStream = printStream;
+        this.appendLinefeed = appendLinefeed;
 
-		initialize();
-	}
+        initialize();
+    }
 
-	public PrintStreamSyslogBackLogHandler(PrintStream printStream, boolean appendLinefeed, boolean appendReason) {
-		this.printStream = printStream;
-		this.appendLinefeed = appendLinefeed;
-		this.appendReason = appendReason;
+    public PrintStreamSyslogBackLogHandler(PrintStream printStream, boolean appendLinefeed, boolean appendReason) {
+        this.printStream = printStream;
+        this.appendLinefeed = appendLinefeed;
+        this.appendReason = appendReason;
 
-		initialize();
-	}
+        initialize();
+    }
 
-	public void initialize() throws SyslogRuntimeException {
-		if (this.printStream == null) {
-			throw new SyslogRuntimeException("PrintStream cannot be null");
-		}
-	}
+    public void initialize() throws SyslogRuntimeException {
+        if (this.printStream == null) {
+            throw new SyslogRuntimeException("PrintStream cannot be null");
+        }
+    }
 
-	public void down(SyslogIF syslog, String reason) {
-		this.printStream.println(syslog.getProtocol() + ": DOWN" + (StringUtils.isBlank(reason) ? "" : " (" + reason + ")"));
-	}
+    public void down(SyslogIF syslog, String reason) {
+        this.printStream.println(syslog.getProtocol() + ": DOWN" + (StringUtils.isBlank(reason) ? "" : " (" + reason + ")"));
+    }
 
-	public void up(SyslogIF syslog) {
-		this.printStream.println(syslog.getProtocol() + ": UP");
-	}
+    public void up(SyslogIF syslog) {
+        this.printStream.println(syslog.getProtocol() + ": UP");
+    }
 
-	public void log(SyslogIF syslog, int level, String message, String reason) {
-		String combinedMessage = combine(syslog,level,message,reason);
+    public void log(SyslogIF syslog, int level, String message, String reason) {
+        String combinedMessage = combine(syslog,level,message,reason);
 
-		if (this.appendLinefeed) {
-			this.printStream.println(combinedMessage);
+        if (this.appendLinefeed) {
+            this.printStream.println(combinedMessage);
 
-		} else {
-			this.printStream.print(combinedMessage);
-		}
-	}
+        } else {
+            this.printStream.print(combinedMessage);
+        }
+    }
 }

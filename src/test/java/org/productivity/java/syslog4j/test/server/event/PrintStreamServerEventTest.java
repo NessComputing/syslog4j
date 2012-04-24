@@ -21,64 +21,64 @@ import org.productivity.java.syslog4j.server.impl.event.printstream.SystemErrSys
 import org.productivity.java.syslog4j.server.impl.event.printstream.SystemOutSyslogServerEventHandler;
 
 public class PrintStreamServerEventTest extends TestCase {
-	public void testPrintStreamEvent() {
-		SyslogServerIF server = SyslogServer.getInstance("udp");
-		
-		String message = "test message";
-		
-		InetAddress inetAddress = null;
-		
-		try { inetAddress = InetAddress.getLocalHost(); } catch (UnknownHostException uhe) { }
-		
-		SyslogServerEventIF event = new SyslogServerEvent(message.getBytes(),message.length(),inetAddress);
+    public void testPrintStreamEvent() {
+        SyslogServerIF server = SyslogServer.getInstance("udp");
 
-		assertEquals(SyslogConstants.CHAR_SET_DEFAULT,event.getCharSet());
-		event.setCharSet("xxyyzz");
-		assertEquals("xxyyzz",event.getCharSet());
-		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintStream ps = new PrintStream(baos);
-		
-		SyslogServerSessionEventHandlerIF eventHandler = new PrintStreamSyslogServerEventHandler(ps);
-		eventHandler.sessionOpened(server,null);
-		eventHandler.event(null,server,null,event);
-		eventHandler.exception(null,server,null,null);
-		eventHandler.sessionClosed(null,server,null,false);
-		assertEquals(event.getMessage(),new String("test message"));
+        String message = "test message";
 
-		Date date = new Date();
-		event.setDate(date);
-		assertTrue(date == event.getDate());
-		
-		event.setFacility(SyslogConstants.FACILITY_LOCAL0);
-		assertEquals(SyslogConstants.FACILITY_LOCAL0,event.getFacility());
-		
-		event.setHost("foo");
-		assertEquals("foo",event.getHost());
-		
-		event.setLevel(SyslogConstants.LEVEL_DEBUG);
-		assertEquals(SyslogConstants.LEVEL_DEBUG,event.getLevel());
-		
-		event.setMessage(message);
-		assertEquals(message,event.getMessage());
-		
-		eventHandler = SystemOutSyslogServerEventHandler.create();
-		eventHandler.event(null,server,null,event);
+        InetAddress inetAddress = null;
 
-		eventHandler = new SystemErrSyslogServerEventHandler();
-		eventHandler.event(null,server,null,event);
-		
-		try {
-			File f = File.createTempFile("syslog4j-test",".txt");
-			
-			eventHandler = new FileSyslogServerEventHandler(f.getPath());
-			eventHandler.event(null,server,null,event);
+        try { inetAddress = InetAddress.getLocalHost(); } catch (UnknownHostException uhe) { }
 
-			eventHandler = new FileSyslogServerEventHandler(f.getPath(),true);
-			eventHandler.event(null,server,null,event);
+        SyslogServerEventIF event = new SyslogServerEvent(message.getBytes(),message.length(),inetAddress);
 
-		} catch (Exception e) {
-			fail(e.toString());
-		}
-	}
+        assertEquals(SyslogConstants.CHAR_SET_DEFAULT,event.getCharSet());
+        event.setCharSet("xxyyzz");
+        assertEquals("xxyyzz",event.getCharSet());
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+
+        SyslogServerSessionEventHandlerIF eventHandler = new PrintStreamSyslogServerEventHandler(ps);
+        eventHandler.sessionOpened(server,null);
+        eventHandler.event(null,server,null,event);
+        eventHandler.exception(null,server,null,null);
+        eventHandler.sessionClosed(null,server,null,false);
+        assertEquals(event.getMessage(),new String("test message"));
+
+        Date date = new Date();
+        event.setDate(date);
+        assertTrue(date == event.getDate());
+
+        event.setFacility(SyslogConstants.FACILITY_LOCAL0);
+        assertEquals(SyslogConstants.FACILITY_LOCAL0,event.getFacility());
+
+        event.setHost("foo");
+        assertEquals("foo",event.getHost());
+
+        event.setLevel(SyslogConstants.LEVEL_DEBUG);
+        assertEquals(SyslogConstants.LEVEL_DEBUG,event.getLevel());
+
+        event.setMessage(message);
+        assertEquals(message,event.getMessage());
+
+        eventHandler = SystemOutSyslogServerEventHandler.create();
+        eventHandler.event(null,server,null,event);
+
+        eventHandler = new SystemErrSyslogServerEventHandler();
+        eventHandler.event(null,server,null,event);
+
+        try {
+            File f = File.createTempFile("syslog4j-test",".txt");
+
+            eventHandler = new FileSyslogServerEventHandler(f.getPath());
+            eventHandler.event(null,server,null,event);
+
+            eventHandler = new FileSyslogServerEventHandler(f.getPath(),true);
+            eventHandler.event(null,server,null,event);
+
+        } catch (Exception e) {
+            fail(e.toString());
+        }
+    }
 }

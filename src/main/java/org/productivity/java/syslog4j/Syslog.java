@@ -38,283 +38,283 @@ import com.google.common.collect.Maps;
  * @version $Id: Syslog.java,v 1.23 2011/01/23 20:49:12 cvs Exp $
  */
 public final class Syslog implements SyslogConstants {
-	private static final long serialVersionUID = -4662318148650646144L;
+    private static final long serialVersionUID = -4662318148650646144L;
 
-	private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;
+    private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;
 
-	protected static final Map<String, SyslogIF> instances = Maps.newHashMap();
+    protected static final Map<String, SyslogIF> instances = Maps.newHashMap();
 
-	static {
-		initialize();
-	}
+    static {
+        initialize();
+    }
 
-	/**
-	 * Syslog is a singleton.
-	 */
-	private Syslog() {
-		//
-	}
+    /**
+     * Syslog is a singleton.
+     */
+    private Syslog() {
+        //
+    }
 
-	/**
-	 * @return Returns the current version identifier for Syslog4j.
-	 */
-	public static final String getVersion() {
-		return Syslog4jVersion.VERSION;
-	}
+    /**
+     * @return Returns the current version identifier for Syslog4j.
+     */
+    public static final String getVersion() {
+        return Syslog4jVersion.VERSION;
+    }
 
-	/**
-	 * @param suppress - true to suppress throwing SyslogRuntimeException in many methods of this class, false to throw exceptions (default)
-	 */
-	public static void setSuppressRuntimeExceptions(boolean suppress) {
-		SUPPRESS_RUNTIME_EXCEPTIONS = suppress;
-	}
+    /**
+     * @param suppress - true to suppress throwing SyslogRuntimeException in many methods of this class, false to throw exceptions (default)
+     */
+    public static void setSuppressRuntimeExceptions(boolean suppress) {
+        SUPPRESS_RUNTIME_EXCEPTIONS = suppress;
+    }
 
-	/**
-	 * @return Returns whether or not to suppress throwing SyslogRuntimeException in many methods of this class.
-	 */
-	public static boolean getSuppressRuntimeExceptions() {
-		return SUPPRESS_RUNTIME_EXCEPTIONS;
-	}
+    /**
+     * @return Returns whether or not to suppress throwing SyslogRuntimeException in many methods of this class.
+     */
+    public static boolean getSuppressRuntimeExceptions() {
+        return SUPPRESS_RUNTIME_EXCEPTIONS;
+    }
 
-	/**
-	 * Throws SyslogRuntimeException unless it has been suppressed via setSuppressRuntimeException(boolean).
-	 *
-	 * @param message
-	 * @throws SyslogRuntimeException
-	 */
-	private static void throwRuntimeException(String message) throws SyslogRuntimeException {
-		if (SUPPRESS_RUNTIME_EXCEPTIONS) {
-			return;
+    /**
+     * Throws SyslogRuntimeException unless it has been suppressed via setSuppressRuntimeException(boolean).
+     *
+     * @param message
+     * @throws SyslogRuntimeException
+     */
+    private static void throwRuntimeException(String message) throws SyslogRuntimeException {
+        if (SUPPRESS_RUNTIME_EXCEPTIONS) {
+            return;
 
-		} else {
-			throw new SyslogRuntimeException(message.toString());
-		}
-	}
+        } else {
+            throw new SyslogRuntimeException(message.toString());
+        }
+    }
 
-	/**
-	 * Use getInstance(protocol) as the starting point for Syslog4j.
-	 *
-	 * @param protocol - the Syslog protocol to use, e.g. "udp", "tcp", "unix_syslog", "unix_socket", or a custom protocol
-	 * @return Returns an instance of SyslogIF.
-	 * @throws SyslogRuntimeException
-	 */
-	public static final SyslogIF getInstance(String protocol) throws SyslogRuntimeException {
-		String _protocol = protocol.toLowerCase();
+    /**
+     * Use getInstance(protocol) as the starting point for Syslog4j.
+     *
+     * @param protocol - the Syslog protocol to use, e.g. "udp", "tcp", "unix_syslog", "unix_socket", or a custom protocol
+     * @return Returns an instance of SyslogIF.
+     * @throws SyslogRuntimeException
+     */
+    public static final SyslogIF getInstance(String protocol) throws SyslogRuntimeException {
+        String _protocol = protocol.toLowerCase();
 
-		if (instances.containsKey(_protocol)) {
-			return instances.get(_protocol);
+        if (instances.containsKey(_protocol)) {
+            return instances.get(_protocol);
 
-		} else {
-			StringBuffer message = new StringBuffer("Syslog protocol \"" + protocol + "\" not defined; call Syslogger.createSyslogInstance(protocol,config) first");
+        } else {
+            StringBuffer message = new StringBuffer("Syslog protocol \"" + protocol + "\" not defined; call Syslogger.createSyslogInstance(protocol,config) first");
 
-			if (instances.size() > 0) {
-				message.append(" or use one of the following instances: ");
+            if (instances.size() > 0) {
+                message.append(" or use one of the following instances: ");
 
-				Iterator<String> i = instances.keySet().iterator();
-				while (i.hasNext()) {
-					String k = (String) i.next();
+                Iterator<String> i = instances.keySet().iterator();
+                while (i.hasNext()) {
+                    String k = (String) i.next();
 
-					message.append(k);
-					if (i.hasNext()) {
-						message.append(' ');
-					}
-				}
-			}
+                    message.append(k);
+                    if (i.hasNext()) {
+                        message.append(' ');
+                    }
+                }
+            }
 
-			throwRuntimeException(message.toString());
-			return null;
-		}
-	}
+            throwRuntimeException(message.toString());
+            return null;
+        }
+    }
 
-	/**
-	 * Use createInstance(protocol,config) to create your own Syslog instance.
-	 *
-	 * <p>First, create an implementation of SyslogConfigIF, such as UdpNetSyslogConfig.</p>
-	 *
-	 * <p>Second, configure that configuration instance.</p>
-	 *
-	 * <p>Third, call createInstance(protocol,config) using a short &amp; simple
-	 * String for the protocol argument.</p>
-	 *
-	 * <p>Fourth, either use the returned instance of SyslogIF, or in later code
-	 * call getInstance(protocol) with the protocol chosen in the previous step.</p>
-	 *
-	 * @param protocol
-	 * @param config
-	 * @return Returns an instance of SyslogIF.
-	 * @throws SyslogRuntimeException
-	 */
-	public static final SyslogIF createInstance(String protocol, SyslogConfigIF config) throws SyslogRuntimeException {
+    /**
+     * Use createInstance(protocol,config) to create your own Syslog instance.
+     *
+     * <p>First, create an implementation of SyslogConfigIF, such as UdpNetSyslogConfig.</p>
+     *
+     * <p>Second, configure that configuration instance.</p>
+     *
+     * <p>Third, call createInstance(protocol,config) using a short &amp; simple
+     * String for the protocol argument.</p>
+     *
+     * <p>Fourth, either use the returned instance of SyslogIF, or in later code
+     * call getInstance(protocol) with the protocol chosen in the previous step.</p>
+     *
+     * @param protocol
+     * @param config
+     * @return Returns an instance of SyslogIF.
+     * @throws SyslogRuntimeException
+     */
+    public static final SyslogIF createInstance(String protocol, SyslogConfigIF config) throws SyslogRuntimeException {
 
-	    if (StringUtils.isBlank(protocol)) {
-			throwRuntimeException("Instance protocol cannot be null or empty");
-			return null;
-		}
-
-		if (config == null) {
-			throwRuntimeException("SyslogConfig cannot be null");
-			return null;
-		}
-
-		String syslogProtocol = protocol.toLowerCase();
-
-		SyslogIF syslog = null;
-
-		synchronized(instances) {
-			if (instances.containsKey(syslogProtocol)) {
-				throwRuntimeException("Syslog protocol \"" + protocol + "\" already defined");
-				return null;
-			}
-
-			try {
-				Class<? extends SyslogIF> syslogClass = config.getSyslogClass();
-				syslog = syslogClass.newInstance();
-
-			} catch (ClassCastException cse) {
-				if (!config.isThrowExceptionOnInitialize()) {
-					throw new SyslogRuntimeException(cse);
-
-				} else {
-					return null;
-				}
-
-			} catch (IllegalAccessException iae) {
-				if (!config.isThrowExceptionOnInitialize()) {
-					throw new SyslogRuntimeException(iae);
-
-				} else {
-					return null;
-				}
-
-			} catch (InstantiationException ie) {
-				if (!config.isThrowExceptionOnInitialize()) {
-					throw new SyslogRuntimeException(ie);
-
-				} else {
-					return null;
-				}
-			}
-
-			syslog.initialize(syslogProtocol,config);
-
-			instances.put(syslogProtocol,syslog);
-		}
-
-		return syslog;
-	}
-
-	/**
-	 * initialize() sets up the default TCP and UDP Syslog protocols, as
-	 * well as UNIX_SYSLOG and UNIX_SOCKET (if running on a Unix-based system).
-	 */
-	public synchronized static final void initialize() {
-		createInstance(UDP,new UDPNetSyslogConfig());
-		createInstance(TCP,new TCPNetSyslogConfig());
-
-		if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
-			createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
-			createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
-		}
-	}
-
-	/**
-	 * @param protocol - Syslog protocol
-	 * @return Returns whether the protocol has been previously defined.
-	 */
-	public static final boolean exists(String protocol) {
         if (StringUtils.isBlank(protocol)) {
-			return false;
-		}
+            throwRuntimeException("Instance protocol cannot be null or empty");
+            return null;
+        }
 
-		return instances.containsKey(protocol.toLowerCase());
-	}
+        if (config == null) {
+            throwRuntimeException("SyslogConfig cannot be null");
+            return null;
+        }
 
-	/**
-	 * shutdown() gracefully shuts down all defined Syslog protocols,
-	 * which includes flushing all queues and connections and finally
-	 * clearing all instances (including those initialized by default).
-	 */
-	public synchronized static final void shutdown() {
-		Set<String> protocols = instances.keySet();
+        String syslogProtocol = protocol.toLowerCase();
 
-		if (protocols.size() > 0) {
-			Iterator<String> i = protocols.iterator();
+        SyslogIF syslog = null;
 
-			SyslogUtility.sleep(SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT);
+        synchronized(instances) {
+            if (instances.containsKey(syslogProtocol)) {
+                throwRuntimeException("Syslog protocol \"" + protocol + "\" already defined");
+                return null;
+            }
 
-			while(i.hasNext()) {
-				String protocol = i.next();
+            try {
+                Class<? extends SyslogIF> syslogClass = config.getSyslogClass();
+                syslog = syslogClass.newInstance();
 
-				SyslogIF syslog = instances.get(protocol);
+            } catch (ClassCastException cse) {
+                if (!config.isThrowExceptionOnInitialize()) {
+                    throw new SyslogRuntimeException(cse);
 
-				syslog.shutdown();
-			}
+                } else {
+                    return null;
+                }
 
-			instances.clear();
-		}
-	}
+            } catch (IllegalAccessException iae) {
+                if (!config.isThrowExceptionOnInitialize()) {
+                    throw new SyslogRuntimeException(iae);
 
-	/**
-	 * destroyInstance() gracefully shuts down the specified Syslog protocol and
-	 * removes the instance from Syslog4j.
-	 *
-	 * @param protocol - the Syslog protocol to destroy
-	 * @throws SyslogRuntimeException
-	 */
-	public synchronized static final void destroyInstance(String protocol) throws SyslogRuntimeException {
+                } else {
+                    return null;
+                }
+
+            } catch (InstantiationException ie) {
+                if (!config.isThrowExceptionOnInitialize()) {
+                    throw new SyslogRuntimeException(ie);
+
+                } else {
+                    return null;
+                }
+            }
+
+            syslog.initialize(syslogProtocol,config);
+
+            instances.put(syslogProtocol,syslog);
+        }
+
+        return syslog;
+    }
+
+    /**
+     * initialize() sets up the default TCP and UDP Syslog protocols, as
+     * well as UNIX_SYSLOG and UNIX_SOCKET (if running on a Unix-based system).
+     */
+    public synchronized static final void initialize() {
+        createInstance(UDP,new UDPNetSyslogConfig());
+        createInstance(TCP,new TCPNetSyslogConfig());
+
+        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
+            createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
+            createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
+        }
+    }
+
+    /**
+     * @param protocol - Syslog protocol
+     * @return Returns whether the protocol has been previously defined.
+     */
+    public static final boolean exists(String protocol) {
         if (StringUtils.isBlank(protocol)) {
-			return;
-		}
+            return false;
+        }
 
-		String _protocol = protocol.toLowerCase();
+        return instances.containsKey(protocol.toLowerCase());
+    }
 
-		if (instances.containsKey(_protocol)) {
-			SyslogUtility.sleep(SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT);
+    /**
+     * shutdown() gracefully shuts down all defined Syslog protocols,
+     * which includes flushing all queues and connections and finally
+     * clearing all instances (including those initialized by default).
+     */
+    public synchronized static final void shutdown() {
+        Set<String> protocols = instances.keySet();
 
-			SyslogIF syslog = instances.get(_protocol);
+        if (protocols.size() > 0) {
+            Iterator<String> i = protocols.iterator();
 
-			try {
-				syslog.shutdown();
+            SyslogUtility.sleep(SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT);
 
-			} finally {
-				instances.remove(_protocol);
-			}
+            while(i.hasNext()) {
+                String protocol = i.next();
 
-		} else {
-			throwRuntimeException("Cannot destroy protocol \"" + protocol + "\" instance; call shutdown instead");
-			return;
-		}
-	}
+                SyslogIF syslog = instances.get(protocol);
 
-	/**
-	 * destroyInstance() gracefully shuts down the specified Syslog instance and
-	 * removes it from Syslog4j.
-	 *
-	 * @param syslog - the Syslog instance to destroy
-	 * @throws SyslogRuntimeException
-	 */
-	public synchronized static final void destroyInstance(SyslogIF syslog) throws SyslogRuntimeException {
-		if (syslog == null) {
-			return;
-		}
+                syslog.shutdown();
+            }
 
-		String protocol = syslog.getProtocol().toLowerCase();
+            instances.clear();
+        }
+    }
 
-		if (instances.containsKey(protocol)) {
-			try {
-				syslog.shutdown();
+    /**
+     * destroyInstance() gracefully shuts down the specified Syslog protocol and
+     * removes the instance from Syslog4j.
+     *
+     * @param protocol - the Syslog protocol to destroy
+     * @throws SyslogRuntimeException
+     */
+    public synchronized static final void destroyInstance(String protocol) throws SyslogRuntimeException {
+        if (StringUtils.isBlank(protocol)) {
+            return;
+        }
 
-			} finally {
-				instances.remove(protocol);
-			}
+        String _protocol = protocol.toLowerCase();
 
-		} else {
-			throwRuntimeException("Cannot destroy protocol \"" + protocol + "\" instance; call shutdown instead");
-			return;
-		}
-	}
+        if (instances.containsKey(_protocol)) {
+            SyslogUtility.sleep(SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT);
 
-	public static void main(String[] args) throws Exception {
-		SyslogMain.main(args);
-	}
+            SyslogIF syslog = instances.get(_protocol);
+
+            try {
+                syslog.shutdown();
+
+            } finally {
+                instances.remove(_protocol);
+            }
+
+        } else {
+            throwRuntimeException("Cannot destroy protocol \"" + protocol + "\" instance; call shutdown instead");
+            return;
+        }
+    }
+
+    /**
+     * destroyInstance() gracefully shuts down the specified Syslog instance and
+     * removes it from Syslog4j.
+     *
+     * @param syslog - the Syslog instance to destroy
+     * @throws SyslogRuntimeException
+     */
+    public synchronized static final void destroyInstance(SyslogIF syslog) throws SyslogRuntimeException {
+        if (syslog == null) {
+            return;
+        }
+
+        String protocol = syslog.getProtocol().toLowerCase();
+
+        if (instances.containsKey(protocol)) {
+            try {
+                syslog.shutdown();
+
+            } finally {
+                instances.remove(protocol);
+            }
+
+        } else {
+            throwRuntimeException("Cannot destroy protocol \"" + protocol + "\" instance; call shutdown instead");
+            return;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        SyslogMain.main(args);
+    }
 }

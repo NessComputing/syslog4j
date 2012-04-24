@@ -9,58 +9,58 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 
 public class MultipleSyslog4jTest extends AbstractNetSyslog4jTest {
-	protected void setupMultipleConfig() {
-		((AbstractNetSyslogConfig) Syslog.getInstance("tcp").getConfig()).setPort(TEST_PORT);
-		
-		MultipleSyslogConfig config = new MultipleSyslogConfig();
-		
-		config.addProtocol("tcp");
-		
-		Syslog.createInstance("multipleTcp",config);
-	}
+    protected void setupMultipleConfig() {
+        ((AbstractNetSyslogConfig) Syslog.getInstance("tcp").getConfig()).setPort(TEST_PORT);
 
-	protected int getMessageCount() {
-		return 100;
-	}
+        MultipleSyslogConfig config = new MultipleSyslogConfig();
 
-	protected String getClientProtocol() {
-		return "multipleTcp";
-	}
+        config.addProtocol("tcp");
 
-	protected String getServerProtocol() {
-		return "tcp";
-	}
-	
-	public void _testExceptionThrows() {
-		SyslogIF s = Syslog.getInstance("multipleTcp");
+        Syslog.createInstance("multipleTcp",config);
+    }
 
-		// NO-OPs
-		s.backLog(0,null,"");
-		s.backLog(0,null,new Exception());
+    protected int getMessageCount() {
+        return 100;
+    }
 
-		// Exceptions for methods that shouldn't be called
-		try { s.setMessageProcessor(null); fail(); } catch (SyslogRuntimeException e) { }
-		try { s.getMessageProcessor(); fail(); } catch (SyslogRuntimeException e) { }
+    protected String getClientProtocol() {
+        return "multipleTcp";
+    }
 
-		// Exceptions for methods that shouldn't be called
-		try { s.setStructuredMessageProcessor(null); fail(); } catch (SyslogRuntimeException e) { }
-		try { s.getStructuredMessageProcessor(); fail(); } catch (SyslogRuntimeException e) { }
+    protected String getServerProtocol() {
+        return "tcp";
+    }
 
-		// Initialize Exceptions
-		try {
-			s.initialize(null,new TCPNetSyslogConfig());
-			fail();
-			
-		} catch (SyslogRuntimeException e) {
-			//
-		}
-	}
+    public void _testExceptionThrows() {
+        SyslogIF s = Syslog.getInstance("multipleTcp");
 
-	public void testSendReceive() {
-		setupMultipleConfig();
-		
-		_testExceptionThrows();
-		
-		super._testSendReceive(true,true);
-	}
+        // NO-OPs
+        s.backLog(0,null,"");
+        s.backLog(0,null,new Exception());
+
+        // Exceptions for methods that shouldn't be called
+        try { s.setMessageProcessor(null); fail(); } catch (SyslogRuntimeException e) { }
+        try { s.getMessageProcessor(); fail(); } catch (SyslogRuntimeException e) { }
+
+        // Exceptions for methods that shouldn't be called
+        try { s.setStructuredMessageProcessor(null); fail(); } catch (SyslogRuntimeException e) { }
+        try { s.getStructuredMessageProcessor(); fail(); } catch (SyslogRuntimeException e) { }
+
+        // Initialize Exceptions
+        try {
+            s.initialize(null,new TCPNetSyslogConfig());
+            fail();
+
+        } catch (SyslogRuntimeException e) {
+            //
+        }
+    }
+
+    public void testSendReceive() {
+        setupMultipleConfig();
+
+        _testExceptionThrows();
+
+        super._testSendReceive(true,true);
+    }
 }
