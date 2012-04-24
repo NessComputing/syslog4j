@@ -1,10 +1,18 @@
 package org.productivity.java.syslog4j.impl.unix.socket;
 
+import static org.productivity.java.syslog4j.SyslogConstants.AF_UNIX;
+import static org.productivity.java.syslog4j.SyslogConstants.SOCK_DGRAM;
+import static org.productivity.java.syslog4j.SyslogConstants.SOCK_STREAM;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_FAMILY_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_LIBRARY_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_PATH_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_PROTOCOL_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_TYPE_DEFAULT;
+
 import org.apache.commons.lang3.StringUtils;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
-
 /**
 * UnixSocketSyslogConfig is an extension of AbstractNetSyslogConfig that provides
 * configuration support for Unix socket-based syslog clients.

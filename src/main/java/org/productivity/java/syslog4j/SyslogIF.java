@@ -10,7 +10,7 @@ package org.productivity.java.syslog4j;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogIF.java,v 1.9 2010/02/11 04:59:22 cvs Exp $
 */
-public interface SyslogIF extends SyslogConstants {
+public interface SyslogIF {
     public void initialize(String protocol, SyslogConfigIF config) throws SyslogRuntimeException;
 
     public String getProtocol();

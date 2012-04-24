@@ -1,9 +1,11 @@
 package org.productivity.java.syslog4j.impl.unix;
 
+import static org.productivity.java.syslog4j.SyslogConstants.OPTION_NONE;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_LIBRARY_DEFAULT;
+
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
-
 /**
 * UnixSyslogConfig is an extension of AbstractNetSyslogConfig that provides
 * configuration support for Unix-based syslog clients.

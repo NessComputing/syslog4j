@@ -1,9 +1,11 @@
 package org.productivity.java.syslog4j.impl.message.modifier;
 
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_MESSAGE_MODIFIER_PREFIX_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_MESSAGE_MODIFIER_SUFFIX_DEFAULT;
+
 import org.productivity.java.syslog4j.SyslogCharSetIF;
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogMessageModifierConfigIF;
-
 /**
 * AbstractSyslogMessageModifierConfig provides a base abstract implementation of the
 * SyslogMessageModifierConfigIF.

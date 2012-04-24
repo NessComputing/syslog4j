@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j;
 
+
 /**
 * SyslogConfigIF provides a common, extensible configuration interface for all
 * implementations of SyslogIF.
@@ -11,7 +12,7 @@ package org.productivity.java.syslog4j;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogConfigIF.java,v 1.19 2010/11/28 04:15:18 cvs Exp $
 */
-public interface SyslogConfigIF extends SyslogConstants, SyslogCharSetIF {
+public interface SyslogConfigIF extends SyslogCharSetIF {
     public Class<? extends SyslogIF> getSyslogClass();
 
     public int getFacility();

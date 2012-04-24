@@ -1,7 +1,8 @@
 package org.productivity.java.syslog4j.server.impl.net;
 
-import org.productivity.java.syslog4j.server.impl.AbstractSyslogServerConfig;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_PORT_DEFAULT;
 
+import org.productivity.java.syslog4j.server.impl.AbstractSyslogServerConfig;
 /**
 * AbstractNetSyslogServerConfig provides a base abstract implementation of the AbstractSyslogServerConfig
 * configuration interface.

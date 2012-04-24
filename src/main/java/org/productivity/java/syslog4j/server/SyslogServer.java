@@ -1,5 +1,8 @@
 package org.productivity.java.syslog4j.server;
 
+import static org.productivity.java.syslog4j.SyslogConstants.TCP;
+import static org.productivity.java.syslog4j.SyslogConstants.UDP;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +16,6 @@ import org.productivity.java.syslog4j.server.impl.net.udp.UDPNetSyslogServerConf
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.collect.Maps;
-
 /**
  * This class provides a Singleton-based interface for Syslog4j
  * server implementations.
@@ -25,7 +27,7 @@ import com.google.common.collect.Maps;
  * @author &lt;syslog4j@productivity.org&gt;
  * @version $Id: SyslogServer.java,v 1.14 2011/01/23 20:49:12 cvs Exp $
  */
-public class SyslogServer implements SyslogConstants {
+public class SyslogServer {
     private static final long serialVersionUID = -2260889360828258602L;
 
     private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;

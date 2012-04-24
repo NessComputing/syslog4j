@@ -1,8 +1,9 @@
 package org.productivity.java.syslog4j.impl.message.modifier.sequential;
 
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_DEBUG;
+
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
-
 /**
 * SequentialSyslogMessageModifier is an implementation of SyslogMessageModifierIF
 * that adds an incremented number at the end.

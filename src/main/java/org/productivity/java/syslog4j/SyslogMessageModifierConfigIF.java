@@ -11,7 +11,7 @@ package org.productivity.java.syslog4j;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogMessageModifierConfigIF.java,v 1.3 2010/10/28 05:10:57 cvs Exp $
 */
-public interface SyslogMessageModifierConfigIF extends SyslogConstants, SyslogCharSetIF {
+public interface SyslogMessageModifierConfigIF extends SyslogCharSetIF {
     public String getPrefix();
     public void setPrefix(String prefix);
 

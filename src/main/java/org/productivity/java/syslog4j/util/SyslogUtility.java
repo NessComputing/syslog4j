@@ -1,5 +1,35 @@
 package org.productivity.java.syslog4j.util;
 
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_AUTH;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_AUTHPRIV;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_CRON;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_DAEMON;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_FTP;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_KERN;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL0;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL1;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL2;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL3;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL4;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL5;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL6;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LOCAL7;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_LPR;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_MAIL;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_NEWS;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_SYSLOG;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_USER;
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_UUCP;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_ALERT;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_CRITICAL;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_DEBUG;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_EMERGENCY;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_ERROR;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_INFO;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_NOTICE;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_WARN;
+import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_NAME_DEFAULT_VALUE;
+
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -8,7 +38,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.productivity.java.syslog4j.SyslogCharSetIF;
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
-
 /**
 * SyslogUtility provides several common utility methods used within
 * Syslog4j.
@@ -20,7 +49,7 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogUtility.java,v 1.21 2010/11/28 01:38:08 cvs Exp $
 */
-public final class SyslogUtility implements SyslogConstants {
+public final class SyslogUtility {
     private static final long serialVersionUID = 915031554586613648L;
 
     private SyslogUtility() {

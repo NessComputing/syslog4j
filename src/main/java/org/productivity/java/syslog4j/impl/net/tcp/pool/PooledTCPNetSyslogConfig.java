@@ -1,10 +1,21 @@
 package org.productivity.java.syslog4j.impl.net.tcp.pool;
 
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_MAX_ACTIVE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_MAX_IDLE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_MAX_WAIT_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_MIN_EVICTABLE_IDLE_TIME_MILLIS_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_MIN_IDLE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_NUM_TESTS_PER_EVICTION_RUN_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_SOFT_MIN_EVICTABLE_IDLE_TIME_MILLIS_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_TEST_ON_BORROW_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_TEST_ON_RETURN_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_TEST_WHILE_IDLE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_TIME_BETWEEN_EVICTION_RUNS_MILLIS_DEFAULT;
+
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogPoolConfigIF;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
-
 /**
 * NetSyslogPoolFactory is an implementation of SyslogPoolConfigIF
 * which provides configuration support for the Apache Commons Pool.

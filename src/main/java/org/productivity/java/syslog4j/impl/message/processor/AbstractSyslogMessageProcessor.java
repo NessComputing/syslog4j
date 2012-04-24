@@ -1,13 +1,13 @@
 package org.productivity.java.syslog4j.impl.message.processor;
 
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_DATEFORMAT;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
 import org.productivity.java.syslog4j.util.SyslogUtility;
-
 /**
 * AbstractSyslogMessageProcessor provides the ability to split a syslog message
 * into multiple messages when the message is greater than the syslog
@@ -20,7 +20,7 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: AbstractSyslogMessageProcessor.java,v 1.2 2010/11/28 04:15:18 cvs Exp $
 */
-public abstract class AbstractSyslogMessageProcessor implements SyslogMessageProcessorIF, SyslogConstants {
+public abstract class AbstractSyslogMessageProcessor implements SyslogMessageProcessorIF {
     private static final long serialVersionUID = -5413127301924500938L;
     protected String localName = null;
 

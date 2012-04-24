@@ -1,8 +1,10 @@
 package org.productivity.java.syslog4j.server.impl.net.tcp;
 
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_MAX_ACTIVE_SOCKETS_BEHAVIOR_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_MAX_ACTIVE_SOCKETS_DEFAULT;
+
 import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.net.AbstractNetSyslogServerConfig;
-
 /**
 * TCPNetSyslogServerConfig provides configuration for TCPNetSyslogServer.
 *

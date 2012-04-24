@@ -1,11 +1,18 @@
 package org.productivity.java.syslog4j.impl.net.tcp;
 
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_FRESH_CONNECTION_INTERVAL_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_KEEP_ALIVE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_PERSISTENT_CONNECTION_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_REUSE_ADDRESS_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_SET_BUFFER_SIZE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_SO_LINGER_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP_SO_LINGER_SECONDS_DEFAULT;
+
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.AbstractNetSyslogConfig;
 import org.productivity.java.syslog4j.util.SyslogUtility;
-
 /**
 * TCPNetSyslogConfig is an extension of AbstractNetSyslogConfig that provides
 * configuration support for TCP/IP-based syslog clients.

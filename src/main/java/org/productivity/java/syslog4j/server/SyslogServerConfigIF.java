@@ -3,9 +3,7 @@ package org.productivity.java.syslog4j.server;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogCharSetIF;
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
-
 /**
 * SyslogServerConfigIF provides a common, extensible configuration interface for all
 * implementations of SyslogServerIF.
@@ -17,7 +15,7 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogServerConfigIF.java,v 1.12 2011/01/11 05:11:13 cvs Exp $
 */
-public interface SyslogServerConfigIF extends SyslogConstants, SyslogCharSetIF {
+public interface SyslogServerConfigIF extends SyslogCharSetIF {
     public Class<? extends SyslogServerIF> getSyslogServerClass();
 
     public String getHost();

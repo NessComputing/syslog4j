@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.test.unix;
 
+import static org.productivity.java.syslog4j.SyslogConstants.FACILITY_KERN;
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.Syslog;
@@ -7,7 +8,6 @@ import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.AbstractSyslog;
 import org.productivity.java.syslog4j.impl.unix.UnixSyslogConfig;
-
 public class UnixSyslogTest extends TestCase {
     public void testUnixSyslogConfig() {
         UnixSyslogConfig config = new UnixSyslogConfig();
@@ -60,7 +60,7 @@ public class UnixSyslogTest extends TestCase {
     public void testUnixSyslog() {
         SyslogIF syslog = Syslog.getInstance(SyslogConstants.UNIX_SYSLOG);
 
-        syslog.getConfig().setFacility(SyslogIF.FACILITY_KERN);
+        syslog.getConfig().setFacility(FACILITY_KERN);
 
         syslog.error(this.getClass().getName() + ": unix_syslog " + System.currentTimeMillis());
 

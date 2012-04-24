@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.test.unix.socket;
 
+import static org.productivity.java.syslog4j.SyslogConstants.SOCK_STREAM;
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.Syslog;
@@ -15,7 +16,7 @@ public class UnixSocketSyslogTest extends TestCase {
         UnixSocketSyslogConfig config = (UnixSocketSyslogConfig) syslog.getConfig();
 
         config.setPath("/tmp/syslog4j.sock");
-        config.setType(UnixSocketSyslogConfig.SOCK_STREAM);
+        config.setType(SOCK_STREAM);
 
         syslog.info(this.getClass().getName() + ": unix_socket " + System.currentTimeMillis());
 

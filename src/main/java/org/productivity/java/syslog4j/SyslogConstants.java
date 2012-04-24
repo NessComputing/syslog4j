@@ -1,6 +1,5 @@
 package org.productivity.java.syslog4j;
 
-import java.io.Serializable;
 
 /**
 * SyslogConstants provides several global constant values for several
@@ -13,7 +12,12 @@ import java.io.Serializable;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogConstants.java,v 1.33 2011/01/11 05:11:13 cvs Exp $
 */
-public interface SyslogConstants extends Serializable {
+public final class SyslogConstants
+{
+    private SyslogConstants()
+    {
+    }
+
     public static final String SYSLOG_PATH_DEFAULT = "/dev/log";
     public static final String SYSLOG_HOST_DEFAULT = "localhost";
     public static final int SYSLOG_PORT_DEFAULT = 514;

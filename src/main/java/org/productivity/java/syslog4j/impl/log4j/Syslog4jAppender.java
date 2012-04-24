@@ -1,7 +1,8 @@
 package org.productivity.java.syslog4j.impl.log4j;
 
-import org.apache.log4j.helpers.LogLog;
+import static org.productivity.java.syslog4j.SyslogConstants.UDP;
 
+import org.apache.log4j.helpers.LogLog;
 /**
  * Syslog4jAppender provides a Log4j Appender wrapper for Syslog4j.
  *

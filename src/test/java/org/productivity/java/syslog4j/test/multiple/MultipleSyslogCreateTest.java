@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.test.multiple;
 
+import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.Syslog;
@@ -14,7 +15,6 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.message.processor.SyslogMessageProcessor;
 import org.productivity.java.syslog4j.impl.message.processor.structured.StructuredSyslogMessageProcessor;
 import org.productivity.java.syslog4j.impl.multiple.MultipleSyslogConfig;
-
 public class MultipleSyslogCreateTest extends TestCase {
     public static class FakeSyslog implements SyslogIF {
         private static final long serialVersionUID = 7519273907420813675L;

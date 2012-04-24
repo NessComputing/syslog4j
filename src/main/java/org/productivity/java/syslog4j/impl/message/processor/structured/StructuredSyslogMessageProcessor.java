@@ -1,10 +1,12 @@
 package org.productivity.java.syslog4j.impl.message.processor.structured;
 
+import static org.productivity.java.syslog4j.SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
+import static org.productivity.java.syslog4j.SyslogConstants.STRUCTURED_DATA_PROCESS_ID_DEFAULT_VALUE;
+
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.productivity.java.syslog4j.impl.message.processor.AbstractSyslogMessageProcessor;
 import org.productivity.java.syslog4j.impl.message.structured.StructuredSyslogMessage;
-
 /**
  * SyslogStructuredMessageProcessor extends SyslogMessageProcessor's ability to
  * split a syslog message into multiple messages when the message is greater

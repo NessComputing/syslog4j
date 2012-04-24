@@ -1,5 +1,15 @@
 package org.productivity.java.syslog4j.impl;
 
+import static org.productivity.java.syslog4j.SyslogConstants.IDENT_SUFFIX_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_ALERT;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_CRITICAL;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_DEBUG;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_EMERGENCY;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_ERROR;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_INFO;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_NOTICE;
+import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_WARN;
+
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +27,6 @@ import org.productivity.java.syslog4j.impl.message.structured.StructuredSyslogMe
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.collect.Lists;
-
 /**
 * AbstractSyslog provides a base abstract implementation of the SyslogIF.
 *

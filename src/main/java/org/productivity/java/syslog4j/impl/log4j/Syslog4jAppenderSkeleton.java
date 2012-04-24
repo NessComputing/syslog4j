@@ -5,7 +5,6 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
 import org.productivity.java.syslog4j.Syslog;
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfigIF;
@@ -24,7 +23,7 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
  * @author &lt;syslog4j@productivity.org&gt;
  * @version $Id: Syslog4jAppenderSkeleton.java,v 1.8 2011/01/23 20:49:12 cvs Exp $
  */
-public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implements SyslogConstants {
+public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
     private static final long serialVersionUID = 5520555788232095628L;
 
     protected SyslogIF syslog = null;

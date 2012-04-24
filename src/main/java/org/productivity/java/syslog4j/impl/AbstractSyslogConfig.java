@@ -1,5 +1,24 @@
 package org.productivity.java.syslog4j.impl;
 
+import static org.productivity.java.syslog4j.SyslogConstants.CHAR_SET_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_NAME_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_TIMESTAMP_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SPLIT_MESSAGE_END_TEXT_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_FACILITY_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.THREADED_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.THREAD_PRIORITY_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.THROW_EXCEPTION_ON_INITIALIZE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.THROW_EXCEPTION_ON_WRITE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.TRUNCATE_MESSAGE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.USE_DAEMON_THREAD_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.WRITE_RETRIES_DEFAULT;
+
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
@@ -10,7 +29,6 @@ import org.productivity.java.syslog4j.impl.backlog.printstream.SystemErrSyslogBa
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.collect.Lists;
-
 /**
 * AbstractSyslog provides a base abstract implementation of the SyslogConfigIF
 * configuration interface.

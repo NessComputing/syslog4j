@@ -1,5 +1,11 @@
 package org.productivity.java.syslog4j;
 
+import static org.productivity.java.syslog4j.SyslogConstants.JNA_NATIVE_CLASS;
+import static org.productivity.java.syslog4j.SyslogConstants.TCP;
+import static org.productivity.java.syslog4j.SyslogConstants.UDP;
+import static org.productivity.java.syslog4j.SyslogConstants.UNIX_SOCKET;
+import static org.productivity.java.syslog4j.SyslogConstants.UNIX_SYSLOG;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +43,7 @@ import com.google.common.collect.Maps;
  * @author &lt;syslog4j@productivity.org&gt;
  * @version $Id: Syslog.java,v 1.23 2011/01/23 20:49:12 cvs Exp $
  */
-public final class Syslog implements SyslogConstants {
+public final class Syslog  {
     private static final long serialVersionUID = -4662318148650646144L;
 
     private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;

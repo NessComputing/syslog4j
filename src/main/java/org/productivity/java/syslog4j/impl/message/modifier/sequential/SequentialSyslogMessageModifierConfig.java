@@ -1,7 +1,13 @@
 package org.productivity.java.syslog4j.impl.message.modifier.sequential;
 
-import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessageModifierConfig;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_FIRST_NUMBER_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_LAST_NUMBER_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PAD_CHAR_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PREFIX_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_SUFFIX_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_USE_PADDING_DEFAULT;
 
+import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessageModifierConfig;
 /**
 * SequentialSyslogMessageModifierConfig is an implementation of AbstractSyslogMessageModifierConfig
 * that provides configuration for SequentialSyslogMessageModifier.

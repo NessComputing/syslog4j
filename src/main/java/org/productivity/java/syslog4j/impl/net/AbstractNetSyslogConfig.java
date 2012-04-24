@@ -1,7 +1,11 @@
 package org.productivity.java.syslog4j.impl.net;
 
-import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
+import static org.productivity.java.syslog4j.SyslogConstants.CACHE_HOST_ADDRESS_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.MAX_QUEUE_SIZE_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_HOST_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_PORT_DEFAULT;
 
+import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 /**
 * AbstractNetSyslogConfig is an abstract extension of AbstractSyslogConfig
 * that provides configuration support for network-based syslog clients.

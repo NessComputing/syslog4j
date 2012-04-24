@@ -1,5 +1,10 @@
 package org.productivity.java.syslog4j.server.impl;
 
+import static org.productivity.java.syslog4j.SyslogConstants.CHAR_SET_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.THREAD_PRIORITY_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.USE_DAEMON_THREAD_DEFAULT;
+import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
+
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogConstants;
@@ -8,7 +13,6 @@ import org.productivity.java.syslog4j.server.SyslogServerEventHandlerIF;
 import org.productivity.java.syslog4j.server.SyslogServerIF;
 
 import com.google.common.collect.Lists;
-
 /**
 * AbstractSyslogServerConfig provides a base abstract implementation of the SyslogServerConfigIF
 * configuration interface.
