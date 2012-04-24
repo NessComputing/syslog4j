@@ -1,69 +1,71 @@
 package org.productivity.java.syslog4j.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.backlog.printstream.SystemErrSyslogBackLogHandler;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
+import com.google.common.collect.Lists;
+
 /**
 * AbstractSyslog provides a base abstract implementation of the SyslogConfigIF
 * configuration interface.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: AbstractSyslogConfig.java,v 1.24 2010/11/28 04:43:31 cvs Exp $
 */
 public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 	private static final long serialVersionUID = -3728308557871358111L;
-	
-	protected final static List defaultBackLogHandlers = new ArrayList();
-	
+
+	protected final static List<SyslogBackLogHandlerIF> defaultBackLogHandlers = Lists.newArrayList();
+
 	static {
 		defaultBackLogHandlers.add(new SystemErrSyslogBackLogHandler());
 	}
-	
+
 	protected int facility = SYSLOG_FACILITY_DEFAULT;
-	
+
 	protected String charSet = CHAR_SET_DEFAULT;
-	
+
 	protected String ident = "";
 
 	protected String localName = null;
 
 	protected boolean sendLocalTimestamp = SEND_LOCAL_TIMESTAMP_DEFAULT;
 	protected boolean sendLocalName = SEND_LOCAL_NAME_DEFAULT;
-	
+
 	protected boolean includeIdentInMessageModifier = INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT;
 	protected boolean throwExceptionOnWrite = THROW_EXCEPTION_ON_WRITE_DEFAULT;
 	protected boolean throwExceptionOnInitialize = THROW_EXCEPTION_ON_INITIALIZE_DEFAULT;
-	
+
 	protected int maxMessageLength = MAX_MESSAGE_LENGTH_DEFAULT;
 	protected byte[] splitMessageBeginText = SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT.getBytes();
 	protected byte[] splitMessageEndText = SPLIT_MESSAGE_END_TEXT_DEFAULT.getBytes();
-	
-	protected List messageModifiers = null;
-	protected List backLogHandlers = null;
+
+	protected List<SyslogMessageModifierIF> messageModifiers = null;
+	protected List<SyslogBackLogHandlerIF> backLogHandlers = null;
 
 	protected boolean threaded = THREADED_DEFAULT;
 	protected boolean useDaemonThread = USE_DAEMON_THREAD_DEFAULT;
 	protected int threadPriority = THREAD_PRIORITY_DEFAULT;
 	protected long threadLoopInterval = THREAD_LOOP_INTERVAL_DEFAULT;
-	
+
 	protected int writeRetries = WRITE_RETRIES_DEFAULT;
 	protected long maxShutdownWait = MAX_SHUTDOWN_WAIT_DEFAULT;
-	
+
 	protected boolean truncateMessage = TRUNCATE_MESSAGE_DEFAULT;
 	protected boolean useStructuredData = USE_STRUCTURED_DATA_DEFAULT;
 
-	public abstract Class getSyslogClass();
-	
+	public abstract Class<? extends SyslogIF> getSyslogClass();
+
 	public String getCharSet() {
 		return this.charSet;
 	}
@@ -143,7 +145,7 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 	public void setSendLocalName(boolean sendLocalName) {
 		this.sendLocalName = sendLocalName;
 	}
-	
+
 	public int getFacility() {
 		return this.facility;
 	}
@@ -155,30 +157,30 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 	public void setFacility(String facilityName) {
 		this.facility = SyslogUtility.getFacility(facilityName);
 	}
-	
+
 	public String getIdent() {
 		return this.ident;
 	}
-	
+
 	public void setIdent(String ident) {
 		this.ident = ident;
 	}
 
-	protected synchronized List _getMessageModifiers() {
+	protected synchronized List<SyslogMessageModifierIF> _getMessageModifiers() {
 		if (this.messageModifiers == null) {
-			this.messageModifiers = new ArrayList();
+			this.messageModifiers = Lists.newArrayList();
 		}
-		
+
 		return this.messageModifiers;
 	}
-	
+
 	public void addMessageModifier(SyslogMessageModifierIF messageModifier) {
 		if (messageModifier == null) {
 			return;
 		}
-		
-		List _messageModifiers = _getMessageModifiers();
-		
+
+		List<SyslogMessageModifierIF> _messageModifiers = _getMessageModifiers();
+
 		synchronized(_messageModifiers) {
 			_messageModifiers.add(messageModifier);
 		}
@@ -188,13 +190,13 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 		if (messageModifier == null) {
 			return;
 		}
-		
-		List _messageModifiers = _getMessageModifiers();
-		
+
+        List<SyslogMessageModifierIF> _messageModifiers = _getMessageModifiers();
+
 		synchronized(_messageModifiers) {
 			try {
-				_messageModifiers.add(index,messageModifier);
-				
+				_messageModifiers.add(index, messageModifier);
+
 			} catch (IndexOutOfBoundsException ioobe) {
 				throw new SyslogRuntimeException(ioobe);
 			}
@@ -205,45 +207,45 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 		if (messageModifier == null) {
 			return;
 		}
-		
-		List _messageModifiers = _getMessageModifiers();
-		
+
+        List<SyslogMessageModifierIF> _messageModifiers = _getMessageModifiers();
+
 		synchronized(_messageModifiers) {
 			_messageModifiers.remove(messageModifier);
 		}
 	}
 
-	public List getMessageModifiers() {
+	public List<SyslogMessageModifierIF> getMessageModifiers() {
 		return this.messageModifiers;
 	}
 
-	public void setMessageModifiers(List messageModifiers) {
+	public void setMessageModifiers(List<SyslogMessageModifierIF> messageModifiers) {
 		this.messageModifiers = messageModifiers;
-	}	
-	
+	}
+
 	public void removeAllMessageModifiers() {
 		if (this.messageModifiers == null || this.messageModifiers.isEmpty()) {
 			return;
 		}
-		
+
 		this.messageModifiers.clear();
 	}
 
-	protected synchronized List _getBackLogHandlers() {
+	protected synchronized List<SyslogBackLogHandlerIF> _getBackLogHandlers() {
 		if (this.backLogHandlers == null) {
-			this.backLogHandlers = new ArrayList();
+			this.backLogHandlers = Lists.newArrayList();
 		}
-		
+
 		return this.backLogHandlers;
 	}
-	
+
 	public void addBackLogHandler(SyslogBackLogHandlerIF backLogHandler) {
 		if (backLogHandler == null) {
 			return;
 		}
-		
-		List _backLogHandlers = _getBackLogHandlers();
-		
+
+		List<SyslogBackLogHandlerIF> _backLogHandlers = _getBackLogHandlers();
+
 		synchronized(_backLogHandlers) {
 			backLogHandler.initialize();
 			_backLogHandlers.add(backLogHandler);
@@ -254,14 +256,14 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 		if (backLogHandler == null) {
 			return;
 		}
-		
-		List _backLogHandlers = _getBackLogHandlers();
-		
+
+        List<SyslogBackLogHandlerIF> _backLogHandlers = _getBackLogHandlers();
+
 		synchronized(_backLogHandlers) {
 			try {
 				backLogHandler.initialize();
 				_backLogHandlers.add(index,backLogHandler);
-				
+
 			} catch (IndexOutOfBoundsException ioobe) {
 				throw new SyslogRuntimeException(ioobe);
 			}
@@ -272,31 +274,31 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 		if (backLogHandler == null) {
 			return;
 		}
-		
-		List _backLogHandlers = _getBackLogHandlers();
-		
+
+        List<SyslogBackLogHandlerIF> _backLogHandlers = _getBackLogHandlers();
+
 		synchronized(_backLogHandlers) {
 			_backLogHandlers.remove(backLogHandler);
 		}
 	}
 
-	public List getBackLogHandlers() {
+	public List<SyslogBackLogHandlerIF> getBackLogHandlers() {
 		if (this.backLogHandlers == null || this.backLogHandlers.size() < 1) {
 			return defaultBackLogHandlers;
 		}
-		
+
 		return this.backLogHandlers;
 	}
 
-	public void setBackLogHandlers(List backLogHandlers) {
+	public void setBackLogHandlers(List<SyslogBackLogHandlerIF> backLogHandlers) {
 		this.backLogHandlers = backLogHandlers;
-	}	
-	
+	}
+
 	public void removeAllBackLogHandlers() {
 		if (this.backLogHandlers == null || this.backLogHandlers.isEmpty()) {
 			return;
 		}
-		
+
 		this.backLogHandlers.clear();
 	}
 
@@ -339,7 +341,7 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 	public void setThreadLoopInterval(long threadLoopInterval) {
 		this.threadLoopInterval = threadLoopInterval;
 	}
-	
+
 	public long getMaxShutdownWait() {
 		return this.maxShutdownWait;
 	}
@@ -372,7 +374,7 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 		this.useStructuredData = useStructuredData;
 	}
 
-	public Class getSyslogWriterClass() {
+	public Class<? extends AbstractSyslogWriter> getSyslogWriterClass() {
 		return null;
 	}
 }

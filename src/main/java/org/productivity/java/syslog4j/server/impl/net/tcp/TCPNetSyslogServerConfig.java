@@ -1,20 +1,21 @@
 package org.productivity.java.syslog4j.server.impl.net.tcp;
 
+import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.net.AbstractNetSyslogServerConfig;
 
 /**
 * TCPNetSyslogServerConfig provides configuration for TCPNetSyslogServer.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: TCPNetSyslogServerConfig.java,v 1.8 2010/11/28 01:38:08 cvs Exp $
 */
 public class TCPNetSyslogServerConfig extends AbstractNetSyslogServerConfig implements TCPNetSyslogServerConfigIF {
 	private static final long serialVersionUID = -1546696301177599370L;
-	
+
 	protected int timeout = 0;
 	protected int backlog = 0;
 	protected int maxActiveSockets = TCP_MAX_ACTIVE_SOCKETS_DEFAULT;
@@ -48,10 +49,10 @@ public class TCPNetSyslogServerConfig extends AbstractNetSyslogServerConfig impl
 		this.backlog = backlog;
 	}
 
-	public Class getSyslogServerClass() {
+	public Class<? extends SyslogServerIF> getSyslogServerClass() {
 		return TCPNetSyslogServer.class;
 	}
-	
+
 	public int getTimeout() {
 		return timeout;
 	}

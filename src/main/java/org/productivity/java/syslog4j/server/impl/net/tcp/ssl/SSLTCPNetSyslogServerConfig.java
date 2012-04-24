@@ -1,14 +1,15 @@
 package org.productivity.java.syslog4j.server.impl.net.tcp.ssl;
 
+import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfig;
 
 /**
 * SSLTCPNetSyslogServerConfig provides configuration for SSLTCPNetSyslogServer.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SSLTCPNetSyslogServerConfig.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
@@ -24,15 +25,15 @@ public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implem
 	public String getKeyStore() {
 		return this.keyStore;
 	}
-	
+
 	public void setKeyStore(String keyStore) {
 		this.keyStore = keyStore;
 	}
-	
+
 	public String getKeyStorePassword() {
 		return this.keyStorePassword;
 	}
-	
+
 	public void setKeyStorePassword(String keyStorePassword) {
 		this.keyStorePassword = keyStorePassword;
 	}
@@ -53,7 +54,7 @@ public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implem
 		this.trustStorePassword = trustStorePassword;
 	}
 
-	public Class getSyslogServerClass() {
+	public Class<? extends SyslogServerIF> getSyslogServerClass() {
 		return SSLTCPNetSyslogServer.class;
 	}
 }

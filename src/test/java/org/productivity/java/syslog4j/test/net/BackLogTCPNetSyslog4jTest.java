@@ -1,6 +1,5 @@
 package org.productivity.java.syslog4j.test.net;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Ignore;
@@ -13,12 +12,14 @@ import org.productivity.java.syslog4j.server.SyslogServer;
 import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
+import com.google.common.collect.Lists;
+
 @Ignore
 public class BackLogTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
 	public static class TestBackLogHandler implements SyslogBackLogHandlerIF {
-		protected List events = null;
+		protected List<String> events = null;
 
-		public TestBackLogHandler(List events) {
+		public TestBackLogHandler(List<String> events) {
 			this.events = events;
 		}
 
@@ -75,7 +76,7 @@ public class BackLogTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
 		Thread t = new Thread(new ThreadStarter(2500,"tcp"));
 		t.start();
 
-		List backLogEvents = new ArrayList();
+		List<String> backLogEvents = Lists.newArrayList();
 
 		TestBackLogHandler bh = new TestBackLogHandler(backLogEvents);
 		bh.initialize();

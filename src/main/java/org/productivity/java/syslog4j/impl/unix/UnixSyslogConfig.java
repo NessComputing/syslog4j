@@ -1,16 +1,17 @@
 package org.productivity.java.syslog4j.impl.unix;
 
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 
 /**
 * UnixSyslogConfig is an extension of AbstractNetSyslogConfig that provides
 * configuration support for Unix-based syslog clients.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: UnixSyslogConfig.java,v 1.13 2010/10/25 03:50:25 cvs Exp $
 */
@@ -19,13 +20,13 @@ public class UnixSyslogConfig extends AbstractSyslogConfig {
 
 	protected String library = SYSLOG_LIBRARY_DEFAULT;
 	protected int option = OPTION_NONE;
-	
+
 	public UnixSyslogConfig() {
 		// Unix-based syslog does not need localName sent
 		this.setSendLocalName(false);
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return UnixSyslog.class;
 	}
 

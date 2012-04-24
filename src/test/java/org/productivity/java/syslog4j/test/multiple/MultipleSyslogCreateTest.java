@@ -18,10 +18,10 @@ import org.productivity.java.syslog4j.impl.multiple.MultipleSyslogConfig;
 public class MultipleSyslogCreateTest extends TestCase {
 	public static class FakeSyslog implements SyslogIF {
 		private static final long serialVersionUID = 7519273907420813675L;
-		
+
 		public String protocol = null;
 		public SyslogConfigIF config = null;
-		
+
 		public int total = 0;
 
 		public void debug(String message) { this.total += 1; }
@@ -52,7 +52,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		public void backLog(int level, String message, String reason) { }
 
 		public void flush() throws SyslogRuntimeException { }
-		
+
 		public SyslogConfigIF getConfig() { return this.config; }
 
 		public SyslogMessageProcessorIF getMessageProcessor() { return SyslogMessageProcessor.getDefault(); }
@@ -92,7 +92,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 
 		public void shutdown() throws SyslogRuntimeException { }
 	}
-	
+
 	public static class FakeSyslogConfig implements SyslogConfigIF {
 		private static final long serialVersionUID = -5349124688260481740L;
 
@@ -113,15 +113,15 @@ public class MultipleSyslogCreateTest extends TestCase {
 		public int getPort() { return SyslogConstants.SYSLOG_PORT_DEFAULT; }
 
 		public boolean isTruncateMessage() { return SyslogConstants.TRUNCATE_MESSAGE_DEFAULT; }
-		
+
 		public int getMaxMessageLength() { return SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT; }
 
-		public Class getSyslogClass() { return FakeSyslog.class; }
+		public Class<? extends SyslogIF> getSyslogClass() { return FakeSyslog.class; }
 
 		public void insertBackLogHandler(int index, SyslogBackLogHandlerIF backLogHandler) { }
-		
+
 		public void insertMessageModifier(int index, SyslogMessageModifierIF messageModifier) { }
-		
+
 		public boolean isIncludeIdentInMessageModifier() { return SyslogConstants.INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT; }
 
 		public boolean isSendLocalName() { return SyslogConstants.SEND_LOCAL_NAME_DEFAULT; }
@@ -139,7 +139,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		public void removeBackLogHandler(SyslogBackLogHandlerIF backLogHandler) { }
 
 		public void removeMessageModifier(SyslogMessageModifierIF messageModifier) { }
-		
+
 		public void setCharSet(String charSet) { }
 
 		public void setFacility(int facility) { }
@@ -151,7 +151,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		public void setIdent(String ident) { }
 
 		public void setLocalName(String localName) { }
-		
+
 		public void setIncludeIdentInMessageModifier(boolean throwExceptionOnInitialize) { }
 
 		public void setPort(int port) throws SyslogRuntimeException { }
@@ -159,20 +159,20 @@ public class MultipleSyslogCreateTest extends TestCase {
 		public void setSendLocalName(boolean sendLocalName) { }
 
 		public void setSendLocalTimestamp(boolean sendLocalTimestamp) { }
-		
+
 		public void setThrowExceptionOnInitialize(boolean throwExceptionOnInitialize) { }
 
 		public void setThrowExceptionOnWrite(boolean throwExceptionOnWrite) { }
 
 		public void setTruncateMessage(boolean truncateMessage) { }
-		
+
 		public void setMaxMessageLength(int maxMessageLength) { }
 
 		public boolean isUseStructuredData() { return USE_STRUCTURED_DATA_DEFAULT; }
 
-		public void setUseStructuredData(boolean useStructuredData) { }			
+		public void setUseStructuredData(boolean useStructuredData) { }
 	}
-	
+
 	public static class FakeSyslogMessage implements SyslogMessageIF {
 		private static final long serialVersionUID = 7448036571948286738L;
 
@@ -180,7 +180,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 			return "fake message";
 		}
 	}
-	
+
 	public void testMultipleSyslog() {
 		FakeSyslogConfig config1 = new FakeSyslogConfig();
 		FakeSyslog fake1 = (FakeSyslog) Syslog.createInstance("fake1", config1);
@@ -191,12 +191,12 @@ public class MultipleSyslogCreateTest extends TestCase {
 		MultipleSyslogConfig config = new MultipleSyslogConfig();
 		config.addProtocol("fake1");
 		config.addProtocol("fake2");
-		
+
 		SyslogIF syslog = Syslog.createInstance("multiple",config);
-		
+
 		assertEquals(0,fake1.total);
 		assertEquals(0,fake2.total);
-		
+
 		syslog.debug("test");
 		assertEquals(1,fake1.total);
 		assertEquals(1,fake2.total);
@@ -208,15 +208,15 @@ public class MultipleSyslogCreateTest extends TestCase {
 		syslog.info("test");
 		assertEquals(1 + 2 + 4,fake1.total);
 		assertEquals(1 + 2 + 4,fake2.total);
-		
+
 		syslog.info(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8,fake1.total);
 		assertEquals(1 + 2 + 4 + 8,fake2.total);
-		
+
 		syslog.notice("test");
 		assertEquals(1 + 2 + 4 + 8 + 16,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16,fake2.total);
-		
+
 		syslog.notice(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32,fake2.total);
@@ -224,7 +224,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		syslog.warn("test");
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64,fake2.total);
-		
+
 		syslog.warn(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128,fake2.total);
@@ -232,7 +232,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		syslog.error("test");
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256,fake2.total);
-		
+
 		syslog.error(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512,fake2.total);
@@ -240,7 +240,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		syslog.critical("test");
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024,fake2.total);
-		
+
 		syslog.critical(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048,fake2.total);
@@ -248,7 +248,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		syslog.alert("test");
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096,fake2.total);
-		
+
 		syslog.alert(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192,fake2.total);
@@ -256,7 +256,7 @@ public class MultipleSyslogCreateTest extends TestCase {
 		syslog.emergency("test");
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384,fake2.total);
-		
+
 		syslog.emergency(new FakeSyslogMessage());
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768,fake1.total);
 		assertEquals(1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16384 + 32768,fake2.total);

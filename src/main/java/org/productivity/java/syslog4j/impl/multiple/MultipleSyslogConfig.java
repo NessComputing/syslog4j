@@ -6,52 +6,55 @@ import java.util.List;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
+
+import com.google.common.collect.Lists;
 
 /**
 * MultipleSyslogConfig is a configuration Object for allowing a single
 * Syslog call to send to multiple Syslog implementations.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: MultipleSyslogConfig.java,v 1.8 2010/11/28 04:15:18 cvs Exp $
 */
 public class MultipleSyslogConfig implements SyslogConfigIF {
 	private static final long serialVersionUID = 753704522364959612L;
-	
-	protected List syslogProtocols = null;
-	
+
+	protected List<String> syslogProtocols = null;
+
 	public MultipleSyslogConfig() {
-		this.syslogProtocols = new ArrayList();
+		this.syslogProtocols = Lists.newArrayList();
 	}
 
-	public MultipleSyslogConfig(List protocols) {
+	public MultipleSyslogConfig(List<String> protocols) {
 		if (protocols != null) {
 			this.syslogProtocols = protocols;
-			
+
 		} else {
-			this.syslogProtocols = new ArrayList();
+			this.syslogProtocols = Lists.newArrayList();
 		}
 	}
 
 	public MultipleSyslogConfig(String[] protocols) {
 		if (protocols != null) {
-			this.syslogProtocols = new ArrayList(protocols.length);
-			
+			this.syslogProtocols = new ArrayList<String>(protocols.length);
+
 			for(int i=0; i<protocols.length; i++) {
 				this.syslogProtocols.add(protocols[i]);
 			}
-			
+
 		} else {
-			this.syslogProtocols = new ArrayList();
+			this.syslogProtocols = Lists.newArrayList();
 		}
 	}
-	
-	public List getProtocols() {
+
+	public List<String> getProtocols() {
 		return this.syslogProtocols;
 	}
 
@@ -79,7 +82,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return MultipleSyslog.class;
 	}
 
@@ -98,7 +101,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 	public String getIdent() {
 		return null;
 	}
-	
+
 	public String getLocalName() {
 		return null;
 	}
@@ -106,7 +109,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 	public int getPort() {
 		return SyslogConstants.SYSLOG_PORT_DEFAULT;
 	}
-	
+
 	public int getMaxShutdownWait() {
 		return SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT;
 	}

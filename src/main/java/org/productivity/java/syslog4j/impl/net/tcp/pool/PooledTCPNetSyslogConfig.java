@@ -1,23 +1,24 @@
 package org.productivity.java.syslog4j.impl.net.tcp.pool;
 
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogPoolConfigIF;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 
 /**
 * NetSyslogPoolFactory is an implementation of SyslogPoolConfigIF
 * which provides configuration support for the Apache Commons Pool.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: PooledTCPNetSyslogConfig.java,v 1.3 2008/11/26 15:01:47 cvs Exp $
 */
 public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements SyslogPoolConfigIF {
 	private static final long serialVersionUID = 2283355983363422888L;
-	
+
 	protected int maxActive							= SYSLOG_POOL_CONFIG_MAX_ACTIVE_DEFAULT;
 	protected int maxIdle							= SYSLOG_POOL_CONFIG_MAX_IDLE_DEFAULT;
 	protected long maxWait							= SYSLOG_POOL_CONFIG_MAX_WAIT_DEFAULT;
@@ -30,7 +31,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 	protected boolean testOnBorrow					= SYSLOG_POOL_CONFIG_TEST_ON_BORROW_DEFAULT;
 	protected boolean testOnReturn					= SYSLOG_POOL_CONFIG_TEST_ON_RETURN_DEFAULT;
 	protected boolean testWhileIdle					= SYSLOG_POOL_CONFIG_TEST_WHILE_IDLE_DEFAULT;
-	
+
 	public PooledTCPNetSyslogConfig() {
 		//
 	}
@@ -54,7 +55,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 	public PooledTCPNetSyslogConfig(String host) {
 		super(host);
 	}
-	
+
 	protected void configureThreadedValues(int value) {
 		if (isThreaded()) {
 			this.minIdle = value;
@@ -62,14 +63,14 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 			this.maxActive = value;
 		}
 	}
-	
+
 	public int getMaxActive() {
 		return this.maxActive;
 	}
 
 	public void setMaxActive(int maxActive) {
 		configureThreadedValues(maxActive);
-		
+
 		this.maxActive = maxActive;
 	}
 
@@ -79,7 +80,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 
 	public void setMaxIdle(int maxIdle) {
 		configureThreadedValues(maxIdle);
-		
+
 		this.maxIdle = maxIdle;
 	}
 
@@ -105,7 +106,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 
 	public void setMinIdle(int minIdle) {
 		configureThreadedValues(minIdle);
-		
+
 		this.minIdle = minIdle;
 	}
 
@@ -166,7 +167,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		this.testWhileIdle = testWhileIdle;
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return PooledTCPNetSyslog.class;
 	}
 }

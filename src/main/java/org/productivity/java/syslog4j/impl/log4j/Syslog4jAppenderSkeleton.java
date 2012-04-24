@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.impl.log4j;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
@@ -12,14 +13,14 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 
 /**
  * Syslog4jAppenderSkeleton provides an extensible Log4j Appender wrapper for Syslog4j.
- * 
+ *
  * <p>Classes which inherit Syslog4jAppenderSkeleton must implement the "initialize()" method,
  * which sets up Syslog4j for use by the Log4j Appender.</p>
- * 
+ *
  * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
  * of the LGPL license is available in the META-INF folder in all
  * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
- * 
+ *
  * @author &lt;syslog4j@productivity.org&gt;
  * @version $Id: Syslog4jAppenderSkeleton.java,v 1.8 2011/01/23 20:49:12 cvs Exp $
  */
@@ -27,7 +28,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 	private static final long serialVersionUID = 5520555788232095628L;
 
 	protected SyslogIF syslog = null;
-	
+
 	protected String ident = null;
 	protected String localName = null;
 	protected String protocol = null;
@@ -44,36 +45,34 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 	protected String writeRetries = null;
 	protected String truncateMessage = null;
 	protected String useStructuredData = null;
-	
+
 	protected boolean initialized = false;
-	
+
 	public abstract String initialize() throws SyslogRuntimeException;
-	
-	protected static boolean isTrueOrOn(String value) {
-		boolean trueOrOn = false;
-		
-		if (value != null) {
-			if ("true".equalsIgnoreCase(value.trim()) || "on".equalsIgnoreCase(value.trim())) {
-				trueOrOn = true;
-				
-			} else if ("false".equalsIgnoreCase(value.trim()) || "off".equalsIgnoreCase(value.trim())) {
-				trueOrOn = false;
-				
-			} else {
-				LogLog.error("Value \"" + value + "\" not true, on, false, or off -- assuming false");
-			}
-		}
-		
-		return trueOrOn;
+
+	protected static boolean isTrueOrOn(String inputValue) {
+	    boolean trueOrOn = false;
+	    final String value = StringUtils.trimToEmpty(inputValue);
+
+	    if ("true".equalsIgnoreCase(value) || "on".equalsIgnoreCase(value)) {
+	        trueOrOn = true;
+
+	    } else if ("false".equalsIgnoreCase(value) || "off".equalsIgnoreCase(value)) {
+	        trueOrOn = false;
+	    } else {
+	        LogLog.error("Value \"" + value + "\" not true, on, false, or off -- assuming false");
+	    }
+
+	    return trueOrOn;
 	}
-	
+
 	protected void _initialize() {
 		String initializedProtocol = initialize();
-		
+
 		if (initializedProtocol != null && this.protocol == null) {
 			this.protocol = initializedProtocol;
 		}
-		
+
 		if (this.protocol != null) {
 			try {
 				this.syslog = Syslog.getInstance(this.protocol);
@@ -87,7 +86,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 					try {
 						int i = Integer.parseInt(this.port);
 						this.syslog.getConfig().setPort(i);
-						
+
 					} catch (NumberFormatException nfe) {
 						LogLog.error(nfe.toString());
 					}
@@ -101,38 +100,32 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 				if (this.localName != null) {
 					this.syslog.getConfig().setLocalName(this.localName);
 				}
-				if (this.truncateMessage != null && !"".equals(this.truncateMessage.trim())) {
-					this.syslog.getConfig().setTruncateMessage(isTrueOrOn(this.truncateMessage));
+
+				this.syslog.getConfig().setTruncateMessage(isTrueOrOn(StringUtils.trimToEmpty(this.truncateMessage)));
+
+				try {
+				    int i = Integer.parseInt(StringUtils.trimToEmpty(this.maxMessageLength));
+					this.syslog.getConfig().setMaxMessageLength(i);
+
+				} catch (NumberFormatException nfe) {
+				    LogLog.error(nfe.toString());
 				}
-				if (this.maxMessageLength != null && this.maxMessageLength.length() > 0) {
-					try {
-						int i = Integer.parseInt(this.maxMessageLength.trim());
-						this.syslog.getConfig().setMaxMessageLength(i);
-						
-					} catch (NumberFormatException nfe) {
-						LogLog.error(nfe.toString());
-					}
-				}
+
 				if (this.useStructuredData != null) {
 					this.syslog.getConfig().setUseStructuredData(isTrueOrOn(this.useStructuredData));
 				}
 				if (this.syslog.getConfig() instanceof AbstractSyslogConfigIF) {
 					AbstractSyslogConfigIF abstractSyslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
-					
-					if (this.threaded != null && !"".equals(this.threaded.trim())) {
-						abstractSyslogConfig.setThreaded(isTrueOrOn(this.threaded));
+
+					abstractSyslogConfig.setThreaded(isTrueOrOn(StringUtils.trimToEmpty(this.threaded)));
+
+					try {
+					    long l = Long.parseLong(StringUtils.trimToEmpty(this.threadLoopInterval));
+					    abstractSyslogConfig.setThreadLoopInterval(l);
+					} catch (NumberFormatException nfe) {
+					    LogLog.error(nfe.toString());
 					}
 
-					if (this.threadLoopInterval != null && this.threadLoopInterval.length() > 0) {
-						try {
-							long l = Long.parseLong(this.threadLoopInterval.trim());
-							abstractSyslogConfig.setThreadLoopInterval(l);
-							
-						} catch (NumberFormatException nfe) {
-							LogLog.error(nfe.toString());
-						}
-					}
-					
 					if (this.splitMessageBeginText != null) {
 						abstractSyslogConfig.setSplitMessageBeginText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageBeginText));
 					}
@@ -140,36 +133,32 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 					if (this.splitMessageEndText != null) {
 						abstractSyslogConfig.setSplitMessageEndText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageEndText));
 					}
-					
-					if (this.maxShutdownWait != null && this.maxShutdownWait.length() > 0) {
-						try {
-							int i = Integer.parseInt(this.maxShutdownWait.trim());
-							abstractSyslogConfig.setMaxShutdownWait(i);
-							
-						} catch (NumberFormatException nfe) {
-							LogLog.error(nfe.toString());
-						}
+
+					try {
+					    int i = Integer.parseInt(StringUtils.trimToEmpty(this.maxShutdownWait));
+					    abstractSyslogConfig.setMaxShutdownWait(i);
+
+					} catch (NumberFormatException nfe) {
+					    LogLog.error(nfe.toString());
 					}
-					
-					if (this.writeRetries != null && this.writeRetries.length() > 0) {
-						try {
-							int i = Integer.parseInt(this.writeRetries.trim());
-							abstractSyslogConfig.setWriteRetries(i);
-							
-						} catch (NumberFormatException nfe) {
-							LogLog.error(nfe.toString());
-						}
+
+					try {
+					    int i = Integer.parseInt(StringUtils.trimToEmpty(this.writeRetries));
+					    abstractSyslogConfig.setWriteRetries(i);
+
+					} catch (NumberFormatException nfe) {
+					    LogLog.error(nfe.toString());
 					}
 				}
-				
+
 				this.initialized = true;
-				
+
 			} catch (SyslogRuntimeException sre) {
 				LogLog.error(sre.toString());
 			}
 		}
 	}
-	
+
 	public String getProtocol() {
 		return this.protocol;
 	}
@@ -182,18 +171,18 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		if (!this.initialized) {
 			_initialize();
 		}
-		
+
 		if (this.initialized) {
 			int level = event.getLevel().getSyslogEquivalent();
-			
+
 			if (this.layout != null) {
 				String message = this.layout.format(event);
-				
+
 				this.syslog.log(level,message);
-				
+
 			} else {
 				String message = event.getRenderedMessage();
-				
+
 				this.syslog.log(level,message);
 			}
 		}
@@ -236,7 +225,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 	public void setPort(String port) {
 		this.port = port;
 	}
-	
+
 	public String getCharSet() {
 		return this.charSet;
 	}

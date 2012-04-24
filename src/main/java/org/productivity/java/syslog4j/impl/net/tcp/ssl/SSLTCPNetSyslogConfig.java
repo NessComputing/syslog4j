@@ -1,15 +1,17 @@
 package org.productivity.java.syslog4j.impl.net.tcp.ssl;
 
+import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 
 /**
 * SSLTCPNetSyslogConfig is an extension of TCPNetSyslogConfig that provides
 * configuration support for TCP/IP-based (over SSL/TLS) syslog clients.
-* 
+*
 * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
+*
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SSLTCPNetSyslogConfig.java,v 1.2 2009/03/29 17:38:58 cvs Exp $
 */
@@ -45,19 +47,19 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 	public SSLTCPNetSyslogConfig(String host) {
 		super(host);
 	}
-	
+
 	public String getKeyStore() {
 		return this.keyStore;
 	}
-	
+
 	public void setKeyStore(String keyStore) {
 		this.keyStore = keyStore;
 	}
-	
+
 	public String getKeyStorePassword() {
 		return this.keyStorePassword;
 	}
-	
+
 	public void setKeyStorePassword(String keyStorePassword) {
 		this.keyStorePassword = keyStorePassword;
 	}
@@ -78,11 +80,11 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 		this.trustStorePassword = trustStorePassword;
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return SSLTCPNetSyslog.class;
 	}
 
-	public Class getSyslogWriterClass() {
+	public Class<? extends AbstractSyslogWriter> getSyslogWriterClass() {
 		return SSLTCPNetSyslogWriter.class;
 	}
 }
