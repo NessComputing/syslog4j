@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.nesscomputing</groupId>
+    <artifactId>ness-oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
+  <groupId>org.syslog4j</groupId>
+  <artifactId>syslog4j</artifactId>
+  <version>0.9.47-NESS-1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>syslog4j</name>
+  <url>http://www.syslog4j.org</url>
+
+  <licenses>
+    <license>
+      <name>LGPL</name>
+      <url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
+    </license>
+  </licenses>
+
+  <description>Syslog4j provides client and server implementations of the BSD Syslog protocol (RFC 3164) and the structured syslog" protocol (RFC5424).</description>
+
+  <scm>
+    <connection>scm:git:git@github.com:NessComputing/syslog4j.git</connection>
+    <developerConnection>scm:git:git@github.com:NessComputing/syslog4j.git</developerConnection>
+    <url>https://gtihub.com/NessComputing/syslog4j</url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.5.4</version>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>3.0.9</version>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit-dep</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project> 
