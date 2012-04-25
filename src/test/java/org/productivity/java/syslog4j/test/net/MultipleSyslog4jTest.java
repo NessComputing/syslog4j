@@ -35,8 +35,8 @@ public class MultipleSyslog4jTest extends AbstractNetSyslog4jTest {
         SyslogIF s = Syslog.getInstance("multipleTcp");
 
         // NO-OPs
-        s.backLog(0,null,"");
-        s.backLog(0,null,new Exception());
+        s.backLog(null,null,"");
+        s.backLog(null,null,new Exception());
 
         // Exceptions for methods that shouldn't be called
         try { s.setMessageProcessor(null); fail(); } catch (SyslogRuntimeException e) { }

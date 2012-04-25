@@ -29,8 +29,6 @@ import org.productivity.java.syslog4j.server.impl.event.SyslogServerEvent;
  * @version $Id: StructuredSyslogServerEvent.java,v 1.6 2011/01/11 05:11:13 cvs Exp $
  */
 public class StructuredSyslogServerEvent extends SyslogServerEvent {
-    private static final long serialVersionUID = 1676499796406044315L;
-
     protected String applicationName = SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
     protected String processId = null;
     protected DateTime dateTime = null;

@@ -18,8 +18,6 @@ import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessag
 * @version $Id: ChecksumSyslogMessageModifierConfig.java,v 1.2 2010/02/04 03:41:38 cvs Exp $
 */
 public class ChecksumSyslogMessageModifierConfig extends AbstractSyslogMessageModifierConfig {
-    private static final long serialVersionUID = -8298600135683882489L;
-
     protected Checksum checksum = null;
     protected boolean continuous = false;
 

@@ -14,8 +14,6 @@ import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessag
 * @version $Id: HashSyslogMessageModifierConfig.java,v 1.1 2008/11/10 04:38:37 cvs Exp $
 */
 public class HashSyslogMessageModifierConfig extends AbstractSyslogMessageModifierConfig {
-    private static final long serialVersionUID = -3148300281439874231L;
-
     protected String hashAlgorithm = null;
 
     public static final HashSyslogMessageModifierConfig createMD5() {

@@ -13,6 +13,7 @@ import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_
 import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_POOL_CONFIG_TIME_BETWEEN_EVICTION_RUNS_MILLIS_DEFAULT;
 
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogPoolConfigIF;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
@@ -28,8 +29,6 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 * @version $Id: PooledTCPNetSyslogConfig.java,v 1.3 2008/11/26 15:01:47 cvs Exp $
 */
 public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements SyslogPoolConfigIF {
-    private static final long serialVersionUID = 2283355983363422888L;
-
     protected int maxActive							= SYSLOG_POOL_CONFIG_MAX_ACTIVE_DEFAULT;
     protected int maxIdle							= SYSLOG_POOL_CONFIG_MAX_IDLE_DEFAULT;
     protected long maxWait							= SYSLOG_POOL_CONFIG_MAX_WAIT_DEFAULT;
@@ -47,15 +46,15 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
         //
     }
 
-    public PooledTCPNetSyslogConfig(int facility, String host, int port) {
+    public PooledTCPNetSyslogConfig(SyslogFacility facility, String host, int port) {
         super(facility, host, port);
     }
 
-    public PooledTCPNetSyslogConfig(int facility, String host) {
+    public PooledTCPNetSyslogConfig(SyslogFacility facility, String host) {
         super(facility, host);
     }
 
-    public PooledTCPNetSyslogConfig(int facility) {
+    public PooledTCPNetSyslogConfig(SyslogFacility facility) {
         super(facility);
     }
 

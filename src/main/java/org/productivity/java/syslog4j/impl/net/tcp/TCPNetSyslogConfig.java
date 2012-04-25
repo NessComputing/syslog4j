@@ -9,6 +9,7 @@ import static org.productivity.java.syslog4j.SyslogConstants.TCP_SO_LINGER_DEFAU
 import static org.productivity.java.syslog4j.SyslogConstants.TCP_SO_LINGER_SECONDS_DEFAULT;
 
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.AbstractNetSyslogConfig;
@@ -25,8 +26,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: TCPNetSyslogConfig.java,v 1.18 2010/10/29 03:14:12 cvs Exp $
 */
 public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNetSyslogConfigIF {
-    private static final long serialVersionUID = 9023152050686365460L;
-
     public static byte[] SYSTEM_DELIMITER_SEQUENCE = null;
 
     static {
@@ -62,17 +61,17 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
         //
     }
 
-    public TCPNetSyslogConfig(int facility, String host, int port) {
+    public TCPNetSyslogConfig(SyslogFacility facility, String host, int port) {
         super(facility, host, port);
         initialize();
     }
 
-    public TCPNetSyslogConfig(int facility, String host) {
+    public TCPNetSyslogConfig(SyslogFacility facility, String host) {
         super(facility, host);
         initialize();
     }
 
-    public TCPNetSyslogConfig(int facility) {
+    public TCPNetSyslogConfig(SyslogFacility facility) {
         super(facility);
         initialize();
     }

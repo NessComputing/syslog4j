@@ -1,8 +1,8 @@
 package org.productivity.java.syslog4j.impl.message.modifier.sequential;
 
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_DEBUG;
-
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 /**
 * SequentialSyslogMessageModifier is an implementation of SyslogMessageModifierIF
@@ -16,11 +16,9 @@ import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 * @version $Id: SequentialSyslogMessageModifier.java,v 1.8 2010/11/28 04:43:31 cvs Exp $
 */
 public class SequentialSyslogMessageModifier implements SyslogMessageModifierIF {
-    private static final long serialVersionUID = 6107735010240030785L;
-
     protected SequentialSyslogMessageModifierConfig config = null;
 
-    protected long currentSequence[] = new long[LEVEL_DEBUG + 1];
+    protected long currentSequence[] = new long[SyslogLevel.values().length];
 
     public static final SequentialSyslogMessageModifier createDefault() {
         SequentialSyslogMessageModifier modifier = new SequentialSyslogMessageModifier(SequentialSyslogMessageModifierConfig.createDefault());
@@ -31,7 +29,7 @@ public class SequentialSyslogMessageModifier implements SyslogMessageModifierIF 
     public SequentialSyslogMessageModifier(SequentialSyslogMessageModifierConfig config) {
         this.config = config;
 
-        for(int i=0; i<(LEVEL_DEBUG + 1); i++) {
+        for(int i=0; i<currentSequence.length; i++) {
             this.currentSequence[i] = config.getFirstNumber();
         }
     }
@@ -46,16 +44,17 @@ public class SequentialSyslogMessageModifier implements SyslogMessageModifierIF 
         return buffer.toString();
     }
 
-    public void setNextSequence(int level, long nextSequence) {
+    public void setNextSequence(SyslogLevel level, long nextSequence) {
         if (nextSequence >= this.config.getFirstNumber() && nextSequence < this.config.getLastNumber()) {
             synchronized(this) {
-                this.currentSequence[level] = nextSequence;
+                this.currentSequence[level.getValue()] = nextSequence;
             }
         }
     }
 
-    protected String nextSequence(int level) {
+    protected String nextSequence(SyslogLevel syslogLevel) {
         long sequence = -1;
+        final int level = syslogLevel.getValue();
 
         synchronized(this) {
             sequence = this.currentSequence[level];
@@ -84,7 +83,8 @@ public class SequentialSyslogMessageModifier implements SyslogMessageModifierIF 
         return this.config;
     }
 
-    public String modify(SyslogIF syslog, int facility, int level, String message) {
+    @Override
+    public String modify(SyslogIF syslog, SyslogFacility facility, SyslogLevel level, String message) {
         StringBuffer buffer = new StringBuffer(message);
 
         buffer.append(this.config.getPrefix());

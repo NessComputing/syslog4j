@@ -23,8 +23,6 @@ import org.productivity.java.syslog4j.SyslogMessageIF;
 * @version $Id: AbstractSyslogMessage.java,v 1.2 2009/04/17 02:37:04 cvs Exp $
 */
 public abstract class AbstractSyslogMessage implements SyslogMessageIF {
-    private static final long serialVersionUID = 414124277626756491L;
-
     public static final String UNDEFINED = "undefined";
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";

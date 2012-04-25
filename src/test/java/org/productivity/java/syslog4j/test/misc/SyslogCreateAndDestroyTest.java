@@ -3,7 +3,9 @@ package org.productivity.java.syslog4j.test.misc;
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.Syslog;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.message.processor.SyslogMessageProcessor;
@@ -14,8 +16,6 @@ import org.productivity.java.syslog4j.server.impl.net.udp.UDPNetSyslogServerConf
 
 public class SyslogCreateAndDestroyTest extends TestCase {
     public static class FakeMessageProcessor implements SyslogMessageProcessorIF {
-        private static final long serialVersionUID = -2118511880575127720L;
-
         public byte[] createPacketData(byte[] header, byte[] message, int start, int length) {
             return null;
         }
@@ -24,7 +24,7 @@ public class SyslogCreateAndDestroyTest extends TestCase {
             return null;
         }
 
-        public String createSyslogHeader(int facility, int level, String localName, boolean sendLocalTimestamp, boolean sendLocalName) {
+        public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, boolean sendLocalTimestamp, boolean sendLocalName) {
             return null;
         }
     }

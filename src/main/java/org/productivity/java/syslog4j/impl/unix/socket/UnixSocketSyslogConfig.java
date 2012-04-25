@@ -10,6 +10,7 @@ import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_PROTO
 import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_TYPE_DEFAULT;
 
 import org.apache.commons.lang3.StringUtils;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
@@ -25,8 +26,6 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 * @version $Id: UnixSocketSyslogConfig.java,v 1.8 2010/11/12 03:43:12 cvs Exp $
 */
 public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
-    private static final long serialVersionUID = -3145794243736015707L;
-
     protected int type = SYSLOG_SOCKET_TYPE_DEFAULT;
     protected short family = SYSLOG_SOCKET_FAMILY_DEFAULT;
     protected int protocol = SYSLOG_SOCKET_PROTOCOL_DEFAULT;
@@ -43,11 +42,11 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
         return UnixSocketSyslog.class;
     }
 
-    public UnixSocketSyslogConfig(int facility) {
+    public UnixSocketSyslogConfig(SyslogFacility facility) {
         this.facility = facility;
     }
 
-    public UnixSocketSyslogConfig(int facility, String path) {
+    public UnixSocketSyslogConfig(SyslogFacility facility, String path) {
         this.facility = facility;
         this.path = path;
     }

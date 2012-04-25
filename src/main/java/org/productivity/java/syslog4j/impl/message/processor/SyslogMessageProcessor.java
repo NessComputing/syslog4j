@@ -17,8 +17,6 @@ package org.productivity.java.syslog4j.impl.message.processor;
 * @version $Id: SyslogMessageProcessor.java,v 1.7 2010/02/04 03:41:37 cvs Exp $
 */
 public class SyslogMessageProcessor extends AbstractSyslogMessageProcessor {
-    private static final long serialVersionUID = -4232803978024990353L;
-
     private static final SyslogMessageProcessor INSTANCE = new SyslogMessageProcessor();
 
     protected static SyslogMessageProcessor defaultInstance = INSTANCE;

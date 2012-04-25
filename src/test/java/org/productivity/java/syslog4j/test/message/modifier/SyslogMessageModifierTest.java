@@ -6,8 +6,9 @@ import java.util.zip.Adler32;
 
 import javax.crypto.spec.SecretKeySpec;
 
-import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
@@ -240,7 +241,7 @@ public class SyslogMessageModifierTest extends AbstractNetSyslog4jTest {
 
         // NINE THOUSAND NINE HUNDRED NIGHTY EIGHT
 
-        sequentialModifier.setNextSequence(SyslogConstants.LEVEL_INFO,9998);
+        sequentialModifier.setNextSequence(SyslogLevel.INFO, 9998);
 
         message = "[TEST] Sequence Test";
         syslog.info(message);
@@ -673,10 +674,10 @@ public class SyslogMessageModifierTest extends AbstractNetSyslog4jTest {
     public void testHTMLEntityEscapeMessageModifier() {
         SyslogMessageModifierIF messageModifier = new HTMLEntityEscapeSyslogMessageModifier();
 
-        String nullHtml = messageModifier.modify(null,0,0,null);
+        String nullHtml = messageModifier.modify(null,SyslogFacility.kern, SyslogLevel.EMERGENCY,null);
         assertNull(nullHtml);
 
-        String emptyHtml = messageModifier.modify(null,0,0,"");
+        String emptyHtml = messageModifier.modify(null,SyslogFacility.kern, SyslogLevel.EMERGENCY,"");
         assertEquals("",emptyHtml);
 
         // PREPARE

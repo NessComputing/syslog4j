@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.productivity.java.syslog4j.SyslogFacility;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 /**
@@ -21,7 +23,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: AbstractSyslogMessageProcessor.java,v 1.2 2010/11/28 04:15:18 cvs Exp $
 */
 public abstract class AbstractSyslogMessageProcessor implements SyslogMessageProcessorIF {
-    private static final long serialVersionUID = -5413127301924500938L;
     protected String localName = null;
 
     public AbstractSyslogMessageProcessor() {
@@ -66,8 +67,8 @@ public abstract class AbstractSyslogMessageProcessor implements SyslogMessagePro
         return data;
     }
 
-    protected void appendPriority(StringBuffer buffer, int facility, int level) {
-        int priority = facility | level;
+    protected void appendPriority(StringBuffer buffer, SyslogFacility facility, SyslogLevel level) {
+        int priority = (facility == null ? 0 : facility.getValue()) | (level == null ? 0 : level.getValue());
 
         buffer.append("<");
         buffer.append(priority);
@@ -100,7 +101,8 @@ public abstract class AbstractSyslogMessageProcessor implements SyslogMessagePro
         buffer.append(' ');
     }
 
-    public String createSyslogHeader(int facility, int level, String localName, boolean sendLocalTimestamp, boolean sendLocalName) {
+    @Override
+    public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, boolean sendLocalTimestamp, boolean sendLocalName) {
         StringBuffer buffer = new StringBuffer();
 
         appendPriority(buffer,facility,level);

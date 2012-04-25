@@ -30,8 +30,6 @@ import com.google.common.collect.Maps;
  * @version $Id: StructuredSyslogMessage.java,v 1.5 2010/09/11 16:49:24 cvs Exp $
  */
 public class StructuredSyslogMessage extends AbstractSyslogMessage implements StructuredSyslogMessageIF {
-    private static final long serialVersionUID = 3669887659567965965L;
-
     private String messageId;
     private Map<String, Map<String, String>> structuredData;
     private String message;

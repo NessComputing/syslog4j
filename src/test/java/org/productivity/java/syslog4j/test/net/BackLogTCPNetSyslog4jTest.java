@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfigIF;
 import org.productivity.java.syslog4j.server.SyslogServer;
@@ -35,7 +36,7 @@ public class BackLogTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
             System.out.println(this.getClass().getName() + ": UP");
         }
 
-        public void log(SyslogIF syslog, int level, String message, String reason) throws SyslogRuntimeException {
+        public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
             String _message = message.substring(message.toUpperCase().indexOf("[TEST]"));
 
             this.events.add(_message);

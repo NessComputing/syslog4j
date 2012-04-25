@@ -10,7 +10,8 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogFacility;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.server.SyslogServer;
 import org.productivity.java.syslog4j.server.SyslogServerEventIF;
 import org.productivity.java.syslog4j.server.SyslogServerIF;
@@ -53,14 +54,14 @@ public class PrintStreamServerEventTest extends TestCase {
         event.setDate(date);
         assertTrue(date == event.getDate());
 
-        event.setFacility(SyslogConstants.FACILITY_LOCAL0);
-        assertEquals(SyslogConstants.FACILITY_LOCAL0,event.getFacility());
+        event.setFacility(SyslogFacility.local0);
+        assertEquals(SyslogFacility.local0,event.getFacility());
 
         event.setHost("foo");
         assertEquals("foo",event.getHost());
 
-        event.setLevel(SyslogConstants.LEVEL_DEBUG);
-        assertEquals(SyslogConstants.LEVEL_DEBUG,event.getLevel());
+        event.setLevel(SyslogLevel.DEBUG);
+        assertEquals(SyslogLevel.DEBUG,event.getLevel());
 
         event.setMessage(message);
         assertEquals(message,event.getMessage());

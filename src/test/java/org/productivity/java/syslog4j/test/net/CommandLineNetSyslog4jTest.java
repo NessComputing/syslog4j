@@ -14,8 +14,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class CommandLineNetSyslog4jTest extends TestCase {
     public static class CaptureHandler implements SyslogServerSessionEventHandlerIF {
-        private static final long serialVersionUID = -432500986007750320L;
-
         public SyslogServerEventIF capturedEvent = null;
 
         public void destroy(SyslogServerIF syslogServer) {

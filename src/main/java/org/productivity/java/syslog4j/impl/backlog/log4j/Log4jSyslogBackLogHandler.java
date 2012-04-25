@@ -3,8 +3,8 @@ package org.productivity.java.syslog4j.impl.backlog.log4j;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.backlog.AbstractSyslogBackLogHandler;
 
@@ -114,16 +114,21 @@ public class Log4jSyslogBackLogHandler extends AbstractSyslogBackLogHandler {
         }
     }
 
-    protected static Level getLog4jLevel(int level) {
+    protected static Level getLog4jLevel(SyslogLevel level)
+    {
+        if (level == null) {
+            return Level.WARN;
+        }
+
         switch(level) {
-            case SyslogConstants.LEVEL_DEBUG: 		return Level.DEBUG;
-            case SyslogConstants.LEVEL_INFO: 		return Level.INFO;
-            case SyslogConstants.LEVEL_NOTICE: 		return Level.INFO;
-            case SyslogConstants.LEVEL_WARN: 		return Level.WARN;
-            case SyslogConstants.LEVEL_ERROR: 		return Level.ERROR;
-            case SyslogConstants.LEVEL_CRITICAL: 	return Level.ERROR;
-            case SyslogConstants.LEVEL_ALERT: 		return Level.ERROR;
-            case SyslogConstants.LEVEL_EMERGENCY: 	return Level.FATAL;
+            case DEBUG:     return Level.DEBUG;
+            case INFO: 		return Level.INFO;
+            case NOTICE: 	return Level.INFO;
+            case WARN: 		return Level.WARN;
+            case ERROR: 	return Level.ERROR;
+            case CRITICAL: 	return Level.ERROR;
+            case ALERT: 	return Level.ERROR;
+            case EMERGENCY: return Level.FATAL;
 
             default:
                 return Level.WARN;
@@ -138,7 +143,7 @@ public class Log4jSyslogBackLogHandler extends AbstractSyslogBackLogHandler {
         this.logger.log(this.upLevel,"Syslog protocol \"" + syslog.getProtocol() + "\" is up");
     }
 
-    public void log(SyslogIF syslog, int level, String message, String reason) throws SyslogRuntimeException {
+    public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
         Level log4jLevel = getLog4jLevel(level);
 
         String combinedMessage = combine(syslog,level,message,reason);

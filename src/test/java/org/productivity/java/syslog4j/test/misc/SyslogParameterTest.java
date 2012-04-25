@@ -19,7 +19,9 @@ import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
@@ -74,8 +76,6 @@ import com.google.common.collect.Maps;
 
 public class SyslogParameterTest extends TestCase {
     public static class FakeSyslogConfig implements SyslogConfigIF {
-        private static final long serialVersionUID = -4215212236417198317L;
-
         public void addMessageModifier(SyslogMessageModifierIF messageModifier) {
             //
         }
@@ -101,8 +101,9 @@ public class SyslogParameterTest extends TestCase {
             return Charsets.UTF_8;
         }
 
-        public int getFacility() {
-            return 0;
+        @Override
+        public SyslogFacility getFacility() {
+            return null;
         }
 
         public String getHost() {
@@ -162,11 +163,8 @@ public class SyslogParameterTest extends TestCase {
             //
         }
 
-        public void setFacility(int facility) {
-            //
-        }
-
-        public void setFacility(String facilityName) {
+        @Override
+        public void setFacility(SyslogFacility facility) {
             //
         }
 
@@ -256,8 +254,6 @@ public class SyslogParameterTest extends TestCase {
     }
 
     public static class FakeSyslogServerConfig implements SyslogServerConfigIF {
-        private static final long serialVersionUID = 4565257970196293922L;
-
         public void addEventHandler(SyslogServerEventHandlerIF eventHandler) {
             //
         }
@@ -503,23 +499,23 @@ public class SyslogParameterTest extends TestCase {
     public void testTcpNetSyslogConfigCreate() {
         AbstractNetSyslogConfig config = null;
 
-        config = new TCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH);
+        config = new TCPNetSyslogConfig(SyslogFacility.auth);
 
         testBackLogHandler(config);
         testMessageModifier(config);
 
         assertTrue(config.getSyslogClass() == TCPNetSyslog.class);
-        assertEquals(SyslogConstants.FACILITY_AUTH,config.getFacility());
+        assertEquals(SyslogFacility.auth,config.getFacility());
 
         config = new TCPNetSyslogConfig("hostname0");
         assertEquals("hostname0",config.getHost());
         config.setHost("hostname1");
         assertEquals("hostname1",config.getHost());
 
-        config = new TCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname2");
+        config = new TCPNetSyslogConfig(SyslogFacility.auth,"hostname2");
         assertEquals("hostname2",config.getHost());
 
-        config = new TCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname3",2222);
+        config = new TCPNetSyslogConfig(SyslogFacility.auth,"hostname3",2222);
         assertEquals("hostname3",config.getHost());
         assertEquals(2222,config.getPort());
         config.setPort(3333);
@@ -577,10 +573,10 @@ public class SyslogParameterTest extends TestCase {
     public void testUdpNetSyslogConfigCreate() {
         AbstractNetSyslogConfig config = null;
 
-        config = new UDPNetSyslogConfig(SyslogConstants.FACILITY_AUTH);
+        config = new UDPNetSyslogConfig(SyslogFacility.auth);
 
         assertTrue(config.getSyslogClass() == UDPNetSyslog.class);
-        assertEquals(SyslogConstants.FACILITY_AUTH,config.getFacility());
+        assertEquals(SyslogFacility.auth,config.getFacility());
 
         assertNull(config.getSyslogWriterClass());
 
@@ -588,11 +584,9 @@ public class SyslogParameterTest extends TestCase {
         config.setMaxMessageLength(99);
         assertEquals(99,config.getMaxMessageLength());
 
-        assertEquals(SyslogConstants.FACILITY_AUTH,config.getFacility());
-        config.setFacility(SyslogConstants.FACILITY_LOCAL1);
-        assertEquals(SyslogConstants.FACILITY_LOCAL1,config.getFacility());
-        config.setFacility("LOCAL2");
-        assertEquals(SyslogConstants.FACILITY_LOCAL2,config.getFacility());
+        assertEquals(SyslogFacility.auth,config.getFacility());
+        config.setFacility(SyslogFacility.local1);
+        assertEquals(SyslogFacility.local1,config.getFacility());
 
         assertEquals(Charsets.UTF_8,config.getCharSet());
         config.setCharSet(Charset.forName("us-ascii"));
@@ -644,10 +638,10 @@ public class SyslogParameterTest extends TestCase {
         config.setHost("hostname1");
         assertEquals("hostname1",config.getHost());
 
-        config = new UDPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname2");
+        config = new UDPNetSyslogConfig(SyslogFacility.auth,"hostname2");
         assertEquals("hostname2",config.getHost());
 
-        config = new UDPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname3",2222);
+        config = new UDPNetSyslogConfig(SyslogFacility.auth,"hostname3",2222);
         assertEquals("hostname3",config.getHost());
         assertEquals(2222,config.getPort());
         config.setPort(3333);
@@ -751,9 +745,6 @@ public class SyslogParameterTest extends TestCase {
         appender.setFacility("kern");
         assertEquals("kern",appender.getFacility());
 
-        appender.setCharSet("FakeCharSet");
-        assertEquals("FakeCharSet",appender.getCharSet());
-
         appender.setHost("hostname1");
         assertEquals("hostname1",appender.getHost());
         assertEquals("hostname1",appender.getSyslogHost());
@@ -810,19 +801,19 @@ public class SyslogParameterTest extends TestCase {
         config = new SSLTCPNetSyslogConfig();
         assertTrue(config.getSyslogWriterClass() == SSLTCPNetSyslogWriter.class);
 
-        config = new SSLTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH);
+        config = new SSLTCPNetSyslogConfig(SyslogFacility.auth);
         assertTrue(config.getSyslogClass() == SSLTCPNetSyslog.class);
-        assertEquals(SyslogConstants.FACILITY_AUTH,config.getFacility());
+        assertEquals(SyslogFacility.auth,config.getFacility());
 
         config = new SSLTCPNetSyslogConfig("hostname0");
         assertEquals("hostname0",config.getHost());
         config.setHost("hostname1");
         assertEquals("hostname1",config.getHost());
 
-        config = new SSLTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname2");
+        config = new SSLTCPNetSyslogConfig(SyslogFacility.auth,"hostname2");
         assertEquals("hostname2",config.getHost());
 
-        config = new SSLTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname3",2222);
+        config = new SSLTCPNetSyslogConfig(SyslogFacility.auth,"hostname3",2222);
         assertEquals("hostname3",config.getHost());
         assertEquals(2222,config.getPort());
         config.setPort(3333);
@@ -883,19 +874,19 @@ public class SyslogParameterTest extends TestCase {
         config = new PooledTCPNetSyslogConfig();
         assertTrue(config.getSyslogWriterClass() == TCPNetSyslogWriter.class);
 
-        config = new PooledTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH);
+        config = new PooledTCPNetSyslogConfig(SyslogFacility.auth);
         assertTrue(config.getSyslogClass() == PooledTCPNetSyslog.class);
-        assertEquals(SyslogConstants.FACILITY_AUTH,config.getFacility());
+        assertEquals(SyslogFacility.auth,config.getFacility());
 
         config = new PooledTCPNetSyslogConfig("hostname0");
         assertEquals("hostname0",config.getHost());
         config.setHost("hostname1");
         assertEquals("hostname1",config.getHost());
 
-        config = new PooledTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname2");
+        config = new PooledTCPNetSyslogConfig(SyslogFacility.auth,"hostname2");
         assertEquals("hostname2",config.getHost());
 
-        config = new PooledTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname3",2222);
+        config = new PooledTCPNetSyslogConfig(SyslogFacility.auth,"hostname3",2222);
         assertEquals("hostname3",config.getHost());
         assertEquals(2222,config.getPort());
         config.setPort(3333);
@@ -914,19 +905,19 @@ public class SyslogParameterTest extends TestCase {
         config = new PooledSSLTCPNetSyslogConfig();
         assertTrue(config.getSyslogWriterClass() == SSLTCPNetSyslogWriter.class);
 
-        config = new PooledSSLTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH);
+        config = new PooledSSLTCPNetSyslogConfig(SyslogFacility.auth);
         assertTrue(config.getSyslogClass() == SSLTCPNetSyslog.class);
-        assertEquals(SyslogConstants.FACILITY_AUTH,config.getFacility());
+        assertEquals(SyslogFacility.auth,config.getFacility());
 
         config = new PooledSSLTCPNetSyslogConfig("hostname0");
         assertEquals("hostname0",config.getHost());
         config.setHost("hostname1");
         assertEquals("hostname1",config.getHost());
 
-        config = new PooledSSLTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname2");
+        config = new PooledSSLTCPNetSyslogConfig(SyslogFacility.auth,"hostname2");
         assertEquals("hostname2",config.getHost());
 
-        config = new PooledSSLTCPNetSyslogConfig(SyslogConstants.FACILITY_AUTH,"hostname3",2222);
+        config = new PooledSSLTCPNetSyslogConfig(SyslogFacility.auth,"hostname3",2222);
         assertEquals("hostname3",config.getHost());
         assertEquals(2222,config.getPort());
         config.setPort(3333);
@@ -946,7 +937,7 @@ public class SyslogParameterTest extends TestCase {
         nbh.down(null,null);
         nbh.up(null);
 
-        nbh.log(null, SyslogConstants.LEVEL_DEBUG,"Test (ignore)","really");
+        nbh.log(null, SyslogLevel.DEBUG,"Test (ignore)","really");
 
         try {
             new PrintStreamSyslogBackLogHandler(null);
@@ -959,23 +950,23 @@ public class SyslogParameterTest extends TestCase {
 
         SyslogBackLogHandlerIF sobh = SystemOutSyslogBackLogHandler.create();
 
-        sobh.log(null,SyslogConstants.LEVEL_DEBUG,"Test (ignore)","really");
+        sobh.log(null,SyslogLevel.DEBUG,"Test (ignore)","really");
         sobh.down(Syslog.getInstance("udp"),"Test (ignore)");
         sobh.up(Syslog.getInstance("udp"));
 
         sobh = new SystemOutSyslogBackLogHandler(false);
 
-        sobh.log(null, SyslogConstants.LEVEL_DEBUG,"Test (ignore)","really");
+        sobh.log(null, SyslogLevel.DEBUG,"Test (ignore)","really");
 
         //
 
         SyslogBackLogHandlerIF sebh = SystemErrSyslogBackLogHandler.create();
 
-        sebh.log(null, SyslogConstants.LEVEL_DEBUG,"Test (ignore)","really");
+        sebh.log(null, SyslogLevel.DEBUG,"Test (ignore)","really");
 
         sebh = new SystemErrSyslogBackLogHandler(false);
 
-        sebh.log(null, SyslogConstants.LEVEL_DEBUG,"Test (ignore)","really");
+        sebh.log(null, SyslogLevel.DEBUG,"Test (ignore)","really");
 
         //
 
@@ -985,7 +976,7 @@ public class SyslogParameterTest extends TestCase {
 
         PrintStreamSyslogBackLogHandler psbh = new PrintStreamSyslogBackLogHandler(ps);
 
-        psbh.log(null, SyslogConstants.LEVEL_DEBUG,"Test (ignore)","really");
+        psbh.log(null, SyslogLevel.DEBUG,"Test (ignore)","really");
 
         try {
             baos.flush();
@@ -1000,13 +991,13 @@ public class SyslogParameterTest extends TestCase {
 
         baos.reset();
 
-        psbh.log(null, SyslogConstants.LEVEL_DEBUG,null,"really");
+        psbh.log(null, SyslogLevel.DEBUG,null,"really");
         s = new String(baos.toByteArray());
         assertTrue(s.equals("DEBUG UNKNOWN [really]"));
 
         baos.reset();
 
-        psbh.log(null, SyslogConstants.LEVEL_DEBUG,"Test (ignore)",null);
+        psbh.log(null, SyslogLevel.DEBUG,"Test (ignore)",null);
         s = new String(baos.toByteArray());
         assertTrue(s.equals("DEBUG Test (ignore) [UNKNOWN]"));
 
@@ -1128,13 +1119,13 @@ public class SyslogParameterTest extends TestCase {
     public void testLog4jSyslogBackLogHandler() {
         SyslogBackLogHandlerIF bh = new Log4jSyslogBackLogHandler(this.getClass());
 
-        bh.log(null,SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
+        bh.log(null,SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
 
-        bh.log(null,-1,"Log4j BackLog Test Message - IGNORE","really");
+        bh.log(null,null,"Log4j BackLog Test Message - IGNORE","really");
 
         bh = new Log4jSyslogBackLogHandler(this.getClass(),false);
 
-        bh.log(null,SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
+        bh.log(null,SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
 
         bh.down(Syslog.getInstance("udp"),null);
         bh.up(Syslog.getInstance("udp"));
@@ -1147,30 +1138,30 @@ public class SyslogParameterTest extends TestCase {
         SyslogBackLogHandlerIF syslog4j = new Syslog4jBackLogHandler("udp");
         syslog4j.initialize();
 
-        syslog4j.log(tcp,SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
-        syslog4j.log(tcp,-1,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,null,"Log4j BackLog Test Message - IGNORE","really");
         syslog4j.down(tcp,null);
         syslog4j.up(tcp);
 
         syslog4j = new Syslog4jBackLogHandler("udp",false);
 
-        syslog4j.log(tcp,SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
-        syslog4j.log(tcp,-1,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,null,"Log4j BackLog Test Message - IGNORE","really");
         syslog4j.down(udp,null);
         syslog4j.up(udp);
 
         syslog4j = new Syslog4jBackLogHandler(udp);
 
-        syslog4j.log(tcp,SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
-        syslog4j.log(tcp,-1,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,null,"Log4j BackLog Test Message - IGNORE","really");
 
         syslog4j = new Syslog4jBackLogHandler(udp,false);
 
-        syslog4j.log(tcp,SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
-        syslog4j.log(tcp,-1,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
+        syslog4j.log(tcp,null,"Log4j BackLog Test Message - IGNORE","really");
 
         try {
-            syslog4j.log(Syslog.getInstance("udp"),SyslogConstants.LEVEL_INFO,"Log4j BackLog Test Message - IGNORE","really");
+            syslog4j.log(Syslog.getInstance("udp"),SyslogLevel.INFO,"Log4j BackLog Test Message - IGNORE","really");
             fail();
 
         } catch (SyslogRuntimeException sre) {
@@ -1225,8 +1216,7 @@ public class SyslogParameterTest extends TestCase {
 
         try { config.setCacheHostAddress(true); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setCharSet(Charset.forName("us-ascii")); fail(); } catch (SyslogRuntimeException sre) { };
-        try { config.setFacility(SyslogConstants.FACILITY_AUTH); fail(); } catch (SyslogRuntimeException sre) { };
-        try { config.setFacility("foo"); fail(); } catch (SyslogRuntimeException sre) { };
+        try { config.setFacility(SyslogFacility.auth); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setHost("foo"); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setIdent("foo"); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setLocalName("foo"); fail(); } catch (SyslogRuntimeException sre) { };
@@ -1252,7 +1242,7 @@ public class SyslogParameterTest extends TestCase {
         assertEquals(SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT,config.getMaxMessageLength());
 
         assertEquals(Charsets.UTF_8, config.getCharSet());
-        assertEquals(SyslogConstants.SYSLOG_FACILITY_DEFAULT,config.getFacility());
+        assertEquals(SyslogFacility.DEFAULT, config.getFacility());
         assertEquals(SyslogConstants.SYSLOG_HOST_DEFAULT,config.getHost());
         assertNull(config.getIdent());
         assertEquals(SyslogConstants.SYSLOG_PORT_DEFAULT,config.getPort());
@@ -1377,11 +1367,11 @@ public class SyslogParameterTest extends TestCase {
     }
 
     public void testUnixSocketSyslogConfigParameters() {
-        UnixSocketSyslogConfig syslogConfig = new UnixSocketSyslogConfig(SyslogConstants.FACILITY_CRON);
-        assertEquals(SyslogConstants.FACILITY_CRON,syslogConfig.getFacility());
+        UnixSocketSyslogConfig syslogConfig = new UnixSocketSyslogConfig(SyslogFacility.cron);
+        assertEquals(SyslogFacility.cron,syslogConfig.getFacility());
 
-        syslogConfig = new UnixSocketSyslogConfig(SyslogConstants.FACILITY_MAIL,"/dev/bar");
-        assertEquals(SyslogConstants.FACILITY_MAIL,syslogConfig.getFacility());
+        syslogConfig = new UnixSocketSyslogConfig(SyslogFacility.mail,"/dev/bar");
+        assertEquals(SyslogFacility.mail,syslogConfig.getFacility());
         assertEquals("/dev/bar",syslogConfig.getPath());
 
         syslogConfig = new UnixSocketSyslogConfig("/dev/baz");

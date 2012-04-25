@@ -52,8 +52,6 @@ import org.apache.log4j.helpers.LogLog;
  * @version $Id: Syslog4jAppender.java,v 1.2 2011/01/23 20:49:12 cvs Exp $
  */
 public class Syslog4jAppender extends Syslog4jAppenderSkeleton {
-    private static final long serialVersionUID = -6072552977605816670L;
-
     public String initialize() {
         if (this.protocol == null) {
             this.protocol = UDP;

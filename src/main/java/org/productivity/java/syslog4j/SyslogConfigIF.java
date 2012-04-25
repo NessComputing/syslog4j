@@ -15,9 +15,8 @@ package org.productivity.java.syslog4j;
 public interface SyslogConfigIF extends SyslogCharSetIF {
     Class<? extends SyslogIF> getSyslogClass();
 
-    int getFacility();
-    void setFacility(int facility);
-    void setFacility(String facilityName);
+    SyslogFacility getFacility();
+    void setFacility(SyslogFacility facility);
 
     int getPort();
     void setPort(int port) throws SyslogRuntimeException;

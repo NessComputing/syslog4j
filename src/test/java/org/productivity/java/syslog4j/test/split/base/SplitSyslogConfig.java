@@ -5,8 +5,6 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 
 public class SplitSyslogConfig extends AbstractSyslogConfig {
-    private static final long serialVersionUID = 6192648434706811381L;
-
     public Class<? extends SyslogIF> getSyslogClass() {
         return SplitSyslog.class;
     }

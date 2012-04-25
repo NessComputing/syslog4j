@@ -12,8 +12,6 @@ package org.productivity.java.syslog4j;
 * @version $Id: SyslogRuntimeException.java,v 1.3 2008/11/13 14:48:36 cvs Exp $
 */
 public class SyslogRuntimeException extends RuntimeException {
-    private static final long serialVersionUID = 7278123987654320379L;
-
     public SyslogRuntimeException(String arg0) {
         super(arg0);
     }

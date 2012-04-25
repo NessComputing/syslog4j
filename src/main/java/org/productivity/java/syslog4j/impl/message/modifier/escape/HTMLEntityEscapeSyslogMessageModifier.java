@@ -1,7 +1,9 @@
 package org.productivity.java.syslog4j.impl.message.modifier.escape;
 
 import org.apache.commons.lang3.StringUtils;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 
 /**
@@ -19,13 +21,12 @@ import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 * @version $Id: HTMLEntityEscapeSyslogMessageModifier.java,v 1.4 2010/10/28 05:10:57 cvs Exp $
 */
 public class HTMLEntityEscapeSyslogMessageModifier implements SyslogMessageModifierIF {
-    private static final long serialVersionUID = -8481773209240762293L;
-
     public static final SyslogMessageModifierIF createDefault() {
         return new HTMLEntityEscapeSyslogMessageModifier();
     }
 
-    public String modify(SyslogIF syslog, int facility, int level, String message) {
+    @Override
+    public String modify(SyslogIF syslog, SyslogFacility facility, SyslogLevel level, String message) {
         if (StringUtils.isBlank(message)) {
             return message;
         }

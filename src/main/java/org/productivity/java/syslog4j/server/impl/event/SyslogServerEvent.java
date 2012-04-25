@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.productivity.java.syslog4j.SyslogFacility;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.server.SyslogServerEventIF;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
@@ -25,8 +27,6 @@ import com.google.common.base.Charsets;
 * @version $Id: SyslogServerEvent.java,v 1.9 2011/01/11 06:21:15 cvs Exp $
 */
 public class SyslogServerEvent implements SyslogServerEventIF {
-    private static final long serialVersionUID = 6136043067089899962L;
-
     public static final String DATE_FORMAT = "MMM dd HH:mm:ss yyyy";
 
     protected Charset charSet = Charsets.UTF_8;
@@ -34,8 +34,8 @@ public class SyslogServerEvent implements SyslogServerEventIF {
     protected byte[] rawBytes = null;
     protected int rawLength = -1;
     protected Date date = null;
-    protected int level = -1;
-    protected int facility = -1;
+    protected SyslogLevel level = SyslogLevel.INFO;
+    protected SyslogFacility facility = SyslogFacility.user;
     protected String host = null;
     protected boolean isHostStrippedFromMessage = false;
     protected String message = null;
@@ -148,8 +148,8 @@ public class SyslogServerEvent implements SyslogServerEventIF {
                 int priority = 0;
                 try {
                     priority = Integer.parseInt(priorityStr);
-                    this.facility = priority >> 3;
-                    this.level = priority - (this.facility << 3);
+                    this.facility = SyslogFacility.forValue(priority >> 3);
+                    this.level = SyslogLevel.values()[priority & 7];
 
                     this.message = this.message.substring(i+1);
 
@@ -172,11 +172,11 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         parsePriority();
     }
 
-    public int getFacility() {
+    public SyslogFacility getFacility() {
         return this.facility;
     }
 
-    public void setFacility(int facility) {
+    public void setFacility(SyslogFacility facility) {
         this.facility = facility;
     }
 
@@ -209,11 +209,11 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         this.date = date;
     }
 
-    public int getLevel() {
+    public SyslogLevel getLevel() {
         return this.level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(SyslogLevel level) {
         this.level = level;
     }
 

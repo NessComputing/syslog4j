@@ -7,7 +7,9 @@ import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.LogLog;
 import org.apache.log4j.spi.LoggingEvent;
 import org.productivity.java.syslog4j.Syslog;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfigIF;
 import org.productivity.java.syslog4j.util.SyslogUtility;
@@ -26,14 +28,12 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
  * @version $Id: Syslog4jAppenderSkeleton.java,v 1.8 2011/01/23 20:49:12 cvs Exp $
  */
 public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
-    private static final long serialVersionUID = 5520555788232095628L;
-
     protected SyslogIF syslog = null;
 
     protected String ident = null;
     protected String localName = null;
     protected String protocol = null;
-    protected String facility = null;
+    protected SyslogFacility facility = null;
     protected String host = null;
     protected String port = null;
     protected Charset charSet = null;
@@ -81,7 +81,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
                     this.syslog.getConfig().setHost(this.host);
                 }
                 if (this.facility != null) {
-                    this.syslog.getConfig().setFacility(SyslogUtility.getFacility(this.facility));
+                    this.syslog.getConfig().setFacility(this.facility);
                 }
                 if (this.port != null) {
                     try {
@@ -174,7 +174,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
         }
 
         if (this.initialized) {
-            int level = event.getLevel().getSyslogEquivalent();
+            SyslogLevel level = SyslogLevel.values()[event.getLevel().getSyslogEquivalent()];
 
             if (this.layout != null) {
                 String message = this.layout.format(event);
@@ -196,11 +196,11 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
     }
 
     public String getFacility() {
-        return this.facility;
+        return this.facility.name();
     }
 
-    public void setFacility(String facility) {
-        this.facility = facility;
+    public void setFacility(String facilityName) {
+        this.facility = SyslogFacility.valueOf(facilityName);
     }
 
     public String getHost() {

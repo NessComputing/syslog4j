@@ -20,7 +20,6 @@ public class TCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
     protected static boolean ONCE = true;
 
     public static class TimeoutHandler extends SystemOutSyslogServerEventHandler {
-        private static final long serialVersionUID = 2634851821468142915L;
         public SyslogServerEventIF lastEvent = null;
 
         public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {

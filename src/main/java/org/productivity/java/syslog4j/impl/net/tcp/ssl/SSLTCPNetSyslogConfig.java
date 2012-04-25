@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.impl.net.tcp.ssl;
 
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
@@ -16,8 +17,6 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 * @version $Id: SSLTCPNetSyslogConfig.java,v 1.2 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPNetSyslogConfigIF {
-    private static final long serialVersionUID = 5569086213824510834L;
-
     protected String keyStore = null;
     protected String keyStorePassword = null;
 
@@ -28,15 +27,15 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
         //
     }
 
-    public SSLTCPNetSyslogConfig(int facility, String host, int port) {
+    public SSLTCPNetSyslogConfig(SyslogFacility facility, String host, int port) {
         super(facility, host, port);
     }
 
-    public SSLTCPNetSyslogConfig(int facility, String host) {
+    public SSLTCPNetSyslogConfig(SyslogFacility facility, String host) {
         super(facility, host);
     }
 
-    public SSLTCPNetSyslogConfig(int facility) {
+    public SSLTCPNetSyslogConfig(SyslogFacility facility) {
         super(facility);
     }
 

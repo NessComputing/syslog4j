@@ -14,7 +14,7 @@ import java.io.Serializable;
 * @version $Id: SyslogMessageProcessorIF.java,v 1.4 2010/11/28 04:15:18 cvs Exp $
 */
 public interface SyslogMessageProcessorIF extends Serializable {
-    public String createSyslogHeader(int facility, int level, String localName, boolean sendLocalTimestamp, boolean sendLocalName);
+    public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, boolean sendLocalTimestamp, boolean sendLocalName);
 
     public byte[] createPacketData(byte[] header, byte[] message, int start, int length);
 

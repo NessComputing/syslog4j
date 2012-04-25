@@ -18,8 +18,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class FreshConnectionIntervalTest extends TestCase {
     public class SocketCounter implements SyslogServerSessionEventHandlerIF {
-        private static final long serialVersionUID = 7166226890012336710L;
-
         public int openCounter = 0;
         public int eventCounter = 0;
         public int closeCounter = 0;

@@ -1,8 +1,8 @@
 package org.productivity.java.syslog4j.impl.backlog;
 
 import org.productivity.java.syslog4j.Syslog;
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 
 /**
@@ -18,8 +18,8 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 */
 public class Syslog4jBackLogHandler extends AbstractSyslogBackLogHandler {
     protected SyslogIF syslog = null;
-    protected int downLevel = SyslogConstants.LEVEL_WARN;
-    protected int upLevel = SyslogConstants.LEVEL_WARN;
+    protected SyslogLevel downLevel = SyslogLevel.WARN;
+    protected SyslogLevel upLevel = SyslogLevel.WARN;
 
     public Syslog4jBackLogHandler(String protocol) {
         this.syslog = Syslog.getInstance(protocol);
@@ -43,7 +43,7 @@ public class Syslog4jBackLogHandler extends AbstractSyslogBackLogHandler {
         // NO-OP
     }
 
-    public void log(SyslogIF syslog, int level, String message, String reason) throws SyslogRuntimeException {
+    public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
         if (this.syslog.getProtocol().equals(syslog.getProtocol())) {
             throw new SyslogRuntimeException("Ignoring this log entry since the backLog protocol \"" + this.syslog.getProtocol() + "\" is the same as the main protocol");
         }

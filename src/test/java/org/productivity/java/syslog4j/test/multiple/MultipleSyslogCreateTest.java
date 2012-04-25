@@ -10,7 +10,9 @@ import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
@@ -23,8 +25,6 @@ import com.google.common.base.Charsets;
 
 public class MultipleSyslogCreateTest extends TestCase {
     public static class FakeSyslog implements SyslogIF {
-        private static final long serialVersionUID = 7519273907420813675L;
-
         public String protocol = null;
         public SyslogConfigIF config = null;
 
@@ -54,8 +54,8 @@ public class MultipleSyslogCreateTest extends TestCase {
         public void emergency(String message) { this.total += 16384; }
         public void emergency(SyslogMessageIF message) { this.total += 32768; }
 
-        public void backLog(int level, String message, Throwable reasonThrowable) { }
-        public void backLog(int level, String message, String reason) { }
+        public void backLog(SyslogLevel level, String message, Throwable reasonThrowable) { }
+        public void backLog(SyslogLevel level, String message, String reason) { }
 
         public void flush() throws SyslogRuntimeException { }
 
@@ -74,34 +74,32 @@ public class MultipleSyslogCreateTest extends TestCase {
             this.config = syslogConfig;
         }
 
-        public void log(int level, String message) {
-            if (SyslogConstants.LEVEL_DEBUG == level) { debug(message); }
-            if (SyslogConstants.LEVEL_INFO == level) { info(message); }
-            if (SyslogConstants.LEVEL_NOTICE == level) { notice(message); }
-            if (SyslogConstants.LEVEL_WARN == level) { warn(message); }
-            if (SyslogConstants.LEVEL_ERROR == level) { error(message); }
-            if (SyslogConstants.LEVEL_CRITICAL == level) { critical(message); }
-            if (SyslogConstants.LEVEL_ALERT == level) { alert(message); }
-            if (SyslogConstants.LEVEL_EMERGENCY == level) { emergency(message); }
+        public void log(SyslogLevel level, String message) {
+            if (SyslogLevel.DEBUG == level) { debug(message); }
+            if (SyslogLevel.INFO == level) { info(message); }
+            if (SyslogLevel.NOTICE == level) { notice(message); }
+            if (SyslogLevel.WARN == level) { warn(message); }
+            if (SyslogLevel.ERROR == level) { error(message); }
+            if (SyslogLevel.CRITICAL == level) { critical(message); }
+            if (SyslogLevel.ALERT == level) { alert(message); }
+            if (SyslogLevel.EMERGENCY == level) { emergency(message); }
         }
 
-        public void log(int level, SyslogMessageIF message) {
-            if (SyslogConstants.LEVEL_DEBUG == level) { debug(message); }
-            if (SyslogConstants.LEVEL_INFO == level) { info(message); }
-            if (SyslogConstants.LEVEL_NOTICE == level) { notice(message); }
-            if (SyslogConstants.LEVEL_WARN == level) { warn(message); }
-            if (SyslogConstants.LEVEL_ERROR == level) { error(message); }
-            if (SyslogConstants.LEVEL_CRITICAL == level) { critical(message); }
-            if (SyslogConstants.LEVEL_ALERT == level) { alert(message); }
-            if (SyslogConstants.LEVEL_EMERGENCY == level) { emergency(message); }
+        public void log(SyslogLevel level, SyslogMessageIF message) {
+            if (SyslogLevel.DEBUG == level) { debug(message); }
+            if (SyslogLevel.INFO == level) { info(message); }
+            if (SyslogLevel.NOTICE == level) { notice(message); }
+            if (SyslogLevel.WARN == level) { warn(message); }
+            if (SyslogLevel.ERROR == level) { error(message); }
+            if (SyslogLevel.CRITICAL == level) { critical(message); }
+            if (SyslogLevel.ALERT == level) { alert(message); }
+            if (SyslogLevel.EMERGENCY == level) { emergency(message); }
         }
 
         public void shutdown() throws SyslogRuntimeException { }
     }
 
     public static class FakeSyslogConfig implements SyslogConfigIF {
-        private static final long serialVersionUID = -5349124688260481740L;
-
         public void addBackLogHandler(SyslogBackLogHandlerIF backLogHandler) { }
 
         public void addMessageModifier(SyslogMessageModifierIF messageModifier) { }
@@ -109,7 +107,8 @@ public class MultipleSyslogCreateTest extends TestCase {
         @Override
         public Charset getCharSet() { return Charsets.UTF_8; }
 
-        public int getFacility() { return SyslogConstants.SYSLOG_FACILITY_DEFAULT; }
+        @Override
+        public SyslogFacility getFacility() { return SyslogFacility.DEFAULT; }
 
         public String getHost() { return SyslogConstants.SYSLOG_HOST_DEFAULT; }
 
@@ -150,9 +149,8 @@ public class MultipleSyslogCreateTest extends TestCase {
         @Override
         public void setCharSet(Charset charSet) { }
 
-        public void setFacility(int facility) { }
-
-        public void setFacility(String facilityName) { }
+        @Override
+        public void setFacility(SyslogFacility facility) { }
 
         public void setHost(String host) throws SyslogRuntimeException { }
 
@@ -182,8 +180,6 @@ public class MultipleSyslogCreateTest extends TestCase {
     }
 
     public static class FakeSyslogMessage implements SyslogMessageIF {
-        private static final long serialVersionUID = 7448036571948286738L;
-
         public String createMessage() {
             return "fake message";
         }

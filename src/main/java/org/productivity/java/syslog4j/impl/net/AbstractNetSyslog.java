@@ -18,8 +18,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: AbstractNetSyslog.java,v 1.7 2009/01/24 22:00:18 cvs Exp $
 */
 public abstract class AbstractNetSyslog extends AbstractSyslog {
-    private static final long serialVersionUID = -3250858945515853967L;
-
     protected static final Object cachedHostAddressSyncObject = new Object();
 
     protected InetAddress cachedHostAddress = null;

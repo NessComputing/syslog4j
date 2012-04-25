@@ -1,21 +1,15 @@
 package org.productivity.java.syslog4j.impl;
 
 import static org.productivity.java.syslog4j.SyslogConstants.IDENT_SUFFIX_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_ALERT;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_CRITICAL;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_DEBUG;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_EMERGENCY;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_ERROR;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_INFO;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_NOTICE;
-import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_WARN;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
@@ -38,8 +32,6 @@ import com.google.common.collect.Lists;
 * @version $Id: AbstractSyslog.java,v 1.29 2011/01/11 04:58:52 cvs Exp $
 */
 public abstract class AbstractSyslog implements SyslogIF {
-    private static final long serialVersionUID = 2632017043774808264L;
-
     protected String syslogProtocol = null;
 
     protected AbstractSyslogConfigIF syslogConfig = null;
@@ -124,7 +116,7 @@ public abstract class AbstractSyslog implements SyslogIF {
         return this.syslogConfig;
     }
 
-    public void log(int level, String message) {
+    public void log(SyslogLevel level, String message) {
         if (this.syslogConfig.isUseStructuredData()) {
             StructuredSyslogMessageIF structuredMessage = new StructuredSyslogMessage(null,null,message);
 
@@ -135,7 +127,7 @@ public abstract class AbstractSyslog implements SyslogIF {
         }
     }
 
-    public void log(int level, SyslogMessageIF message) {
+    public void log(SyslogLevel level, SyslogMessageIF message) {
         if (message instanceof StructuredSyslogMessageIF) {
             if (getMessageProcessor() instanceof StructuredSyslogMessageProcessor) {
                 log(getMessageProcessor(),level,message.createMessage());
@@ -150,67 +142,67 @@ public abstract class AbstractSyslog implements SyslogIF {
     }
 
     public void debug(String message) {
-        log(LEVEL_DEBUG,message);
+        log(SyslogLevel.DEBUG, message);
     }
 
     public void notice(String message) {
-        log(LEVEL_NOTICE,message);
+        log(SyslogLevel.NOTICE,message);
     }
 
     public void info(String message) {
-        log(LEVEL_INFO,message);
+        log(SyslogLevel.INFO,message);
     }
 
     public void warn(String message) {
-        log(LEVEL_WARN,message);
+        log(SyslogLevel.WARN,message);
     }
 
     public void error(String message) {
-        log(LEVEL_ERROR,message);
+        log(SyslogLevel.ERROR,message);
     }
 
     public void critical(String message) {
-        log(LEVEL_CRITICAL,message);
+        log(SyslogLevel.CRITICAL,message);
     }
 
     public void alert(String message) {
-        log(LEVEL_ALERT,message);
+        log(SyslogLevel.ALERT,message);
     }
 
     public void emergency(String message) {
-        log(LEVEL_EMERGENCY,message);
+        log(SyslogLevel.EMERGENCY,message);
     }
 
     public void debug(SyslogMessageIF message) {
-        log(LEVEL_DEBUG,message);
+        log(SyslogLevel.DEBUG,message);
     }
 
     public void notice(SyslogMessageIF message) {
-        log(LEVEL_NOTICE,message);
+        log(SyslogLevel.NOTICE,message);
     }
 
     public void info(SyslogMessageIF message) {
-        log(LEVEL_INFO,message);
+        log(SyslogLevel.INFO,message);
     }
 
     public void warn(SyslogMessageIF message) {
-        log(LEVEL_WARN,message);
+        log(SyslogLevel.WARN,message);
     }
 
     public void error(SyslogMessageIF message) {
-        log(LEVEL_ERROR,message);
+        log(SyslogLevel.ERROR,message);
     }
 
     public void critical(SyslogMessageIF message) {
-        log(LEVEL_CRITICAL,message);
+        log(SyslogLevel.CRITICAL,message);
     }
 
     public void alert(SyslogMessageIF message) {
-        log(LEVEL_ALERT,message);
+        log(SyslogLevel.ALERT,message);
     }
 
     public void emergency(SyslogMessageIF message) {
-        log(LEVEL_EMERGENCY,message);
+        log(SyslogLevel.EMERGENCY,message);
     }
 
     protected String prefixMessage(String message, String suffix) {
@@ -221,7 +213,7 @@ public abstract class AbstractSyslog implements SyslogIF {
         return _message;
     }
 
-    public void log(SyslogMessageProcessorIF messageProcessor, int level, String message) {
+    public void log(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String message) {
         String _message = null;
 
         if (this.syslogConfig.isIncludeIdentInMessageModifier()) {
@@ -250,7 +242,7 @@ public abstract class AbstractSyslog implements SyslogIF {
         }
     }
 
-    protected void write(SyslogMessageProcessorIF messageProcessor, int level, String message) throws SyslogRuntimeException {
+    protected void write(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String message) throws SyslogRuntimeException {
         String header = messageProcessor.createSyslogHeader(this.syslogConfig.getFacility(),level,this.syslogConfig.getLocalName(),this.syslogConfig.isSendLocalTimestamp(),this.syslogConfig.isSendLocalName());
 
         byte[] h = SyslogUtility.getBytes(this.syslogConfig,header);
@@ -309,9 +301,9 @@ public abstract class AbstractSyslog implements SyslogIF {
 
     protected abstract void initialize() throws SyslogRuntimeException;
 
-    protected abstract void write(int level, byte[] message) throws SyslogRuntimeException;
+    protected abstract void write(SyslogLevel level, byte[] message) throws SyslogRuntimeException;
 
-    protected String modifyMessage(int level, String message) {
+    protected String modifyMessage(SyslogLevel level, String message) {
         List<? extends SyslogMessageModifierIF> _messageModifiers = this.syslogConfig.getMessageModifiers();
 
         if (_messageModifiers == null || _messageModifiers.size() < 1) {
@@ -320,7 +312,7 @@ public abstract class AbstractSyslog implements SyslogIF {
 
         String _message = message;
 
-        int facility = this.syslogConfig.getFacility();
+        SyslogFacility facility = this.syslogConfig.getFacility();
 
         for(int i=0; i<_messageModifiers.size(); i++) {
             SyslogMessageModifierIF messageModifier = _messageModifiers.get(i);
@@ -331,11 +323,11 @@ public abstract class AbstractSyslog implements SyslogIF {
         return _message;
     }
 
-    public void backLog(int level, String message, Throwable reasonThrowable) {
+    public void backLog(SyslogLevel level, String message, Throwable reasonThrowable) {
         backLog(level,message,reasonThrowable != null ? reasonThrowable.toString() : "UNKNOWN");
     }
 
-    public void backLog(int level, String message, String reason) {
+    public void backLog(SyslogLevel level, String message, String reason) {
         boolean status = getBackLogStatus();
 
         if (!status) {

@@ -16,10 +16,10 @@ public interface SyslogIF {
     public String getProtocol();
     public SyslogConfigIF getConfig();
 
-    public void backLog(int level, String message, Throwable reasonThrowable);
-    public void backLog(int level, String message, String reason);
+    public void backLog(SyslogLevel level, String message, Throwable reasonThrowable);
+    public void backLog(SyslogLevel level, String message, String reason);
 
-    public void log(int level, String message);
+    public void log(SyslogLevel level, String message);
 
     public void debug(String message);
     public void info(String message);
@@ -30,7 +30,7 @@ public interface SyslogIF {
     public void alert(String message);
     public void emergency(String message);
 
-    public void log(int level, SyslogMessageIF message);
+    public void log(SyslogLevel level, SyslogMessageIF message);
 
     public void debug(SyslogMessageIF message);
     public void info(SyslogMessageIF message);

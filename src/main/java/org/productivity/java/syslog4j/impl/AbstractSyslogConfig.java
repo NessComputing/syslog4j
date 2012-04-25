@@ -7,7 +7,6 @@ import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_NAME_DEF
 import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_TIMESTAMP_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.SPLIT_MESSAGE_END_TEXT_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_FACILITY_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.THREADED_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.THREAD_PRIORITY_DEFAULT;
@@ -22,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
@@ -42,15 +42,13 @@ import com.google.common.collect.Lists;
 * @version $Id: AbstractSyslogConfig.java,v 1.24 2010/11/28 04:43:31 cvs Exp $
 */
 public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
-    private static final long serialVersionUID = -3728308557871358111L;
-
     protected final static List<SyslogBackLogHandlerIF> defaultBackLogHandlers = Lists.newArrayList();
 
     static {
         defaultBackLogHandlers.add(new SystemErrSyslogBackLogHandler());
     }
 
-    protected int facility = SYSLOG_FACILITY_DEFAULT;
+    protected SyslogFacility facility = SyslogFacility.DEFAULT;
 
     protected Charset charSet = Charsets.UTF_8;
 
@@ -167,16 +165,14 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
         this.sendLocalName = sendLocalName;
     }
 
-    public int getFacility() {
+    @Override
+    public SyslogFacility getFacility() {
         return this.facility;
     }
 
-    public void setFacility(int facility) {
+    @Override
+    public void setFacility(SyslogFacility facility) {
         this.facility = facility;
-    }
-
-    public void setFacility(String facilityName) {
-        this.facility = SyslogUtility.getFacility(facilityName);
     }
 
     public String getIdent() {

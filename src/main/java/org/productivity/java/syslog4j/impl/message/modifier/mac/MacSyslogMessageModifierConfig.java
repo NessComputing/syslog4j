@@ -20,8 +20,6 @@ import org.productivity.java.syslog4j.util.Base64;
 * @version $Id: MacSyslogMessageModifierConfig.java,v 1.3 2009/04/17 02:37:04 cvs Exp $
 */
 public class MacSyslogMessageModifierConfig extends AbstractSyslogMessageModifierConfig {
-    private static final long serialVersionUID = 4524180892377960695L;
-
     protected String macAlgorithm = null;
     protected String keyAlgorithm = null;
     protected Key key = null;

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.productivity.java.syslog4j.Syslog;
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.message.pci.PCISyslogMessage;
 import org.productivity.java.syslog4j.impl.message.structured.StructuredSyslogMessage;
@@ -64,8 +64,6 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
     }
 
     protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
-        private static final long serialVersionUID = 7364480542656523264L;
-
         protected List<String> recordedEvents = Lists.newLinkedList();
 
         public List<String> getRecordedEvents() {
@@ -301,7 +299,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
         syslog.emergency(message);
         events.add(message.createMessage());
 
-        syslog.log(SyslogConstants.LEVEL_INFO,message);
+        syslog.log(SyslogLevel.INFO,message);
         events.add(message.createMessage());
 
         SyslogUtility.sleep(100);
@@ -352,10 +350,10 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
         syslog.emergency(message);
         events.add(message.createMessage());
 
-        syslog.log(SyslogConstants.LEVEL_INFO,message);
+        syslog.log(SyslogLevel.INFO,message);
         events.add(message.createMessage());
 
-        syslog.log(SyslogConstants.LEVEL_INFO,message.createMessage());
+        syslog.log(SyslogLevel.INFO,message.createMessage());
         events.add(message.createMessage());
 
         SyslogUtility.sleep(100);
@@ -454,8 +452,6 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
         System.out.println("done.");
 
         SyslogUtility.sleep(100);
-
-        Syslog.initialize();
         SyslogServer.initialize();
     }
 }

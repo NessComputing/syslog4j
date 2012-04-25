@@ -2,6 +2,7 @@ package org.productivity.java.syslog4j.test.misc;
 
 import junit.framework.TestCase;
 
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogMain;
 import org.productivity.java.syslog4j.server.SyslogServerMain;
 
@@ -41,13 +42,13 @@ public class SyslogMainTests extends TestCase {
 
         options = SyslogMain.parseOptions(new String[] { "udp", "-l", "WARN", "message" });
         assertEquals("udp",options.protocol);
-        assertEquals("WARN",options.level);
+        assertEquals("WARN",options.level.name());
         assertNull(options.usage);
         assertEquals("message",options.message);
 
         options = SyslogMain.parseOptions(new String[] { "udp", "-f", "LOCAL0" });
         assertEquals("udp",options.protocol);
-        assertEquals("LOCAL0",options.facility);
+        assertEquals(SyslogFacility.local0,options.facility);
         assertNull(options.usage);
 
         options = SyslogMain.parseOptions(new String[] { "udp", "-i", "file.txt" });

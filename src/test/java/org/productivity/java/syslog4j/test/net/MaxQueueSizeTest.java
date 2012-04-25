@@ -14,6 +14,7 @@ import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.backlog.NullSyslogBackLogHandler;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
@@ -32,7 +33,7 @@ public class MaxQueueSizeTest extends TestCase {
             count = 0;
         }
 
-        public void log(SyslogIF syslog, int level, String message, String reason) throws SyslogRuntimeException {
+        public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
             System.out.println(message + " " + reason);
             count++;
         }
@@ -117,7 +118,7 @@ public class MaxQueueSizeTest extends TestCase {
         SyslogIF syslog = Syslog.createInstance("maxQueueSizeTest",syslogConfig);
 
         for(int i=1; i<=messagesToSend; i++) {
-            syslog.log(SyslogConstants.LEVEL_INFO,"test line " + i);
+            syslog.log(SyslogLevel.INFO,"test line " + i);
         }
 
         SyslogUtility.sleep(500);

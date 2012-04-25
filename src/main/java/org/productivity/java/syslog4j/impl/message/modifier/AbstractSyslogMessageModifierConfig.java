@@ -21,8 +21,6 @@ import com.google.common.base.Charsets;
 */
 public abstract class AbstractSyslogMessageModifierConfig implements SyslogMessageModifierConfigIF
 {
-    private static final long serialVersionUID = 5036574188079124884L;
-
     protected String prefix = SYSLOG_MESSAGE_MODIFIER_PREFIX_DEFAULT;
     protected String suffix = SYSLOG_MESSAGE_MODIFIER_SUFFIX_DEFAULT;
     protected Charset charSet = Charsets.UTF_8;

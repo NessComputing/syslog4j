@@ -16,8 +16,6 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslog;
 * @version $Id: SSLTCPNetSyslog.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslog extends TCPNetSyslog {
-    private static final long serialVersionUID = 2766654802524487317L;
-
     public void initialize() throws SyslogRuntimeException {
         super.initialize();
 

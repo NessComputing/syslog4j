@@ -35,8 +35,6 @@ import com.google.common.collect.Maps;
 */
 public abstract class AbstractSyslogServer implements SyslogServerIF {
     public static class Sessions extends HashMap<Socket, Map<SyslogServerEventHandlerIF, Object>> {
-        private static final long serialVersionUID = -4438949276263772580L;
-
         public static final Object syncObject = new Object();
 
         public void addSocket(Socket socket) {

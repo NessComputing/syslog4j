@@ -1,6 +1,8 @@
 package org.productivity.java.syslog4j.impl.unix;
 
 import org.apache.commons.lang3.StringUtils;
+import org.productivity.java.syslog4j.SyslogFacility;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageProcessorIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslog;
@@ -26,8 +28,6 @@ import com.sun.jna.Native;
 * @version $Id: UnixSyslog.java,v 1.27 2010/10/25 04:21:19 cvs Exp $
 */
 public class UnixSyslog extends AbstractSyslog {
-    private static final long serialVersionUID = 4973353204252276740L;
-
     protected UnixSyslogConfig unixSyslogConfig = null;
 
     protected interface CLibrary extends Library {
@@ -36,7 +36,7 @@ public class UnixSyslog extends AbstractSyslog {
         public void closelog();
     }
 
-    protected static int currentFacility = -1;
+    protected static SyslogFacility currentFacility = null;
     protected static boolean openlogCalled = false;
 
     protected static CLibrary libraryInstance = null;
@@ -62,7 +62,7 @@ public class UnixSyslog extends AbstractSyslog {
         loadLibrary(this.unixSyslogConfig);
     }
 
-    protected static void write(int level, String message, UnixSyslogConfig config) throws SyslogRuntimeException {
+    protected static void write(SyslogLevel level, String message, UnixSyslogConfig config) throws SyslogRuntimeException {
         synchronized(libraryInstance) {
             if (currentFacility != config.getFacility()) {
                 if (openlogCalled) {
@@ -87,21 +87,21 @@ public class UnixSyslog extends AbstractSyslog {
                     identBuffer.setString(0, ident, false);
                 }
 
-                libraryInstance.openlog(identBuffer,config.getOption(),currentFacility);
+                libraryInstance.openlog(identBuffer,config.getOption(),currentFacility.getValue());
                 openlogCalled = true;
             }
 
-            int priority = currentFacility | level;
+            int priority = (currentFacility == null ? 0 : currentFacility.getValue()) | (level == null ? 0 : level.getValue());
 
             libraryInstance.syslog(priority,"%s",message);
         }
     }
 
-    protected void write(int level, byte[] message) throws SyslogRuntimeException {
+    protected void write(SyslogLevel level, byte[] message) throws SyslogRuntimeException {
         // NO-OP
     }
 
-    public void log(SyslogMessageProcessorIF messageProcessor, int level, String message) {
+    public void log(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String message) {
         write(level,message,this.unixSyslogConfig);
     }
 

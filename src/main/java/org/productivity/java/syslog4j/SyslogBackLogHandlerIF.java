@@ -47,5 +47,5 @@ public interface SyslogBackLogHandlerIF {
      * @param reason - reason given for why this message could not be handled
      * @throws SyslogRuntimeException - throwing this Exception activates the next backlogHandler in the chain
      */
-    public void log(SyslogIF syslog, int level, String message, String reason) throws SyslogRuntimeException;
+    public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException;
 }

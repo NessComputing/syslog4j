@@ -2,6 +2,7 @@ package org.productivity.java.syslog4j.impl.unix.socket;
 
 import java.nio.ByteBuffer;
 
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslog;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
@@ -26,8 +27,6 @@ import com.sun.jna.Structure;
 * @version $Id: UnixSocketSyslog.java,v 1.13 2010/11/16 00:52:01 cvs Exp $
 */
 public class UnixSocketSyslog extends AbstractSyslog {
-    private static final long serialVersionUID = 39878807911936785L;
-
     protected static class SockAddr extends Structure {
         public final static int SUN_PATH_SIZE = 108;
         public final static byte[] ZERO_BYTE = new byte[] { 0 };
@@ -103,7 +102,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
         }
     }
 
-    protected void write(int level, byte[] message) throws SyslogRuntimeException {
+    protected void write(SyslogLevel level, byte[] message) throws SyslogRuntimeException {
         if (this.fd == -1) {
             connect();
         }

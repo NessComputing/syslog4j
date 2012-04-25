@@ -5,6 +5,8 @@ import static org.productivity.java.syslog4j.SyslogConstants.STRUCTURED_DATA_PRO
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.productivity.java.syslog4j.SyslogFacility;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.impl.message.processor.AbstractSyslogMessageProcessor;
 import org.productivity.java.syslog4j.impl.message.structured.StructuredSyslogMessage;
 /**
@@ -31,8 +33,6 @@ import org.productivity.java.syslog4j.impl.message.structured.StructuredSyslogMe
  * @version $Id: StructuredSyslogMessageProcessor.java,v 1.4 2011/01/11 05:11:13 cvs Exp $
  */
 public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProcessor {
-    private static final long serialVersionUID = -1563777226913475257L;
-
     public static String VERSION = "1";
 
     private static final StructuredSyslogMessageProcessor INSTANCE = new StructuredSyslogMessageProcessor();
@@ -86,7 +86,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
         this.processId = processId;
     }
 
-    public String createSyslogHeader(final int facility, final int level, String localName, final boolean sendLocalTimestamp, final boolean sendLocalName) {
+    public String createSyslogHeader(final SyslogFacility facility, final SyslogLevel level, String localName, final boolean sendLocalTimestamp, final boolean sendLocalName) {
         final StringBuffer buffer = new StringBuffer();
 
         appendPriority(buffer,facility,level);

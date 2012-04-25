@@ -1,7 +1,9 @@
 package org.productivity.java.syslog4j.impl.message.modifier.text;
 
 import org.apache.commons.lang3.StringUtils;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 
 /**
@@ -16,8 +18,6 @@ import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 * @version $Id: PrefixSyslogMessageModifier.java,v 1.5 2010/10/28 05:10:57 cvs Exp $
 */
 public class PrefixSyslogMessageModifier implements SyslogMessageModifierIF {
-    private static final long serialVersionUID = 6718826215583513972L;
-
     protected String prefix = null;
     protected String delimiter = " ";
 
@@ -44,7 +44,8 @@ public class PrefixSyslogMessageModifier implements SyslogMessageModifierIF {
         this.prefix = prefix;
     }
 
-    public String modify(SyslogIF syslog, int facility, int level, String message) {
+    @Override
+    public String modify(SyslogIF syslog, SyslogFacility facility, SyslogLevel level, String message) {
         if (StringUtils.isBlank(prefix)) {
             return message;
         }

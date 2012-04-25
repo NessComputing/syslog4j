@@ -2,6 +2,7 @@ package org.productivity.java.syslog4j.test.split.base;
 
 import java.util.List;
 
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslog;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
@@ -10,8 +11,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 import com.google.common.collect.Lists;
 
 public class SplitSyslog extends AbstractSyslog {
-    private static final long serialVersionUID = -2860454535112047368L;
-
     public List<String> lastMessages = Lists.newArrayList();
 
     protected void initialize() throws SyslogRuntimeException {
@@ -22,7 +21,7 @@ public class SplitSyslog extends AbstractSyslog {
         this.lastMessages.clear();
     }
 
-    protected void write(int level, byte[] message) throws SyslogRuntimeException {
+    protected void write(SyslogLevel level, byte[] message) throws SyslogRuntimeException {
         String lastMessage = SyslogUtility.newString(this.getConfig(),message);
 
         System.out.println(lastMessage);

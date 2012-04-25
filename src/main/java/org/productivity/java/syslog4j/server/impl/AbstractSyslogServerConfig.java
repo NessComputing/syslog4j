@@ -26,8 +26,6 @@ import com.google.common.collect.Lists;
 * @version $Id: AbstractSyslogServerConfig.java,v 1.9 2011/01/11 05:11:13 cvs Exp $
 */
 public abstract class AbstractSyslogServerConfig implements SyslogServerConfigIF {
-    private static final long serialVersionUID = 870248648801259856L;
-
     public abstract Class<? extends SyslogServerIF> getSyslogServerClass();
 
     protected Charset charSet = Charsets.UTF_8;

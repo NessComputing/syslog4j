@@ -5,7 +5,9 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.Syslog;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessageModifier;
@@ -27,7 +29,7 @@ public class SyslogMessageModifierVerifyTest extends TestCase {
 
         String message = "crc32 checksum Test 1234 ABCD";
 
-        String modifiedMessage = modifier.modify(syslog, 0, 0, message);
+        String modifiedMessage = modifier.modify(syslog, SyslogFacility.kern, SyslogLevel.EMERGENCY, message);
         System.out.println(modifiedMessage);
 
         if (!modifier.verify(message,"2399A0FD")) {
@@ -69,7 +71,7 @@ public class SyslogMessageModifierVerifyTest extends TestCase {
 
         String message = "adler32 checksum Test 4321 DCBA";
 
-        String modifiedMessage = modifier.modify(syslog,0,0,message);
+        String modifiedMessage = modifier.modify(syslog,SyslogFacility.kern, SyslogLevel.EMERGENCY,message);
         System.out.println(modifiedMessage);
 
         if (!modifier.verify(message,"A8D109B5")) {
@@ -111,7 +113,7 @@ public class SyslogMessageModifierVerifyTest extends TestCase {
 
         String message = "md5 hash Test 1212 ABAB";
 
-        String modifiedMessage = modifier.modify(syslog,0,0,message);
+        String modifiedMessage = modifier.modify(syslog,SyslogFacility.kern, SyslogLevel.EMERGENCY,message);
         System.out.println(modifiedMessage);
 
         if (!modifier.verify(message,"fqfK2PYV76Wv9yNQjLoVeg==")) {
@@ -138,7 +140,7 @@ public class SyslogMessageModifierVerifyTest extends TestCase {
 
         String message = "hmacmd5 Test 3434 DCDC";
 
-        String modifiedMessage = modifier.modify(syslog,0,0,message);
+        String modifiedMessage = modifier.modify(syslog,SyslogFacility.kern, SyslogLevel.EMERGENCY,message);
         System.out.println(modifiedMessage);
 
         if (!modifier.verify(message,"MfWJ4XhFiMlPwnFEJ401zA==")) {

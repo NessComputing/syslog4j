@@ -76,40 +76,6 @@ public final class SyslogConstants
     public static final int TCP_MAX_ACTIVE_SOCKETS_DEFAULT = 0;
     public static final byte TCP_MAX_ACTIVE_SOCKETS_BEHAVIOR_DEFAULT = 0;
 
-    public static final int FACILITY_KERN     =  0;
-    public static final int FACILITY_USER     =  1<<3;
-    public static final int FACILITY_MAIL     =  2<<3;
-    public static final int FACILITY_DAEMON   =  3<<3;
-    public static final int FACILITY_AUTH     =  4<<3;
-    public static final int FACILITY_SYSLOG   =  5<<3;
-
-    public static final int FACILITY_LPR      =  6<<3;
-    public static final int FACILITY_NEWS     =  7<<3;
-    public static final int FACILITY_UUCP     =  8<<3;
-    public static final int FACILITY_CRON     =  9<<3;
-    public static final int FACILITY_AUTHPRIV = 10<<3;
-    public static final int FACILITY_FTP      = 11<<3;
-
-    public static final int FACILITY_LOCAL0   = 16<<3;
-    public static final int FACILITY_LOCAL1   = 17<<3;
-    public static final int FACILITY_LOCAL2   = 18<<3;
-    public static final int FACILITY_LOCAL3   = 19<<3;
-    public static final int FACILITY_LOCAL4   = 20<<3;
-    public static final int FACILITY_LOCAL5   = 21<<3;
-    public static final int FACILITY_LOCAL6   = 22<<3;
-    public static final int FACILITY_LOCAL7   = 23<<3;
-
-    public static final int SYSLOG_FACILITY_DEFAULT = FACILITY_USER;
-
-    public static final int LEVEL_DEBUG = 7;
-    public static final int LEVEL_INFO = 6;
-    public static final int LEVEL_NOTICE = 5;
-    public static final int LEVEL_WARN = 4;
-    public static final int LEVEL_ERROR = 3;
-    public static final int LEVEL_CRITICAL = 2;
-    public static final int LEVEL_ALERT = 1;
-    public static final int LEVEL_EMERGENCY = 0;
-
     public static final int OPTION_NONE = 0;
     public static final int OPTION_LOG_CONS = 1;
     public static final int OPTION_LOG_NDELAY = 2;

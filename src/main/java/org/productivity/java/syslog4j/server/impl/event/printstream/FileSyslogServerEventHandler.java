@@ -7,8 +7,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class FileSyslogServerEventHandler extends PrintStreamSyslogServerEventHandler {
-    private static final long serialVersionUID = -755824686809731430L;
-
     protected static PrintStream createPrintStream(String fileName, boolean append) throws IOException {
         File file = new File(fileName);
 

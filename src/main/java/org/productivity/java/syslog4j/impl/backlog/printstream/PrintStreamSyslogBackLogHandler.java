@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.backlog.AbstractSyslogBackLogHandler;
 
@@ -57,7 +58,7 @@ public class PrintStreamSyslogBackLogHandler extends AbstractSyslogBackLogHandle
         this.printStream.println(syslog.getProtocol() + ": UP");
     }
 
-    public void log(SyslogIF syslog, int level, String message, String reason) {
+    public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) {
         String combinedMessage = combine(syslog,level,message,reason);
 
         if (this.appendLinefeed) {

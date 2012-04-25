@@ -16,8 +16,6 @@ import org.productivity.java.syslog4j.server.impl.net.AbstractNetSyslogServerCon
 * @version $Id: TCPNetSyslogServerConfig.java,v 1.8 2010/11/28 01:38:08 cvs Exp $
 */
 public class TCPNetSyslogServerConfig extends AbstractNetSyslogServerConfig implements TCPNetSyslogServerConfigIF {
-    private static final long serialVersionUID = -1546696301177599370L;
-
     protected int timeout = 0;
     protected int backlog = 0;
     protected int maxActiveSockets = TCP_MAX_ACTIVE_SOCKETS_DEFAULT;

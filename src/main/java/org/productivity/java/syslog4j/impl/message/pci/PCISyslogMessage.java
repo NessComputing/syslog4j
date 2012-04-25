@@ -25,8 +25,6 @@ import org.productivity.java.syslog4j.impl.message.AbstractSyslogMessage;
 * @version $Id: PCISyslogMessage.java,v 1.3 2008/11/14 04:32:00 cvs Exp $
 */
 public class PCISyslogMessage extends AbstractSyslogMessage implements PCISyslogMessageIF {
-    private static final long serialVersionUID = 3571696218386879119L;
-
     public static final String USER_ID				= "userId";
     public static final String EVENT_TYPE			= "eventType";
     public static final String DATE					= "date";

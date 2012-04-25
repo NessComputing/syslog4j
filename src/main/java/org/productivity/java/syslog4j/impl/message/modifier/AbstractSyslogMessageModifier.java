@@ -5,8 +5,6 @@ import org.productivity.java.syslog4j.SyslogMessageModifierConfigIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 
 public abstract class AbstractSyslogMessageModifier implements SyslogMessageModifierIF {
-    private static final long serialVersionUID = 7632959170109372003L;
-
     protected SyslogMessageModifierConfigIF messageModifierConfig = null;
 
     public AbstractSyslogMessageModifier(SyslogMessageModifierConfigIF messageModifierConfig) {

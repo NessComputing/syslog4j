@@ -18,8 +18,6 @@ import org.productivity.java.syslog4j.impl.pool.generic.GenericSyslogPoolFactory
 * @version $Id: PooledTCPNetSyslog.java,v 1.5 2008/12/10 04:30:15 cvs Exp $
 */
 public class PooledTCPNetSyslog extends TCPNetSyslog {
-    private static final long serialVersionUID = 4279960451141784200L;
-
     protected AbstractSyslogPoolFactory poolFactory = null;
 
     public void initialize() throws SyslogRuntimeException {

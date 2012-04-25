@@ -7,6 +7,7 @@ import java.util.List;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
@@ -26,8 +27,6 @@ import com.google.common.collect.Lists;
 * @version $Id: MultipleSyslogConfig.java,v 1.8 2010/11/28 04:15:18 cvs Exp $
 */
 public class MultipleSyslogConfig implements SyslogConfigIF {
-    private static final long serialVersionUID = 753704522364959612L;
-
     protected List<String> syslogProtocols = null;
 
     public MultipleSyslogConfig() {
@@ -93,8 +92,8 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
         return Charsets.UTF_8;
     }
 
-    public int getFacility() {
-        return SyslogConstants.SYSLOG_FACILITY_DEFAULT;
+    public SyslogFacility getFacility() {
+        return SyslogFacility.DEFAULT;
     }
 
     public String getHost() {
@@ -182,7 +181,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
         throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
     }
 
-    public void setFacility(String facilityName) {
+    public void setFacility(SyslogFacility facilityName) {
         throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
     }
 

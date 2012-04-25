@@ -5,6 +5,7 @@ import static org.productivity.java.syslog4j.SyslogConstants.MAX_QUEUE_SIZE_DEFA
 import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_HOST_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_PORT_DEFAULT;
 
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 /**
 * AbstractNetSyslogConfig is an abstract extension of AbstractSyslogConfig
@@ -18,8 +19,6 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 * @version $Id: AbstractNetSyslogConfig.java,v 1.12 2010/10/25 03:50:25 cvs Exp $
 */
 public abstract class AbstractNetSyslogConfig extends AbstractSyslogConfig implements AbstractNetSyslogConfigIF {
-    private static final long serialVersionUID = 7240133962159244924L;
-
     protected String host = SYSLOG_HOST_DEFAULT;
     protected int port = SYSLOG_PORT_DEFAULT;
 
@@ -31,11 +30,11 @@ public abstract class AbstractNetSyslogConfig extends AbstractSyslogConfig imple
         //
     }
 
-    public AbstractNetSyslogConfig(int facility) {
+    public AbstractNetSyslogConfig(SyslogFacility facility) {
         this.facility = facility;
     }
 
-    public AbstractNetSyslogConfig(int facility, String host) {
+    public AbstractNetSyslogConfig(SyslogFacility facility, String host) {
         this.facility = facility;
         this.host = host;
     }
@@ -44,7 +43,7 @@ public abstract class AbstractNetSyslogConfig extends AbstractSyslogConfig imple
         this.host = host;
     }
 
-    public AbstractNetSyslogConfig(int facility, String host, int port) {
+    public AbstractNetSyslogConfig(SyslogFacility facility, String host, int port) {
         this.facility = facility;
         this.host = host;
         this.port = port;

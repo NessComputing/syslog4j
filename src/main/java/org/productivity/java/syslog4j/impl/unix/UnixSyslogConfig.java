@@ -18,8 +18,6 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 * @version $Id: UnixSyslogConfig.java,v 1.13 2010/10/25 03:50:25 cvs Exp $
 */
 public class UnixSyslogConfig extends AbstractSyslogConfig {
-    private static final long serialVersionUID = -4805767812011660656L;
-
     protected String library = SYSLOG_LIBRARY_DEFAULT;
     protected int option = OPTION_NONE;
 

@@ -28,8 +28,6 @@ import com.google.common.collect.Maps;
  * @version $Id: SyslogServer.java,v 1.14 2011/01/23 20:49:12 cvs Exp $
  */
 public class SyslogServer {
-    private static final long serialVersionUID = -2260889360828258602L;
-
     private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;
 
     protected static final Map<String, SyslogServerIF> instances = Maps.newHashMap();

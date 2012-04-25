@@ -20,8 +20,6 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 * @see org.productivity.java.syslog4j.impl.pool.generic.GenericSyslogPoolFactory
 */
 public abstract class AbstractSyslogPoolFactory extends BasePoolableObjectFactory {
-    private static final long serialVersionUID = -7441569603980981508L;
-
     protected AbstractSyslog syslog = null;
     protected AbstractSyslogConfigIF syslogConfig = null;
 

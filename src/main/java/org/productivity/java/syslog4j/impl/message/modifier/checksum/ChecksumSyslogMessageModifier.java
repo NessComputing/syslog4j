@@ -1,6 +1,8 @@
 package org.productivity.java.syslog4j.impl.message.modifier.checksum;
 
+import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessageModifier;
 import org.productivity.java.syslog4j.util.SyslogUtility;
@@ -17,8 +19,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: ChecksumSyslogMessageModifier.java,v 1.5 2010/10/28 05:10:57 cvs Exp $
 */
 public class ChecksumSyslogMessageModifier extends AbstractSyslogMessageModifier {
-    private static final long serialVersionUID = -3268914290497005065L;
-
     protected ChecksumSyslogMessageModifierConfig config = null;
 
     public static final ChecksumSyslogMessageModifier createCRC32() {
@@ -79,7 +79,8 @@ public class ChecksumSyslogMessageModifier extends AbstractSyslogMessageModifier
         }
     }
 
-    public String modify(SyslogIF syslog, int facility, int level, String message) {
+    @Override
+    public String modify(SyslogIF syslog, SyslogFacility facility, SyslogLevel level, String message) {
         synchronized(this.config.getChecksum()) {
             StringBuffer messageBuffer = new StringBuffer(message);
 

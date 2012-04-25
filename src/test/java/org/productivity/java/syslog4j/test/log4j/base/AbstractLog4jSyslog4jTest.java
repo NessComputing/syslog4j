@@ -19,8 +19,6 @@ import com.google.common.collect.Lists;
 
 public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
     protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
-        private static final long serialVersionUID = 8040266564168724L;
-
         protected List<String> recordedEvents = Lists.newArrayList();
 
         public List<String> getRecordedEvents() {
@@ -150,7 +148,6 @@ public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
 
         SyslogUtility.sleep(100);
 
-        Syslog.initialize();
         SyslogServer.initialize();
     }
 }
