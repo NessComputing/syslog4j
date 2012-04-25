@@ -43,15 +43,24 @@ import com.google.common.collect.Maps;
  * @author &lt;syslog4j@productivity.org&gt;
  * @version $Id: Syslog.java,v 1.23 2011/01/23 20:49:12 cvs Exp $
  */
-public final class Syslog  {
-    private static final long serialVersionUID = -4662318148650646144L;
-
+public final class Syslog
+{
     private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;
 
     protected static final Map<String, SyslogIF> instances = Maps.newHashMap();
 
+    /**
+     * Set up the default TCP and UDP Syslog protocols, as
+     * well as UNIX_SYSLOG and UNIX_SOCKET (if running on a Unix-based system).
+     */
     static {
-        initialize();
+        createInstance(UDP,new UDPNetSyslogConfig());
+        createInstance(TCP,new TCPNetSyslogConfig());
+
+        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
+            createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
+            createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
+        }
     }
 
     /**
@@ -209,19 +218,6 @@ public final class Syslog  {
         return syslog;
     }
 
-    /**
-     * initialize() sets up the default TCP and UDP Syslog protocols, as
-     * well as UNIX_SYSLOG and UNIX_SOCKET (if running on a Unix-based system).
-     */
-    public synchronized static final void initialize() {
-        createInstance(UDP,new UDPNetSyslogConfig());
-        createInstance(TCP,new TCPNetSyslogConfig());
-
-        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
-            createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
-            createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
-        }
-    }
 
     /**
      * @param protocol - Syslog protocol
