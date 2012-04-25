@@ -29,8 +29,6 @@ public final class SyslogConstants
     public static final String STRUCTURED_DATA_NILVALUE = "-";
     public static final String STRUCTURED_DATA_EMPTY_VALUE = "[0@0]";
 
-    public static final String CHAR_SET_DEFAULT = "UTF-8";
-
     public static final byte[] LF = "\n".getBytes();
     public static final byte[] CRLF = "\r\n".getBytes();
 

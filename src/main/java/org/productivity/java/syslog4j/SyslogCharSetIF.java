@@ -1,6 +1,7 @@
 package org.productivity.java.syslog4j;
 
 import java.io.Serializable;
+import java.nio.charset.Charset;
 
 /**
 * SyslogCharSetIF provides control of the encoding character set within
@@ -13,7 +14,9 @@ import java.io.Serializable;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogCharSetIF.java,v 1.3 2008/11/07 15:15:41 cvs Exp $
 */
-public interface SyslogCharSetIF extends Serializable {
-    public String getCharSet();
-    public void setCharSet(String charSet);
+public interface SyslogCharSetIF extends Serializable
+{
+    Charset getCharSet();
+
+    public void setCharSet(Charset charSet);
 }

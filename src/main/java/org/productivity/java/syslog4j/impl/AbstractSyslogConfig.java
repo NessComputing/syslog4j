@@ -1,6 +1,5 @@
 package org.productivity.java.syslog4j.impl;
 
-import static org.productivity.java.syslog4j.SyslogConstants.CHAR_SET_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT;
@@ -19,6 +18,7 @@ import static org.productivity.java.syslog4j.SyslogConstants.USE_DAEMON_THREAD_D
 import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.WRITE_RETRIES_DEFAULT;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
@@ -28,6 +28,7 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.backlog.printstream.SystemErrSyslogBackLogHandler;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 /**
 * AbstractSyslog provides a base abstract implementation of the SyslogConfigIF
@@ -51,7 +52,7 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 
     protected int facility = SYSLOG_FACILITY_DEFAULT;
 
-    protected String charSet = CHAR_SET_DEFAULT;
+    protected Charset charSet = Charsets.UTF_8;
 
     protected String ident = "";
 
@@ -84,11 +85,13 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 
     public abstract Class<? extends SyslogIF> getSyslogClass();
 
-    public String getCharSet() {
+    @Override
+    public Charset getCharSet() {
         return this.charSet;
     }
 
-    public void setCharSet(String charSet) {
+    @Override
+    public void setCharSet(Charset charSet) {
         this.charSet = charSet;
     }
 

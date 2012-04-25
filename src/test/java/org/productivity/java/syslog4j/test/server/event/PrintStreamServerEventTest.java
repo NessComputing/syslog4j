@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.util.Date;
 
 import junit.framework.TestCase;
@@ -20,6 +21,8 @@ import org.productivity.java.syslog4j.server.impl.event.printstream.PrintStreamS
 import org.productivity.java.syslog4j.server.impl.event.printstream.SystemErrSyslogServerEventHandler;
 import org.productivity.java.syslog4j.server.impl.event.printstream.SystemOutSyslogServerEventHandler;
 
+import com.google.common.base.Charsets;
+
 public class PrintStreamServerEventTest extends TestCase {
     public void testPrintStreamEvent() {
         SyslogServerIF server = SyslogServer.getInstance("udp");
@@ -32,9 +35,9 @@ public class PrintStreamServerEventTest extends TestCase {
 
         SyslogServerEventIF event = new SyslogServerEvent(message.getBytes(),message.length(),inetAddress);
 
-        assertEquals(SyslogConstants.CHAR_SET_DEFAULT,event.getCharSet());
-        event.setCharSet("xxyyzz");
-        assertEquals("xxyyzz",event.getCharSet());
+        assertEquals(Charsets.UTF_8, event.getCharSet());
+        event.setCharSet(Charset.forName("us-ascii"));
+        assertEquals(Charset.forName("us-ascii"), event.getCharSet());
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PrintStream ps = new PrintStream(baos);

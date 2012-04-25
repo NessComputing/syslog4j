@@ -1,6 +1,7 @@
 package org.productivity.java.syslog4j.server.impl.event;
 
 import java.net.InetAddress;
+import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,9 +9,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.server.SyslogServerEventIF;
 import org.productivity.java.syslog4j.util.SyslogUtility;
+
+import com.google.common.base.Charsets;
 
 /**
 * SyslogServerEvent provides an implementation of the SyslogServerEventIF interface.
@@ -27,7 +29,7 @@ public class SyslogServerEvent implements SyslogServerEventIF {
 
     public static final String DATE_FORMAT = "MMM dd HH:mm:ss yyyy";
 
-    protected String charSet = SyslogConstants.CHAR_SET_DEFAULT;
+    protected Charset charSet = Charsets.UTF_8;
     protected String rawString = null;
     protected byte[] rawBytes = null;
     protected int rawLength = -1;
@@ -235,11 +237,13 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         this.message = message;
     }
 
-    public String getCharSet() {
+    @Override
+    public Charset getCharSet() {
         return this.charSet;
     }
 
-    public void setCharSet(String charSet) {
+    @Override
+    public void setCharSet(Charset charSet) {
         this.charSet = charSet;
     }
 }

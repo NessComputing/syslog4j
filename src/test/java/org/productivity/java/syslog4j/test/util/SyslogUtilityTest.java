@@ -1,5 +1,7 @@
 package org.productivity.java.syslog4j.test.util;
 
+import java.nio.charset.Charset;
+
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.SyslogCharSetIF;
@@ -7,17 +9,21 @@ import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
+import com.google.common.base.Charsets;
+
 public class SyslogUtilityTest extends TestCase {
     public static class CharSet implements SyslogCharSetIF {
         private static final long serialVersionUID = 130052445223551802L;
 
-        protected String charSet = null;
+        protected Charset charSet = Charsets.UTF_8;
 
-        public String getCharSet() {
+        @Override
+        public Charset getCharSet() {
             return this.charSet;
         }
 
-        public void setCharSet(String charSet) {
+        @Override
+        public void setCharSet(Charset charSet) {
             this.charSet = charSet;
         }
 
@@ -95,7 +101,7 @@ public class SyslogUtilityTest extends TestCase {
         String message = "foo";
 
         CharSet cs = new CharSet();
-        cs.setCharSet("FakeCharSet");
+        cs.setCharSet(Charset.forName("us-ascii"));
 
         assertEquals(message,SyslogUtility.newString(cs,message.getBytes()));
         assertEquals(message,new String(SyslogUtility.getBytes(cs,message)));

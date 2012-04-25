@@ -1,5 +1,7 @@
 package org.productivity.java.syslog4j.impl.log4j;
 
+import java.nio.charset.Charset;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.helpers.LogLog;
@@ -34,7 +36,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
     protected String facility = null;
     protected String host = null;
     protected String port = null;
-    protected String charSet = null;
+    protected Charset charSet = null;
     protected String threaded = null;
     protected String threadLoopInterval = null;
     protected String splitMessageBeginText = null;
@@ -226,11 +228,11 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
     }
 
     public String getCharSet() {
-        return this.charSet;
+        return this.charSet.name();
     }
 
     public void setCharSet(String charSet) {
-        this.charSet = charSet;
+        this.charSet = Charset.forName(charSet);
     }
 
     public String getIdent() {

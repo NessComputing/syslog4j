@@ -1,6 +1,9 @@
 package org.productivity.java.syslog4j.test.multiple;
 
 import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
+
+import java.nio.charset.Charset;
+
 import junit.framework.TestCase;
 
 import org.productivity.java.syslog4j.Syslog;
@@ -15,6 +18,9 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.message.processor.SyslogMessageProcessor;
 import org.productivity.java.syslog4j.impl.message.processor.structured.StructuredSyslogMessageProcessor;
 import org.productivity.java.syslog4j.impl.multiple.MultipleSyslogConfig;
+
+import com.google.common.base.Charsets;
+
 public class MultipleSyslogCreateTest extends TestCase {
     public static class FakeSyslog implements SyslogIF {
         private static final long serialVersionUID = 7519273907420813675L;
@@ -100,7 +106,8 @@ public class MultipleSyslogCreateTest extends TestCase {
 
         public void addMessageModifier(SyslogMessageModifierIF messageModifier) { }
 
-        public String getCharSet() { return SyslogConstants.CHAR_SET_DEFAULT; }
+        @Override
+        public Charset getCharSet() { return Charsets.UTF_8; }
 
         public int getFacility() { return SyslogConstants.SYSLOG_FACILITY_DEFAULT; }
 
@@ -140,7 +147,8 @@ public class MultipleSyslogCreateTest extends TestCase {
 
         public void removeMessageModifier(SyslogMessageModifierIF messageModifier) { }
 
-        public void setCharSet(String charSet) { }
+        @Override
+        public void setCharSet(Charset charSet) { }
 
         public void setFacility(int facility) { }
 

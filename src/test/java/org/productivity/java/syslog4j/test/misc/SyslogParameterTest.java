@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
+import java.nio.charset.Charset;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,7 @@ import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConf
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfigIF;
 import org.productivity.java.syslog4j.server.impl.net.udp.UDPNetSyslogServerConfig;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -94,8 +96,9 @@ public class SyslogParameterTest extends TestCase {
             //
         }
 
-        public String getCharSet() {
-            return null;
+        @Override
+        public Charset getCharSet() {
+            return Charsets.UTF_8;
         }
 
         public int getFacility() {
@@ -154,7 +157,8 @@ public class SyslogParameterTest extends TestCase {
             //
         }
 
-        public void setCharSet(String charSet) {
+        @Override
+        public void setCharSet(Charset charSet) {
             //
         }
 
@@ -302,11 +306,13 @@ public class SyslogParameterTest extends TestCase {
             //
         }
 
-        public String getCharSet() {
-            return null;
+        @Override
+        public Charset getCharSet() {
+            return Charsets.UTF_8;
         }
 
-        public void setCharSet(String charSet) {
+        @Override
+        public void setCharSet(Charset charSet) {
             //
         }
 
@@ -588,9 +594,9 @@ public class SyslogParameterTest extends TestCase {
         config.setFacility("LOCAL2");
         assertEquals(SyslogConstants.FACILITY_LOCAL2,config.getFacility());
 
-        assertEquals(SyslogConstants.CHAR_SET_DEFAULT,config.getCharSet());
-        config.setCharSet("UTF-FAKE");
-        assertEquals("UTF-FAKE",config.getCharSet());
+        assertEquals(Charsets.UTF_8,config.getCharSet());
+        config.setCharSet(Charset.forName("us-ascii"));
+        assertEquals(Charset.forName("us-ascii"),config.getCharSet());
 
         assertEquals(SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT,config.getMaxShutdownWait());
         config.setMaxShutdownWait(9999);
@@ -706,9 +712,9 @@ public class SyslogParameterTest extends TestCase {
         assertTrue(handler2 == tcpServerConfig.getEventHandlers().get(0));
         tcpServerConfig.removeAllEventHandlers();
         assertEquals(0,tcpServerConfig.getEventHandlers().size());
-        assertEquals(SyslogConstants.CHAR_SET_DEFAULT,tcpServerConfig.getCharSet());
-        tcpServerConfig.setCharSet("zzyyxx");
-        assertEquals("zzyyxx",tcpServerConfig.getCharSet());
+        assertEquals(Charsets.UTF_8,tcpServerConfig.getCharSet());
+        tcpServerConfig.setCharSet(Charset.forName("us-ascii"));
+        assertEquals(Charset.forName("us-ascii"), tcpServerConfig.getCharSet());
 
         assertEquals(SyslogConstants.USE_DAEMON_THREAD_DEFAULT,tcpServerConfig.isUseDaemonThread());
         tcpServerConfig.setUseDaemonThread(false);
@@ -1175,9 +1181,9 @@ public class SyslogParameterTest extends TestCase {
     public void testSequentialSyslogMessageModifierConfigCreate() {
         SequentialSyslogMessageModifierConfig config = new SequentialSyslogMessageModifierConfig();
 
-        assertEquals(SyslogConstants.CHAR_SET_DEFAULT,config.getCharSet());
-        config.setCharSet("Unicode");
-        assertEquals("Unicode",config.getCharSet());
+        assertEquals(Charsets.UTF_8,config.getCharSet());
+        config.setCharSet(Charset.forName("us-ascii"));
+        assertEquals(Charset.forName("us-ascii"), config.getCharSet());
 
         config.setFirstNumber(500);
         assertEquals(config.getFirstNumber(),500);
@@ -1218,7 +1224,7 @@ public class SyslogParameterTest extends TestCase {
         assertEquals(0,config.getProtocols().size());
 
         try { config.setCacheHostAddress(true); fail(); } catch (SyslogRuntimeException sre) { };
-        try { config.setCharSet("foo"); fail(); } catch (SyslogRuntimeException sre) { };
+        try { config.setCharSet(Charset.forName("us-ascii")); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setFacility(SyslogConstants.FACILITY_AUTH); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setFacility("foo"); fail(); } catch (SyslogRuntimeException sre) { };
         try { config.setHost("foo"); fail(); } catch (SyslogRuntimeException sre) { };
@@ -1245,7 +1251,7 @@ public class SyslogParameterTest extends TestCase {
         assertEquals(SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT,config.getMaxShutdownWait());
         assertEquals(SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT,config.getMaxMessageLength());
 
-        assertEquals(SyslogConstants.CHAR_SET_DEFAULT,config.getCharSet());
+        assertEquals(Charsets.UTF_8, config.getCharSet());
         assertEquals(SyslogConstants.SYSLOG_FACILITY_DEFAULT,config.getFacility());
         assertEquals(SyslogConstants.SYSLOG_HOST_DEFAULT,config.getHost());
         assertNull(config.getIdent());

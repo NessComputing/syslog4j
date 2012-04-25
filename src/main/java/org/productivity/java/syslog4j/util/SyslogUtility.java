@@ -30,7 +30,6 @@ import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_NOTICE;
 import static org.productivity.java.syslog4j.SyslogConstants.LEVEL_WARN;
 import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_NAME_DEFAULT_VALUE;
 
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -172,17 +171,9 @@ public final class SyslogUtility {
         return localName;
     }
 
-    public static final byte[] getBytes(SyslogCharSetIF syslogCharSet, String data) {
-        byte[] dataBytes = null;
-
-        try {
-            dataBytes = data.getBytes(syslogCharSet.getCharSet());
-
-        } catch (UnsupportedEncodingException uee) {
-            dataBytes = data.getBytes();
-        }
-
-        return dataBytes;
+    public static final byte[] getBytes(SyslogCharSetIF syslogCharSet, String data)
+    {
+        return data.getBytes(syslogCharSet.getCharSet());
     }
 
     public static final String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes) {
@@ -192,16 +183,7 @@ public final class SyslogUtility {
     }
 
     public static final String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes, int dataLength) {
-        String data = null;
-
-        try {
-            data = new String(dataBytes,0,dataLength,syslogCharSet.getCharSet());
-
-        } catch (UnsupportedEncodingException uee) {
-            data = new String(dataBytes);
-        }
-
-        return data;
+        return new String(dataBytes, 0, dataLength,syslogCharSet.getCharSet());
     }
 
     public static final String getLevelString(int level) {

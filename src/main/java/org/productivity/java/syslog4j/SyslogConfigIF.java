@@ -5,7 +5,7 @@ package org.productivity.java.syslog4j;
 * SyslogConfigIF provides a common, extensible configuration interface for all
 * implementations of SyslogIF.
 *
-* <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
+* <p>Syslog4j is licensed under the Lesser GNU License v2.1.  A copy
 * of the LGPL license is available in the META-INF folder in all
 * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
 *
@@ -13,58 +13,55 @@ package org.productivity.java.syslog4j;
 * @version $Id: SyslogConfigIF.java,v 1.19 2010/11/28 04:15:18 cvs Exp $
 */
 public interface SyslogConfigIF extends SyslogCharSetIF {
-    public Class<? extends SyslogIF> getSyslogClass();
+    Class<? extends SyslogIF> getSyslogClass();
 
-    public int getFacility();
-    public void setFacility(int facility);
-    public void setFacility(String facilityName);
+    int getFacility();
+    void setFacility(int facility);
+    void setFacility(String facilityName);
 
-    public int getPort();
-    public void setPort(int port) throws SyslogRuntimeException;
+    int getPort();
+    void setPort(int port) throws SyslogRuntimeException;
 
-    public String getLocalName();
-    public void setLocalName(String localName) throws SyslogRuntimeException;
+    String getLocalName();
+    void setLocalName(String localName) throws SyslogRuntimeException;
 
-    public String getHost();
-    public void setHost(String host) throws SyslogRuntimeException;
+    String getHost();
+    void setHost(String host) throws SyslogRuntimeException;
 
-    public String getIdent();
-    public void setIdent(String ident);
+    String getIdent();
+    void setIdent(String ident);
 
-    public String getCharSet();
-    public void setCharSet(String charSet);
+    boolean isIncludeIdentInMessageModifier();
+    void setIncludeIdentInMessageModifier(boolean throwExceptionOnInitialize);
 
-    public boolean isIncludeIdentInMessageModifier();
-    public void setIncludeIdentInMessageModifier(boolean throwExceptionOnInitialize);
+    boolean isThrowExceptionOnInitialize();
+    void setThrowExceptionOnInitialize(boolean throwExceptionOnInitialize);
 
-    public boolean isThrowExceptionOnInitialize();
-    public void setThrowExceptionOnInitialize(boolean throwExceptionOnInitialize);
+    boolean isThrowExceptionOnWrite();
+    void setThrowExceptionOnWrite(boolean throwExceptionOnWrite);
 
-    public boolean isThrowExceptionOnWrite();
-    public void setThrowExceptionOnWrite(boolean throwExceptionOnWrite);
+    boolean isSendLocalTimestamp();
+    void setSendLocalTimestamp(boolean sendLocalTimestamp);
 
-    public boolean isSendLocalTimestamp();
-    public void setSendLocalTimestamp(boolean sendLocalTimestamp);
+    boolean isSendLocalName();
+    void setSendLocalName(boolean sendLocalName);
 
-    public boolean isSendLocalName();
-    public void setSendLocalName(boolean sendLocalName);
+    boolean isTruncateMessage();
+    void setTruncateMessage(boolean truncateMessage);
 
-    public boolean isTruncateMessage();
-    public void setTruncateMessage(boolean truncateMessage);
+    boolean isUseStructuredData();
+    void setUseStructuredData(boolean useStructuredData);
 
-    public boolean isUseStructuredData();
-    public void setUseStructuredData(boolean useStructuredData);
+    int getMaxMessageLength();
+    void setMaxMessageLength(int maxMessageLength);
 
-    public int getMaxMessageLength();
-    public void setMaxMessageLength(int maxMessageLength);
+    void addMessageModifier(SyslogMessageModifierIF messageModifier);
+    void insertMessageModifier(int index, SyslogMessageModifierIF messageModifier);
+    void removeMessageModifier(SyslogMessageModifierIF messageModifier);
+    void removeAllMessageModifiers();
 
-    public void addMessageModifier(SyslogMessageModifierIF messageModifier);
-    public void insertMessageModifier(int index, SyslogMessageModifierIF messageModifier);
-    public void removeMessageModifier(SyslogMessageModifierIF messageModifier);
-    public void removeAllMessageModifiers();
-
-    public void addBackLogHandler(SyslogBackLogHandlerIF backLogHandler);
-    public void insertBackLogHandler(int index, SyslogBackLogHandlerIF backLogHandler);
-    public void removeBackLogHandler(SyslogBackLogHandlerIF backLogHandler);
-    public void removeAllBackLogHandlers();
+    void addBackLogHandler(SyslogBackLogHandlerIF backLogHandler);
+    void insertBackLogHandler(int index, SyslogBackLogHandlerIF backLogHandler);
+    void removeBackLogHandler(SyslogBackLogHandlerIF backLogHandler);
+    void removeAllBackLogHandlers();
 }

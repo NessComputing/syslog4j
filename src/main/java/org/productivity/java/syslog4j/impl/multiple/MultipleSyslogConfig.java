@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.impl.multiple;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 
 /**
@@ -86,8 +88,9 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
         return MultipleSyslog.class;
     }
 
-    public String getCharSet() {
-        return SyslogConstants.CHAR_SET_DEFAULT;
+    @Override
+    public Charset getCharSet() {
+        return Charsets.UTF_8;
     }
 
     public int getFacility() {
@@ -170,7 +173,8 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
         throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
     }
 
-    public void setCharSet(String charSet) {
+    @Override
+    public void setCharSet(Charset charSet) {
         throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
     }
 

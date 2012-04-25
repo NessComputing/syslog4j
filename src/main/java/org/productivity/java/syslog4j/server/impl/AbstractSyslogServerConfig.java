@@ -1,10 +1,10 @@
 package org.productivity.java.syslog4j.server.impl;
 
-import static org.productivity.java.syslog4j.SyslogConstants.CHAR_SET_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.THREAD_PRIORITY_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.USE_DAEMON_THREAD_DEFAULT;
 import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogConstants;
@@ -12,6 +12,7 @@ import org.productivity.java.syslog4j.server.SyslogServerConfigIF;
 import org.productivity.java.syslog4j.server.SyslogServerEventHandlerIF;
 import org.productivity.java.syslog4j.server.SyslogServerIF;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 /**
 * AbstractSyslogServerConfig provides a base abstract implementation of the SyslogServerConfigIF
@@ -29,7 +30,7 @@ public abstract class AbstractSyslogServerConfig implements SyslogServerConfigIF
 
     public abstract Class<? extends SyslogServerIF> getSyslogServerClass();
 
-    protected String charSet = CHAR_SET_DEFAULT;
+    protected Charset charSet = Charsets.UTF_8;
 
     protected long shutdownWait = SyslogConstants.SERVER_SHUTDOWN_WAIT_DEFAULT;
 
@@ -42,11 +43,13 @@ public abstract class AbstractSyslogServerConfig implements SyslogServerConfigIF
     protected boolean useDaemonThread = USE_DAEMON_THREAD_DEFAULT;
     protected int threadPriority = THREAD_PRIORITY_DEFAULT;
 
-    public String getCharSet() {
+    @Override
+    public Charset getCharSet() {
         return this.charSet;
     }
 
-    public void setCharSet(String charSet) {
+    @Override
+    public void setCharSet(Charset charSet) {
         this.charSet = charSet;
     }
 
