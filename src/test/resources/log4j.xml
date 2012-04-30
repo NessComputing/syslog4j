@@ -31,7 +31,12 @@
 			<param name="ConversionPattern" value="%m"/>
 		</layout>
    </appender>
-   
+
+   <logger name="com.nesscomputing.testing">
+    <param name="additivity" value="false" />
+    <appender-ref ref="Console" />
+   </logger>
+
    <root>
      <appender-ref ref="Console"/>
      <appender-ref ref="Syslog4j"/>
