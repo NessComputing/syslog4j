@@ -64,11 +64,11 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
     }
 
     public void setHost(String host) throws SyslogRuntimeException {
-        throw new SyslogRuntimeException("Host not appropriate for class \"" + this.getClass().getName() + "\"");
+        throw new SyslogRuntimeException("Host not appropriate for class \"%s\"", this.getClass().getName());
     }
 
     public void setPort(int port) throws SyslogRuntimeException {
-        throw new SyslogRuntimeException("Port not appropriate for class \"" + this.getClass().getName() + "\"");
+        throw new SyslogRuntimeException("Port not appropriate for class \"%s\"", this.getClass().getName());
     }
 
     public String getLibrary() {
@@ -97,7 +97,7 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 
     public void setType(String type) {
         if (type == null) {
-            throw new SyslogRuntimeException("Type cannot be null for class \"" + this.getClass().getName() + "\"");
+            throw new SyslogRuntimeException("Type cannot be null for class \"%s\"", this.getClass().getName());
         }
 
         if ("SOCK_STREAM".equalsIgnoreCase(StringUtils.trimToEmpty(type))) {
@@ -107,7 +107,7 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
             this.type = SOCK_DGRAM;
 
         } else {
-            throw new SyslogRuntimeException("Type must be \"SOCK_STREAM\" or \"SOCK_DGRAM\" for class \"" + this.getClass().getName() + "\"");
+            throw new SyslogRuntimeException("Type must be \"SOCK_STREAM\" or \"SOCK_DGRAM\" for class \"%s\"", this.getClass().getName());
         }
     }
 
@@ -121,14 +121,14 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 
     public void setFamily(String family) {
         if (family == null) {
-            throw new SyslogRuntimeException("Family cannot be null for class \"" + this.getClass().getName() + "\"");
+            throw new SyslogRuntimeException("Family cannot be null for class \"%s\"", this.getClass().getName());
         }
 
         if ("AF_UNIX".equalsIgnoreCase(StringUtils.trimToEmpty(family))) {
             this.family = AF_UNIX;
 
         } else {
-            throw new SyslogRuntimeException("Family must be \"AF_UNIX\" for class \"" + this.getClass().getName() + "\"");
+            throw new SyslogRuntimeException("Family must be \"AF_UNIX\" for class \"%s\"", this.getClass().getName());
         }
     }
 

@@ -11,12 +11,17 @@ package org.productivity.java.syslog4j;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogRuntimeException.java,v 1.3 2008/11/13 14:48:36 cvs Exp $
 */
-public class SyslogRuntimeException extends RuntimeException {
-    public SyslogRuntimeException(String arg0) {
-        super(arg0);
+public class SyslogRuntimeException extends RuntimeException
+{
+    public SyslogRuntimeException(String format, Object ... args) {
+        super(String.format(format, args));
     }
 
-    public SyslogRuntimeException(Throwable arg0) {
-        super(arg0);
+    public SyslogRuntimeException(Throwable t) {
+        super(t);
+    }
+
+    public SyslogRuntimeException(Throwable t, String format, Object ... args) {
+        super(String.format(format, args), t);
     }
 }

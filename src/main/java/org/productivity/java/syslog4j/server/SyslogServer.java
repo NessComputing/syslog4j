@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.productivity.java.syslog4j.Syslog4jVersion;
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfig;
@@ -39,14 +38,6 @@ public class SyslogServer {
     private SyslogServer() {
         //
     }
-
-    /**
-     * @return Returns the current version identifier for Syslog4j.
-     */
-    public static final String getVersion() {
-        return Syslog4jVersion.VERSION;
-    }
-
 
     /**
      * @param suppress - true to suppress throwing SyslogRuntimeException in many methods of this class, false to throw exceptions (default)

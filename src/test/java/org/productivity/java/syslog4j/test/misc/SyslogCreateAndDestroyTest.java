@@ -85,15 +85,16 @@ public class SyslogCreateAndDestroyTest extends TestCase {
             //
         }
 
-        assertFalse(Syslog.getSuppressRuntimeExceptions());
-        Syslog.setSuppressRuntimeExceptions(true);
-        assertTrue(Syslog.getSuppressRuntimeExceptions());
 
         assertNull(Syslog.getInstance("udpToDestroy"));
 
-        Syslog.destroyInstance(syslog);
-
-        Syslog.setSuppressRuntimeExceptions(false);
+        try {
+            Syslog.destroyInstance(syslog);
+            fail();
+        }
+        catch (SyslogRuntimeException sre) {
+            // expected.
+        }
     }
 
     public void testCreateAndDestroyServerByProtocol() {

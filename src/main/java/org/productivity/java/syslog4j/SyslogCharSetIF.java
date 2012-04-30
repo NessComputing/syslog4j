@@ -1,6 +1,5 @@
 package org.productivity.java.syslog4j;
 
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
 /**
@@ -14,7 +13,7 @@ import java.nio.charset.Charset;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogCharSetIF.java,v 1.3 2008/11/07 15:15:41 cvs Exp $
 */
-public interface SyslogCharSetIF extends Serializable
+public interface SyslogCharSetIF
 {
     Charset getCharSet();
 

@@ -100,10 +100,6 @@ public class SyslogServerMain {
             if (CALL_SYSTEM_EXIT_ON_FAILURE) { System.exit(1); } else { return; }
         }
 
-        if (!options.quiet) {
-            System.out.println("SyslogServer " + SyslogServer.getVersion());
-        }
-
         if (!SyslogServer.exists(options.protocol)) {
             usage("Protocol \"" + options.protocol + "\" not supported");
             if (CALL_SYSTEM_EXIT_ON_FAILURE) { System.exit(1); } else { return; }

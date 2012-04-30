@@ -28,19 +28,23 @@ public class MaxQueueSizeTest extends TestCase {
     public static class BackLogCounter implements SyslogBackLogHandlerIF {
         public int count = 0;
 
+        @Override
         public void down(SyslogIF syslog, String reason) {
             //
         }
 
+        @Override
         public void initialize() throws SyslogRuntimeException {
             count = 0;
         }
 
+        @Override
         public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
             LOG.info(message + " " + reason);
             count++;
         }
 
+        @Override
         public void up(SyslogIF syslog) {
             //
         }

@@ -24,18 +24,22 @@ public class BackLogTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
             this.events = events;
         }
 
+        @Override
         public void initialize() throws SyslogRuntimeException {
             LOG.info(this.getClass().getName() + ": READY");
         }
 
+        @Override
         public void down(SyslogIF syslog, String reason) {
             LOG.info(this.getClass().getName() + ": DOWN");
         }
 
+        @Override
         public void up(SyslogIF syslog) {
             LOG.info(this.getClass().getName() + ": UP");
         }
 
+        @Override
         public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
             String _message = message.substring(message.toUpperCase().indexOf("[TEST]"));
 

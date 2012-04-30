@@ -18,18 +18,22 @@ import org.productivity.java.syslog4j.SyslogLevel;
 public class NullSyslogBackLogHandler implements SyslogBackLogHandlerIF {
     public static final NullSyslogBackLogHandler INSTANCE = new NullSyslogBackLogHandler();
 
+    @Override
     public void initialize() {
         //
     }
 
+    @Override
     public void down(SyslogIF syslog, String reason) {
         //
     }
 
+    @Override
     public void up(SyslogIF syslog) {
         //
     }
 
+    @Override
     public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) {
         //
     }

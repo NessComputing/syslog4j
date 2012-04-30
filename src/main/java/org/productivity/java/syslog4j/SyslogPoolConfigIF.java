@@ -1,6 +1,5 @@
 package org.productivity.java.syslog4j;
 
-import java.io.Serializable;
 
 /**
 * SyslogPoolConfigIF is an interface which provides configuration support
@@ -13,7 +12,7 @@ import java.io.Serializable;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: SyslogPoolConfigIF.java,v 1.2 2009/03/29 17:38:58 cvs Exp $
 */
-public interface SyslogPoolConfigIF extends Serializable {
+public interface SyslogPoolConfigIF {
     public int getMaxActive();
     public void setMaxActive(int maxActive);
 

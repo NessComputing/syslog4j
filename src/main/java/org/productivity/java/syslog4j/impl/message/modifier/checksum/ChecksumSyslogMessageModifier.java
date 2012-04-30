@@ -52,7 +52,7 @@ public class ChecksumSyslogMessageModifier extends AbstractSyslogMessageModifier
 
     protected void continuousCheckForVerify() {
         if (this.config.isContinuous()) {
-            throw new SyslogRuntimeException(this.getClass().getName() + ".verify(..) does not work with isContinuous() returning true");
+            throw new SyslogRuntimeException("%s.verify(..) does not work with isContinuous() returning true", this.getClass().getName());
         }
 
     }

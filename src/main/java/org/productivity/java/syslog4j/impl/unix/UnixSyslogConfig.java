@@ -39,11 +39,11 @@ public class UnixSyslogConfig extends AbstractSyslogConfig {
     }
 
     public void setHost(String host) throws SyslogRuntimeException {
-        throw new SyslogRuntimeException("Host not appropriate for class \"" + this.getClass().getName() + "\"");
+        throw new SyslogRuntimeException("Host not appropriate for class \"%s\"", this.getClass().getName());
     }
 
     public void setPort(int port) throws SyslogRuntimeException {
-        throw new SyslogRuntimeException("Port not appropriate for class \"" + this.getClass().getName() + "\"");
+        throw new SyslogRuntimeException("Port not appropriate for class \"%s\"", this.getClass().getName());
     }
 
     public String getLibrary() {

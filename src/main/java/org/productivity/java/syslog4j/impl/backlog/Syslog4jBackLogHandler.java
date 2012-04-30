@@ -45,7 +45,7 @@ public class Syslog4jBackLogHandler extends AbstractSyslogBackLogHandler {
 
     public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
         if (this.syslog.getProtocol().equals(syslog.getProtocol())) {
-            throw new SyslogRuntimeException("Ignoring this log entry since the backLog protocol \"" + this.syslog.getProtocol() + "\" is the same as the main protocol");
+            throw new SyslogRuntimeException("Ignoring this log entry since the backLog protocol \"%s\" is the same as the main protocol", this.syslog.getProtocol());
         }
 
         String combinedMessage = combine(syslog,level,message,reason);

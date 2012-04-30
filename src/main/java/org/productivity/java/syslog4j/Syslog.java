@@ -18,6 +18,7 @@ import org.productivity.java.syslog4j.impl.unix.socket.UnixSocketSyslogConfig;
 import org.productivity.java.syslog4j.util.OSDetectUtility;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 
 /**
@@ -45,8 +46,6 @@ import com.google.common.collect.Maps;
  */
 public final class Syslog
 {
-    private static boolean SUPPRESS_RUNTIME_EXCEPTIONS = false;
-
     protected static final Map<String, SyslogIF> instances = Maps.newHashMap();
 
     /**
@@ -62,42 +61,6 @@ public final class Syslog
      */
     private Syslog() {
         //
-    }
-
-    /**
-     * @return Returns the current version identifier for Syslog4j.
-     */
-    public static final String getVersion() {
-        return Syslog4jVersion.VERSION;
-    }
-
-    /**
-     * @param suppress - true to suppress throwing SyslogRuntimeException in many methods of this class, false to throw exceptions (default)
-     */
-    public static void setSuppressRuntimeExceptions(boolean suppress) {
-        SUPPRESS_RUNTIME_EXCEPTIONS = suppress;
-    }
-
-    /**
-     * @return Returns whether or not to suppress throwing SyslogRuntimeException in many methods of this class.
-     */
-    public static boolean getSuppressRuntimeExceptions() {
-        return SUPPRESS_RUNTIME_EXCEPTIONS;
-    }
-
-    /**
-     * Throws SyslogRuntimeException unless it has been suppressed via setSuppressRuntimeException(boolean).
-     *
-     * @param message
-     * @throws SyslogRuntimeException
-     */
-    private static void throwRuntimeException(String message) throws SyslogRuntimeException {
-        if (SUPPRESS_RUNTIME_EXCEPTIONS) {
-            return;
-
-        } else {
-            throw new SyslogRuntimeException(message.toString());
-        }
     }
 
     /**
@@ -130,8 +93,7 @@ public final class Syslog
                 }
             }
 
-            throwRuntimeException(message.toString());
-            return null;
+            throw new SyslogRuntimeException(message.toString());
         }
     }
 
@@ -153,27 +115,17 @@ public final class Syslog
      * @return Returns an instance of SyslogIF.
      * @throws SyslogRuntimeException
      */
-    public static final SyslogIF createInstance(String protocol, SyslogConfigIF config) throws SyslogRuntimeException {
-
-        if (StringUtils.isBlank(protocol)) {
-            throwRuntimeException("Instance protocol cannot be null or empty");
-            return null;
-        }
-
-        if (config == null) {
-            throwRuntimeException("SyslogConfig cannot be null");
-            return null;
-        }
+    public static final SyslogIF createInstance(String protocol, SyslogConfigIF config) throws SyslogRuntimeException
+    {
+        Preconditions.checkArgument(!StringUtils.isBlank(protocol), "Instance protocol cannot be null or empty");
+        Preconditions.checkArgument(config != null, "SyslogConfig cannot be null");
 
         String syslogProtocol = protocol.toLowerCase();
 
         SyslogIF syslog = null;
 
         synchronized(instances) {
-            if (instances.containsKey(syslogProtocol)) {
-                throwRuntimeException("Syslog protocol \"" + protocol + "\" already defined");
-                return null;
-            }
+            Preconditions.checkState(!instances.containsKey(syslogProtocol), "Syslog protocol \"%s\" already defined", protocol);
 
             try {
                 Class<? extends SyslogIF> syslogClass = config.getSyslogClass();
@@ -295,8 +247,7 @@ public final class Syslog
             }
 
         } else {
-            throwRuntimeException("Cannot destroy protocol \"" + protocol + "\" instance; call shutdown instead");
-            return;
+            throw new SyslogRuntimeException("Cannot destroy protocol \"%s\" instance; call shutdown instead", protocol);
         }
     }
 
@@ -323,8 +274,7 @@ public final class Syslog
             }
 
         } else {
-            throwRuntimeException("Cannot destroy protocol \"" + protocol + "\" instance; call shutdown instead");
-            return;
+            throw new SyslogRuntimeException("Cannot destroy protocol \"%s\" instance; call shutdown instead", protocol);
         }
     }
 

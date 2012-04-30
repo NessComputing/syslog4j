@@ -1,6 +1,5 @@
 package org.productivity.java.syslog4j.impl;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogLevel;
@@ -23,7 +22,7 @@ import com.google.common.collect.Lists;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: AbstractSyslogWriter.java,v 1.9 2010/10/25 03:50:25 cvs Exp $
 */
-public abstract class AbstractSyslogWriter implements Runnable, Serializable {
+public abstract class AbstractSyslogWriter implements Runnable {
     protected AbstractSyslog syslog = null;
 
     protected List<byte []> queuedMessages = null;
