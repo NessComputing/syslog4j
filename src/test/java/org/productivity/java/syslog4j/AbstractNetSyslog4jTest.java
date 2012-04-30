@@ -1,4 +1,4 @@
-package org.productivity.java.syslog4j.test.net.base;
+package org.productivity.java.syslog4j;
 
 import java.net.SocketAddress;
 import java.util.Collections;
@@ -188,7 +188,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
             String detail = "Count: " + perc + "% " + recordedEventCount + "/" + eventCount + " : " + ClientThread.active;
 
             if (eventCount > recordedEventCount) {
-                System.out.println(detail);
+                LOG.info(detail);
 
             } else if (eventCount < recordedEventCount) {
                 detail = "Problem - Sent Events: " + eventCount + " Recorded Events: " + recordedEventCount;
@@ -198,7 +198,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
                 fail(detail);
 
             } else {
-                System.out.println(detail);
+                LOG.info(detail);
 
                 done = true;
             }
@@ -236,8 +236,8 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
             String recordedEvent = (String) recordedEvents.get(i);
 
             if (!sentEvent.equals(recordedEvent)) {
-                System.out.println("SENT: " + sentEvent);
-                System.out.println("RCVD: " + recordedEvent);
+                LOG.info("SENT: " + sentEvent);
+                LOG.info("RCVD: " + recordedEvent);
 
                 fail("Sent and recorded events do not match");
             }
@@ -406,7 +406,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
             long startTime = System.currentTimeMillis();
 
             while(haveCount < events.size()) {
-                System.out.println("Count: " + haveCount + "/" + events.size());
+                LOG.info("Count: " + haveCount + "/" + events.size());
                 SyslogUtility.sleep(250);
 
                 haveCount = recordedEvents.size() + backLogEvents.size();
@@ -418,9 +418,9 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
                 }
             }
 
-            System.out.println("Sent Events:     " + events.size());
-            System.out.println("BackLog Events:  " + backLogEvents.size());
-            System.out.println("Recorded Events: " + recordedEvents.size());
+            LOG.info("Sent Events:     " + events.size());
+            LOG.info("BackLog Events:  " + backLogEvents.size());
+            LOG.info("Recorded Events: " + recordedEvents.size());
 
             if (backLogEvents.size() < 1) {
                 fail("No backLog events received");
@@ -440,16 +440,14 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
         verifySendReceive(events,sortEvents,sortRecordedEvents);
     }
 
-    public void tearDown() {
-        System.out.print("Shutting down Syslog...");
-        Syslog.shutdown();
-        System.out.println("done.");
+    public void tearDown() throws InterruptedException {
+        Syslog.reset();
 
         SyslogUtility.sleep(100);
 
         System.out.print("Shutting down SyslogServer...");
         SyslogServer.shutdown();
-        System.out.println("done.");
+        LOG.info("done.");
 
         SyslogUtility.sleep(100);
         SyslogServer.initialize();

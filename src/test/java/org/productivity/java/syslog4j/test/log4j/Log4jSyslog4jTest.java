@@ -1,6 +1,6 @@
 package org.productivity.java.syslog4j.test.log4j;
 
-import org.productivity.java.syslog4j.test.log4j.base.AbstractLog4jSyslog4jTest;
+import org.productivity.java.syslog4j.AbstractLog4jSyslog4jTest;
 
 public class Log4jSyslog4jTest extends AbstractLog4jSyslog4jTest {
     protected int getMessageCount() {

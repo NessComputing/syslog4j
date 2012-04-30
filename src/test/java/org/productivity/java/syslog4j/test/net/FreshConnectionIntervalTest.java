@@ -4,6 +4,7 @@ import java.net.SocketAddress;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
@@ -17,6 +18,8 @@ import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConf
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class FreshConnectionIntervalTest extends TestCase {
+    protected static final Logger LOG = Logger.getLogger("test");
+
     public class SocketCounter implements SyslogServerSessionEventHandlerIF {
         public int openCounter = 0;
         public int eventCounter = 0;
@@ -33,7 +36,7 @@ public class FreshConnectionIntervalTest extends TestCase {
 
         public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
             eventCounter++;
-            System.out.println(openCounter + "/" + eventCounter + "/" + closeCounter + " " + event.getMessage() + " " + (event.isHostStrippedFromMessage() ? "host_stripped" : "host_not_stripped"));
+            LOG.info(openCounter + "/" + eventCounter + "/" + closeCounter + " " + event.getMessage() + " " + (event.isHostStrippedFromMessage() ? "host_stripped" : "host_not_stripped"));
         }
 
         public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {

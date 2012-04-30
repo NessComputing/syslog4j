@@ -54,13 +54,7 @@ public final class Syslog
      * well as UNIX_SYSLOG and UNIX_SOCKET (if running on a Unix-based system).
      */
     static {
-        createInstance(UDP,new UDPNetSyslogConfig());
-        createInstance(TCP,new TCPNetSyslogConfig());
-
-        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
-            createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
-            createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
-        }
+        initialize();
     }
 
     /**
@@ -255,6 +249,24 @@ public final class Syslog
             instances.clear();
         }
     }
+
+    private synchronized static final void initialize() {
+        createInstance(UDP,new UDPNetSyslogConfig());
+        createInstance(TCP,new TCPNetSyslogConfig());
+
+        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
+            createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
+            createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
+        }
+    }
+
+    synchronized static final void reset() throws InterruptedException
+    {
+        shutdown();
+        Thread.sleep(200L);
+        initialize();
+    }
+
 
     /**
      * destroyInstance() gracefully shuts down the specified Syslog protocol and

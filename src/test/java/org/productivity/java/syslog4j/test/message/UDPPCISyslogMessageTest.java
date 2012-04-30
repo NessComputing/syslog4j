@@ -3,9 +3,9 @@ package org.productivity.java.syslog4j.test.message;
 import java.util.Date;
 import java.util.List;
 
+import org.productivity.java.syslog4j.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.message.pci.PCISyslogMessage;
-import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.collect.Lists;

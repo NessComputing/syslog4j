@@ -2,6 +2,7 @@ package org.productivity.java.syslog4j.test.net;
 
 import java.net.SocketAddress;
 
+import org.productivity.java.syslog4j.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.message.processor.SyslogMessageProcessor;
@@ -13,7 +14,6 @@ import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.event.printstream.SystemOutSyslogServerEventHandler;
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfig;
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfigIF;
-import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class TCPNetSyslog4jTest extends AbstractNetSyslog4jTest {

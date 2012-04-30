@@ -1,4 +1,4 @@
-package org.productivity.java.syslog4j.test.log4j.base;
+package org.productivity.java.syslog4j;
 
 import java.net.SocketAddress;
 import java.util.Collections;
@@ -18,6 +18,9 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 import com.google.common.collect.Lists;
 
 public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
+
+    protected static final Logger LOG = Logger.getLogger("test");
+
     protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
         protected List<String> recordedEvents = Lists.newArrayList();
 
@@ -114,8 +117,8 @@ public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
             String recordedEvent = (String) recordedEvents.get(i);
 
             if (!sentEvent.equals(recordedEvent)) {
-                System.out.println("SENT: " + sentEvent);
-                System.out.println("RCVD: " + recordedEvent);
+                LOG.info("SENT: " + sentEvent);
+                LOG.info("RCVD: " + recordedEvent);
 
                 fail("Sent and recorded events do not match");
             }
@@ -139,10 +142,8 @@ public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
         verifySendReceive(events,true);
     }
 
-    public void tearDown() {
-        Syslog.shutdown();
-
-        SyslogUtility.sleep(100);
+    public void tearDown() throws InterruptedException {
+        Syslog.reset();
 
         SyslogServer.shutdown();
 

@@ -1,12 +1,12 @@
 package org.productivity.java.syslog4j.test.net;
 
+import org.productivity.java.syslog4j.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.multiple.MultipleSyslogConfig;
 import org.productivity.java.syslog4j.impl.net.AbstractNetSyslogConfig;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
-import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 
 public class MultipleSyslog4jTest extends AbstractNetSyslog4jTest {
     protected void setupMultipleConfig() {

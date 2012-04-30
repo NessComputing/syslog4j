@@ -1,10 +1,10 @@
 package org.productivity.java.syslog4j.test.net;
 
+import org.productivity.java.syslog4j.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.impl.net.tcp.pool.PooledTCPNetSyslogConfig;
 import org.productivity.java.syslog4j.server.SyslogServer;
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfig;
-import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 
 public class PooledTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
     protected void setupPoolConfig(boolean threaded, int maxActive, int maxWait) {

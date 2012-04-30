@@ -4,6 +4,7 @@ import java.net.SocketAddress;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogIF;
@@ -21,6 +22,9 @@ import org.productivity.java.syslog4j.server.impl.net.udp.UDPNetSyslogServerConf
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class SyslogServerSessionTest extends TestCase {
+    protected static final Logger LOG = Logger.getLogger("test");
+
+
     public static class TCPSessionHandler implements SyslogServerSessionEventHandlerIF {
         public static int currentSession = 0;
         public static final String[] SESSIONS = { "one", "two", "three", "four" };
@@ -41,13 +45,13 @@ public class SyslogServerSessionTest extends TestCase {
 
         public void initialize(SyslogServerIF syslogServer) {
             this.initialized = true;
-            System.out.println("initialized " + syslogServer.getProtocol());
+            LOG.info("initialized " + syslogServer.getProtocol());
         }
 
         public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
             String session = SESSIONS[currentSession++];
 
-            System.out.println("opened: " + id + "/" + session);
+            LOG.info("opened: " + id + "/" + session);
 
             return session;
         }
@@ -75,20 +79,20 @@ public class SyslogServerSessionTest extends TestCase {
 
                 if (i != -1) {
                     eventCount[i]++;
-                    System.out.println(id + " " + session + " " + i + " " + eventCount[i]);
+                    LOG.info(id + " " + session + " " + i + " " + eventCount[i]);
                 }
             }
 
-            System.out.println("event: " + id + "/" + session.toString() + "/" + event.getMessage());
+            LOG.info("event: " + id + "/" + session.toString() + "/" + event.getMessage());
         }
 
         public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
             // This section is not (yet) tested; a bit tricky to cause a SocketException -- but not impossible
             if (session != null) {
-                System.out.println("exception: " + id + "/" + session.toString() + ": " + exception);
+                LOG.info("exception: " + id + "/" + session.toString() + ": " + exception);
 
             } else {
-                System.out.println("exception: " + id + ": " + exception);
+                LOG.info("exception: " + id + ": " + exception);
             }
         }
 
@@ -101,12 +105,12 @@ public class SyslogServerSessionTest extends TestCase {
                 }
             }
 
-            System.out.println("closed: " + id + "/" + session.toString());
+            LOG.info("closed: " + id + "/" + session.toString());
         }
 
         public void destroy(SyslogServerIF syslogServer) {
             this.destroyed = true;
-            System.out.println("destroyed " + syslogServer.getProtocol());
+            LOG.info("destroyed " + syslogServer.getProtocol());
         }
     }
 
@@ -124,7 +128,7 @@ public class SyslogServerSessionTest extends TestCase {
 
         public void initialize(SyslogServerIF syslogServer) {
             this.initialized = true;
-            System.out.println("initialized " + syslogServer.getProtocol());
+            LOG.info("initialized " + syslogServer.getProtocol());
         }
 
         public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
@@ -138,7 +142,7 @@ public class SyslogServerSessionTest extends TestCase {
                 okay = false;
             }
 
-            System.out.println("event: " + id + "/" + event.getMessage());
+            LOG.info("event: " + id + "/" + event.getMessage());
         }
 
         public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
@@ -146,7 +150,7 @@ public class SyslogServerSessionTest extends TestCase {
                 okay = false;
             }
 
-            System.out.println("exception: " + id);
+            LOG.info("exception: " + id);
         }
 
         public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
@@ -154,12 +158,12 @@ public class SyslogServerSessionTest extends TestCase {
                 okay = false;
             }
 
-            System.out.println("closed: " + id);
+            LOG.info("closed: " + id);
         }
 
         public void destroy(SyslogServerIF syslogServer) {
             this.destroyed = true;
-            System.out.println("destroyed " + syslogServer.getProtocol());
+            LOG.info("destroyed " + syslogServer.getProtocol());
         }
     }
 

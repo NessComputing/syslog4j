@@ -10,6 +10,7 @@ import javax.net.ServerSocketFactory;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConstants;
@@ -22,6 +23,8 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfigIF;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 public class MaxQueueSizeTest extends TestCase {
+    protected static final Logger LOG = Logger.getLogger("test");
+
     public static class BackLogCounter implements SyslogBackLogHandlerIF {
         public int count = 0;
 
@@ -34,7 +37,7 @@ public class MaxQueueSizeTest extends TestCase {
         }
 
         public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
-            System.out.println(message + " " + reason);
+            LOG.info(message + " " + reason);
             count++;
         }
 
@@ -70,7 +73,7 @@ public class MaxQueueSizeTest extends TestCase {
                 for(int i=0; i<catchCount; i++) {
                     String line = br.readLine();
 
-                    System.out.println("Received: " + line);
+                    LOG.info("Received: " + line);
                     count++;
                 }
 
@@ -80,7 +83,7 @@ public class MaxQueueSizeTest extends TestCase {
 
                 String line = br.readLine();
                 while(line != null) {
-                    System.out.println("Received: " + line);
+                    LOG.info("Received: " + line);
                     count++;
 
                     line = br.readLine();
@@ -127,9 +130,9 @@ public class MaxQueueSizeTest extends TestCase {
 
         SyslogUtility.sleep(500);
 
-        System.out.println("Sent Messages:       " + messagesToSend);
-        System.out.println("Received Messages:   " + server.count);
-        System.out.println("Backlogged Messages: " + counter.count);
+        LOG.info("Sent Messages:       " + messagesToSend);
+        LOG.info("Received Messages:   " + server.count);
+        LOG.info("Backlogged Messages: " + counter.count);
 
         assertEquals(messagesToSend,(server.count+counter.count));
     }

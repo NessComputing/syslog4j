@@ -3,6 +3,7 @@ package org.productivity.java.syslog4j.test.net;
 import java.util.List;
 
 import org.junit.Ignore;
+import org.productivity.java.syslog4j.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.Syslog;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogIF;
@@ -10,7 +11,6 @@ import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfigIF;
 import org.productivity.java.syslog4j.server.SyslogServer;
-import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.collect.Lists;
@@ -25,15 +25,15 @@ public class BackLogTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
         }
 
         public void initialize() throws SyslogRuntimeException {
-            System.out.println(this.getClass().getName() + ": READY");
+            LOG.info(this.getClass().getName() + ": READY");
         }
 
         public void down(SyslogIF syslog, String reason) {
-            System.out.println(this.getClass().getName() + ": DOWN");
+            LOG.info(this.getClass().getName() + ": DOWN");
         }
 
         public void up(SyslogIF syslog) {
-            System.out.println(this.getClass().getName() + ": UP");
+            LOG.info(this.getClass().getName() + ": UP");
         }
 
         public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {

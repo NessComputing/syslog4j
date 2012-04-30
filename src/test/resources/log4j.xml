@@ -32,6 +32,11 @@
 		</layout>
    </appender>
 
+   <logger name="test">
+    <param name="additivity" value="false" />
+    <appender-ref ref="Console" />
+   </logger>
+
    <logger name="com.nesscomputing.testing">
     <param name="additivity" value="false" />
     <appender-ref ref="Console" />

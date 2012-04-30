@@ -6,6 +6,7 @@ import java.util.zip.Adler32;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.productivity.java.syslog4j.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogLevel;
@@ -23,7 +24,6 @@ import org.productivity.java.syslog4j.impl.message.modifier.sequential.Sequentia
 import org.productivity.java.syslog4j.impl.message.modifier.text.PrefixSyslogMessageModifier;
 import org.productivity.java.syslog4j.impl.message.modifier.text.StringCaseSyslogMessageModifier;
 import org.productivity.java.syslog4j.impl.message.modifier.text.SuffixSyslogMessageModifier;
-import org.productivity.java.syslog4j.test.net.base.AbstractNetSyslog4jTest;
 import org.productivity.java.syslog4j.util.Base64;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 

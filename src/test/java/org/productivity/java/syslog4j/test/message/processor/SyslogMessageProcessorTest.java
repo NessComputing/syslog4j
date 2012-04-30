@@ -28,7 +28,7 @@ public class SyslogMessageProcessorTest extends AbstractBaseTest {
 
         byte[] d = syslogMessageProcessor.createPacketData(h,m,s,l);
 
-        System.out.println(new String(d));
+        LOG.info(new String(d));
     }
 
     public void testCreatePacketData2() {
@@ -38,9 +38,9 @@ public class SyslogMessageProcessorTest extends AbstractBaseTest {
         byte[] d = null;
 
         d = syslogMessageProcessor.createPacketData(h,m,0,8,null,"..".getBytes());
-        System.out.println(new String(d));
+        LOG.info(new String(d));
 
         d = syslogMessageProcessor.createPacketData(h,m,8,6,"..".getBytes(),"..".getBytes());
-        System.out.println(new String(d));
+        LOG.info(new String(d));
     }
 }
