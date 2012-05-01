@@ -19,6 +19,7 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 
 import com.nesscomputing.syslog4j.SyslogPoolConfigIF;
 import com.nesscomputing.syslog4j.SyslogRuntimeException;
+import com.nesscomputing.syslog4j.impl.AbstractSyslogWriter;
 import com.nesscomputing.syslog4j.impl.pool.AbstractSyslogPoolFactory;
 
 /**
@@ -32,8 +33,9 @@ import com.nesscomputing.syslog4j.impl.pool.AbstractSyslogPoolFactory;
 * @author &lt;syslog4j@productivity.org&gt;
 * @version $Id: GenericSyslogPoolFactory.java,v 1.5 2008/12/10 04:15:10 cvs Exp $
 */
-public class GenericSyslogPoolFactory extends AbstractSyslogPoolFactory {
-    protected void configureGenericObjectPool(GenericObjectPool genericObjectPool) throws SyslogRuntimeException {
+public class GenericSyslogPoolFactory extends AbstractSyslogPoolFactory
+{
+    protected void configureGenericObjectPool(GenericObjectPool<AbstractSyslogWriter> genericObjectPool) throws SyslogRuntimeException {
         SyslogPoolConfigIF poolConfig = null;
 
         try {
@@ -57,8 +59,8 @@ public class GenericSyslogPoolFactory extends AbstractSyslogPoolFactory {
         genericObjectPool.setWhenExhaustedAction(poolConfig.getWhenExhaustedAction());
     }
 
-    public ObjectPool createPool() throws SyslogRuntimeException {
-        GenericObjectPool genericPool = new GenericObjectPool(this);
+    public ObjectPool<AbstractSyslogWriter> createPool() throws SyslogRuntimeException {
+        GenericObjectPool<AbstractSyslogWriter> genericPool = new GenericObjectPool<AbstractSyslogWriter>(this);
 
         configureGenericObjectPool(genericPool);
 
