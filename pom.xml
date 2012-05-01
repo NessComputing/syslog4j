@@ -9,7 +9,7 @@
 
   <groupId>org.syslog4j</groupId>
   <artifactId>syslog4j</artifactId>
-  <version>0.9.47-NESS-1</version>
+  <version>0.9.47-NESS-2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>syslog4j</name>
   <url>http://www.syslog4j.org</url>
