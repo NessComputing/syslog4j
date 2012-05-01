@@ -44,6 +44,8 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 /**
 * AbstractSyslog provides a base abstract implementation of the SyslogConfigIF
 * configuration interface.
@@ -78,8 +80,8 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
     protected boolean throwExceptionOnInitialize = THROW_EXCEPTION_ON_INITIALIZE_DEFAULT;
 
     protected int maxMessageLength = MAX_MESSAGE_LENGTH_DEFAULT;
-    protected byte[] splitMessageBeginText = SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT.getBytes();
-    protected byte[] splitMessageEndText = SPLIT_MESSAGE_END_TEXT_DEFAULT.getBytes();
+    protected byte[] splitMessageBeginText = SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT.getBytes(Charsets.UTF_8);
+    protected byte[] splitMessageEndText = SPLIT_MESSAGE_END_TEXT_DEFAULT.getBytes(Charsets.UTF_8);
 
     protected List<SyslogMessageModifierIF> messageModifiers = null;
     protected List<SyslogBackLogHandlerIF> backLogHandlers = null;
@@ -131,10 +133,12 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
         this.throwExceptionOnInitialize = throwExceptionOnInitialize;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public byte[] getSplitMessageBeginText() {
         return this.splitMessageBeginText;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public void setSplitMessageBeginText(byte[] splitMessageBeginText) {
         this.splitMessageBeginText = splitMessageBeginText;
     }
@@ -143,10 +147,12 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
         this.splitMessageBeginText = SyslogUtility.getBytes(this,splitMessageBeginText);
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public byte[] getSplitMessageEndText() {
         return this.splitMessageEndText;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public void setSplitMessageEndText(byte[] splitMessageEndText) {
         this.splitMessageEndText = splitMessageEndText;
     }

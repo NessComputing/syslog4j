@@ -47,10 +47,11 @@ import org.productivity.java.syslog4j.impl.message.structured.StructuredSyslogMe
  * @version $Id: StructuredSyslogMessageProcessor.java,v 1.4 2011/01/11 05:11:13 cvs Exp $
  */
 public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProcessor {
-    public static String VERSION = "1";
+    public static final String VERSION = "1";
 
     private static final StructuredSyslogMessageProcessor INSTANCE = new StructuredSyslogMessageProcessor();
-    protected static StructuredSyslogMessageProcessor defaultInstance = INSTANCE;
+
+    private static StructuredSyslogMessageProcessor defaultInstance = INSTANCE;
 
     private String applicationName = STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
     private String processId = STRUCTURED_DATA_PROCESS_ID_DEFAULT_VALUE;

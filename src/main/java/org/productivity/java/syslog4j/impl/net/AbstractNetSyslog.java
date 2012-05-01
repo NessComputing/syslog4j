@@ -34,7 +34,7 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 public abstract class AbstractNetSyslog extends AbstractSyslog {
     protected static final Object cachedHostAddressSyncObject = new Object();
 
-    protected InetAddress cachedHostAddress = null;
+    private volatile InetAddress cachedHostAddress = null;
 
     protected AbstractNetSyslogConfigIF netSyslogConfig = null;
 

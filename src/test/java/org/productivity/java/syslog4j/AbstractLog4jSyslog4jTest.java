@@ -35,7 +35,7 @@ public abstract class AbstractLog4jSyslog4jTest extends AbstractBaseTest {
 
     protected static final Logger LOG = Logger.getLogger("test");
 
-    protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
+    protected static class RecorderHandler implements SyslogServerSessionEventHandlerIF {
         protected List<String> recordedEvents = Lists.newArrayList();
 
         public List<String> getRecordedEvents() {

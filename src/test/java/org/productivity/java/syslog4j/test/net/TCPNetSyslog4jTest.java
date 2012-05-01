@@ -37,13 +37,13 @@ public class TCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
         public SyslogServerEventIF lastEvent = null;
 
         public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
-            System.out.println("Open");
+            LOG.info("Open");
 
             return null;
         }
 
         public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
-            System.out.println("Exception after " + lastEvent.getMessage());
+            LOG.info("Exception after " + lastEvent.getMessage());
         }
 
         public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
@@ -54,7 +54,7 @@ public class TCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
 
         public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
             if (timeout) {
-                System.out.println("Timeout after event: " + lastEvent.getMessage());
+                LOG.info("Timeout after event: " + lastEvent.getMessage());
 
                 assertTrue(lastEvent.getMessage().endsWith("yes"));
 
@@ -62,7 +62,7 @@ public class TCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
                 assertTrue(lastEvent.getMessage().endsWith("no"));
             }
 
-            System.out.println("Closed");
+            LOG.info("Closed");
         }
     }
 

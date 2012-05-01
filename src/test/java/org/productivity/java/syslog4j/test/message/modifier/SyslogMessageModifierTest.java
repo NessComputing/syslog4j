@@ -44,7 +44,7 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 import com.google.common.collect.Lists;
 
 public class SyslogMessageModifierTest extends AbstractNetSyslog4jTest {
-    protected static int pause = 100;
+    protected static final int pause = 100;
 
     protected int getMessageCount() {
         return -1;

@@ -19,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.google.common.base.Charsets;
+
 /**
  * This class provides a command-line interface for Syslog4j
  * server implementations.
@@ -31,7 +33,6 @@ import java.io.InputStreamReader;
  * @version $Id: SyslogMain.java,v 1.4 2010/11/28 01:38:08 cvs Exp $
  */
 public class SyslogMain {
-    public static boolean CALL_SYSTEM_EXIT_ON_FAILURE = true;
 
     public static class Options {
         public String host = null;
@@ -137,12 +138,12 @@ public class SyslogMain {
 
         if (options.usage != null) {
             usage(options.usage);
-            if (CALL_SYSTEM_EXIT_ON_FAILURE) { System.exit(1); } else { return; }
+            System.exit(1);
         }
 
         if (!Syslog.exists(options.protocol)) {
             usage("Protocol \"" + options.protocol + "\" not supported");
-            if (CALL_SYSTEM_EXIT_ON_FAILURE) { System.exit(1); } else { return; }
+            System.exit(1);
         }
 
         SyslogIF syslog = Syslog.getInstance(options.protocol);
@@ -182,7 +183,7 @@ public class SyslogMain {
                 is = System.in;
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
 
             String line = br.readLine();
 

@@ -14,6 +14,8 @@
  */
 package org.productivity.java.syslog4j;
 
+import com.google.common.base.Charsets;
+
 
 /**
 * SyslogConstants provides several global constant values for several
@@ -43,9 +45,11 @@ public final class SyslogConstants
     public static final String STRUCTURED_DATA_NILVALUE = "-";
     public static final String STRUCTURED_DATA_EMPTY_VALUE = "[0@0]";
 
-    public static final byte[] LF = "\n".getBytes();
-    public static final byte[] CRLF = "\r\n".getBytes();
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings("MS_PKGPROTECT")
+    public static final byte[] LF = "\n".getBytes(Charsets.UTF_8);
+    public static final byte[] CRLF = "\r\n".getBytes(Charsets.UTF_8);
 
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings("MS_MUTABLE_ARRAY")
     public static final byte[] TCP_DELIMITER_SEQUENCE_DEFAULT = LF;
 
     public static final boolean THREADED_DEFAULT = true;

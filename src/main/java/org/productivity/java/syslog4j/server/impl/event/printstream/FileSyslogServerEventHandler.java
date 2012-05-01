@@ -26,7 +26,7 @@ public class FileSyslogServerEventHandler extends PrintStreamSyslogServerEventHa
 
         OutputStream os = new FileOutputStream(file,append);
 
-        PrintStream printStream = new PrintStream(os);
+        PrintStream printStream = new PrintStream(os, true, "UTF-8");
 
         return printStream;
     }

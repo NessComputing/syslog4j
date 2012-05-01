@@ -166,20 +166,4 @@ public class SyslogMainTests extends TestCase {
         SyslogServerMain.usage(null);
         SyslogServerMain.usage("Problem (Ignore)");
     }
-
-    public void testSyslogMain() throws Exception {
-        SyslogMain.CALL_SYSTEM_EXIT_ON_FAILURE = false;
-
-        SyslogMain.main(new String[] { });
-
-        SyslogMain.main(new String[] { "nonExistentProtocol" });
-    }
-
-    public void testSyslogServerMain() throws Exception {
-        SyslogServerMain.CALL_SYSTEM_EXIT_ON_FAILURE = false;
-
-        SyslogServerMain.main(new String[] { });
-
-        SyslogServerMain.main(new String[] { "nonExistentProtocol" });
-    }
 }

@@ -26,12 +26,15 @@ import java.util.Iterator;
 
 import javax.net.ServerSocketFactory;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.server.SyslogServerEventIF;
 import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.AbstractSyslogServer;
 import org.productivity.java.syslog4j.util.SyslogUtility;
+
+import com.google.common.base.Charsets;
 
 /**
 * TCPNetSyslogServer provides a simple threaded TCP/IP server implementation.
@@ -44,6 +47,8 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: TCPNetSyslogServer.java,v 1.23 2010/11/28 22:07:57 cvs Exp $
 */
 public class TCPNetSyslogServer extends AbstractSyslogServer {
+    private static final Logger LOG = Logger.getLogger(TCPNetSyslogServer.class);
+
     public static class TCPNetSyslogSocketHandler implements Runnable {
         protected SyslogServerIF server = null;
         protected Socket socket = null;
@@ -63,7 +68,7 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
             boolean timeout = false;
 
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+                BufferedReader br = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), Charsets.UTF_8));
 
                 String line = br.readLine();
 
@@ -138,7 +143,7 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
         return this.sessions;
     }
 
-    public synchronized void shutdown() {
+    public void shutdown() {
         super.shutdown();
 
         try {
@@ -163,13 +168,10 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
             }
 
         } catch (IOException ioe) {
-            //
+            LOG.warn("While running:" ,ioe);
         }
 
-        if (this.thread != null) {
-            this.thread.interrupt();
-            this.thread = null;
-        }
+        interruptThread();
     }
 
     protected ServerSocketFactory getServerSocketFactory() throws IOException {

@@ -22,9 +22,12 @@ import org.productivity.java.syslog4j.impl.AbstractSyslog;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.util.OSDetectUtility;
 
+import com.google.common.base.Charsets;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Structure;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
 * UnixSocketSyslog is an extension of AbstractSyslog that provides support for
@@ -43,13 +46,14 @@ import com.sun.jna.Structure;
 public class UnixSocketSyslog extends AbstractSyslog {
     protected static class SockAddr extends Structure {
         public final static int SUN_PATH_SIZE = 108;
-        public final static byte[] ZERO_BYTE = new byte[] { 0 };
+        private final static byte[] ZERO_BYTE = new byte[] { 0 };
 
+        @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
         public short sun_family = 1;
         public byte[] sun_path = new byte[SUN_PATH_SIZE];
 
         public void setSunPath(String sunPath) {
-            System.arraycopy(sunPath.getBytes(), 0,this.sun_path, 0, sunPath.length());
+            System.arraycopy(sunPath.getBytes(Charsets.UTF_8), 0,this.sun_path, 0, sunPath.length());
             System.arraycopy(ZERO_BYTE,0,this.sun_path,sunPath.length(),1);
         }
     }
@@ -63,7 +67,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
     }
 
     protected boolean libraryLoaded = false;
-    protected CLibrary libraryInstance = null;
+    private CLibrary libraryInstance = null;
 
     protected UnixSocketSyslogConfig unixSocketSyslogConfig = null;
     protected int fd = -1;
@@ -116,7 +120,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
         }
     }
 
-    protected void write(SyslogLevel level, byte[] message) throws SyslogRuntimeException {
+    protected synchronized void write(SyslogLevel level, byte[] message) throws SyslogRuntimeException {
         if (this.fd == -1) {
             connect();
         }
@@ -130,13 +134,13 @@ public class UnixSocketSyslog extends AbstractSyslog {
         this.libraryInstance.write(this.fd,byteBuffer,message.length);
     }
 
-    public void flush() throws SyslogRuntimeException {
+    public synchronized void flush() throws SyslogRuntimeException {
         shutdown();
 
         this.fd = this.libraryInstance.socket(this.unixSocketSyslogConfig.getFamily(),this.unixSocketSyslogConfig.getType(),this.unixSocketSyslogConfig.getProtocol());
     }
 
-    public void shutdown() throws SyslogRuntimeException {
+    public synchronized void shutdown() throws SyslogRuntimeException {
         if (this.fd == -1) {
             return;
         }

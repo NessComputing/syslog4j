@@ -75,7 +75,7 @@ public class Syslog4jBackLogHandler extends AbstractSyslogBackLogHandler {
 
     public void up(SyslogIF syslog) {
         if (!this.syslog.getProtocol().equals(syslog.getProtocol())) {
-            this.syslog.log(this.downLevel,"Syslog protocol \"" + syslog.getProtocol() + "\" is up");
+            this.syslog.log(this.upLevel,"Syslog protocol \"" + syslog.getProtocol() + "\" is up");
         }
     }
 }

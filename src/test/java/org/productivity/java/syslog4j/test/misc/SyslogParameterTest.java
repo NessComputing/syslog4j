@@ -782,7 +782,6 @@ public class SyslogParameterTest extends TestCase {
         assertFalse(appender.requiresLayout());
 
         assertFalse(appender.getHeader());
-        System.err.println("The following two log4j:WARN entries are expected and can be ignored:");
         appender.setHeader(true);
         appender.setHeader(true);
 

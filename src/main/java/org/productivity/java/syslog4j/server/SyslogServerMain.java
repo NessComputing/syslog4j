@@ -31,8 +31,6 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
  * @version $Id: SyslogServerMain.java,v 1.3 2010/11/28 01:38:08 cvs Exp $
  */
 public class SyslogServerMain {
-    public static boolean CALL_SYSTEM_EXIT_ON_FAILURE = true;
-
     public static class Options {
         public String protocol = null;
         public String fileName = null;
@@ -111,12 +109,12 @@ public class SyslogServerMain {
 
         if (options.usage != null) {
             usage(options.usage);
-            if (CALL_SYSTEM_EXIT_ON_FAILURE) { System.exit(1); } else { return; }
+            System.exit(1);
         }
 
         if (!SyslogServer.exists(options.protocol)) {
             usage("Protocol \"" + options.protocol + "\" not supported");
-            if (CALL_SYSTEM_EXIT_ON_FAILURE) { System.exit(1); } else { return; }
+            System.exit(1);
         }
 
         SyslogServerIF syslogServer = SyslogServer.getInstance(options.protocol);

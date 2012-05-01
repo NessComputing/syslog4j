@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.server.SyslogServerEventIF;
@@ -38,6 +39,8 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: UDPNetSyslogServer.java,v 1.16 2010/11/12 03:43:15 cvs Exp $
 */
 public class UDPNetSyslogServer extends AbstractSyslogServer {
+    private static final Logger LOG = Logger.getLogger(UDPNetSyslogServer.class);
+
     protected DatagramSocket ds = null;
 
     public void initialize() throws SyslogRuntimeException {
@@ -77,9 +80,11 @@ public class UDPNetSyslogServer extends AbstractSyslogServer {
             this.shutdown = false;
 
         } catch (SocketException se) {
+            LOG.warn("While creating datagram socket", se);
             return;
 
         } catch (UnknownHostException uhe) {
+            LOG.warn("While creating datagram socket", uhe);
             return;
         }
 

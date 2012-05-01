@@ -42,7 +42,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
-    protected static String APP_ID = "Syslog4jTest";
+
+
+    protected static final String APP_ID = "Syslog4jTest";
 
     public static class ClientThread implements Runnable {
         protected SyslogIF syslog = null;
@@ -70,14 +72,14 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
                     this.syslog.info(message);
 
                 } catch (SyslogRuntimeException sre) {
-                    System.err.println(sre);
+                    LOG.warn(sre);
                 }
             }
             decrementActive();
         }
     }
 
-    protected class RecorderHandler implements SyslogServerSessionEventHandlerIF {
+    protected static class RecorderHandler implements SyslogServerSessionEventHandlerIF {
         protected List<String> recordedEvents = Lists.newLinkedList();
 
         public List<String> getRecordedEvents() {
@@ -207,7 +209,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
             } else if (eventCount < recordedEventCount) {
                 detail = "Problem - Sent Events: " + eventCount + " Recorded Events: " + recordedEventCount;
 
-                System.err.println(detail);
+                LOG.warn(detail);
 
                 fail(detail);
 
@@ -223,7 +225,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
                 if (now - start > 600 * threads) {
                     detail = "Problem: " + eventCount + " " + recordedEventCount;
 
-                    System.err.println(detail);
+                    LOG.warn(detail);
 
                     fail(detail);
 
@@ -459,7 +461,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
 
         SyslogUtility.sleep(100);
 
-        System.out.print("Shutting down SyslogServer...");
+        LOG.info("Shutting down SyslogServer...");
         SyslogServer.shutdown();
         LOG.info("done.");
 

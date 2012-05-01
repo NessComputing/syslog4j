@@ -33,7 +33,7 @@ package org.productivity.java.syslog4j.impl.message.processor;
 public class SyslogMessageProcessor extends AbstractSyslogMessageProcessor {
     private static final SyslogMessageProcessor INSTANCE = new SyslogMessageProcessor();
 
-    protected static SyslogMessageProcessor defaultInstance = INSTANCE;
+    private static SyslogMessageProcessor defaultInstance = INSTANCE;
 
     public static void setDefault(SyslogMessageProcessor messageProcessor) {
         if (messageProcessor != null) {

@@ -226,7 +226,7 @@ public final class Syslog
         }
     }
 
-    synchronized static final void reset() throws InterruptedException
+    static final void reset() throws InterruptedException
     {
         shutdown();
         Thread.sleep(200L);

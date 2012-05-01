@@ -111,7 +111,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
 
     protected String syslogProtocol = null;
     protected AbstractSyslogServerConfig syslogServerConfig = null;
-    protected Thread thread = null;
+    private Thread thread = null;
 
     protected boolean shutdown = false;
 
@@ -142,12 +142,20 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
         this.shutdown = true;
     }
 
-    public Thread getThread() {
+    public synchronized Thread getThread() {
         return this.thread;
     }
 
-    public void setThread(Thread thread) {
+    public synchronized void setThread(Thread thread) {
         this.thread = thread;
+    }
+
+    protected synchronized void interruptThread()
+    {
+        if (this.thread != null) {
+            this.thread.interrupt();
+            this.thread = null;
+        }
     }
 
     protected static boolean isStructuredMessage(SyslogCharSetIF syslogCharSet, byte[] receiveData) {

@@ -197,38 +197,40 @@ public class TCPNetSyslogWriter extends AbstractSyslogWriter {
         }
     }
 
-    public synchronized void shutdown() throws SyslogRuntimeException {
+    public void shutdown() throws SyslogRuntimeException {
         this.shutdown = true;
 
-        if (this.syslogConfig.isThreaded()) {
-            long timeStart = System.currentTimeMillis();
-            boolean done = false;
+        synchronized(this) {
+            if (this.syslogConfig.isThreaded()) {
+                long timeStart = System.currentTimeMillis();
+                boolean done = false;
 
-            while(!done) {
-                if (this.socket == null || this.socket.isClosed()) {
-                    done = true;
-
-                } else {
-                    long now = System.currentTimeMillis();
-
-                    if (now > (timeStart + this.tcpNetSyslogConfig.getMaxShutdownWait())) {
-                        closeSocket(this.socket);
-                        this.thread.interrupt();
+                while(!done) {
+                    if (this.socket == null || this.socket.isClosed()) {
                         done = true;
-                    }
 
-                    if (!done) {
-                        SyslogUtility.sleep(SyslogConstants.SHUTDOWN_INTERVAL);
+                    } else {
+                        long now = System.currentTimeMillis();
+
+                        if (now > (timeStart + this.tcpNetSyslogConfig.getMaxShutdownWait())) {
+                            closeSocket(this.socket);
+                            this.thread.interrupt();
+                            done = true;
+                        }
+
+                        if (!done) {
+                            SyslogUtility.sleep(SyslogConstants.SHUTDOWN_INTERVAL);
+                        }
                     }
                 }
-            }
 
-        } else {
-            if (this.socket == null || this.socket.isClosed()) {
-                return;
-            }
+            } else {
+                if (this.socket == null || this.socket.isClosed()) {
+                    return;
+                }
 
-            closeSocket(this.socket);
+                closeSocket(this.socket);
+            }
         }
     }
 

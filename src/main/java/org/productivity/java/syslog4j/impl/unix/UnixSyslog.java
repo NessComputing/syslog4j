@@ -50,10 +50,10 @@ public class UnixSyslog extends AbstractSyslog {
         public void closelog();
     }
 
-    protected static SyslogFacility currentFacility = null;
-    protected static boolean openlogCalled = false;
+    private static SyslogFacility currentFacility = null;
+    private static boolean openlogCalled = false;
 
-    protected static CLibrary libraryInstance = null;
+    private static CLibrary libraryInstance = null;
 
     protected static synchronized void loadLibrary(UnixSyslogConfig config) throws SyslogRuntimeException {
         if (!OSDetectUtility.isUnix()) {
@@ -63,6 +63,11 @@ public class UnixSyslog extends AbstractSyslog {
         if (libraryInstance == null) {
             libraryInstance = (CLibrary) Native.loadLibrary(config.getLibrary(),CLibrary.class);
         }
+    }
+
+    private static void setOpenlogCalled()
+    {
+        openlogCalled = true;
     }
 
     public void initialize() throws SyslogRuntimeException {
@@ -122,7 +127,7 @@ public class UnixSyslog extends AbstractSyslog {
     public void flush() throws SyslogRuntimeException {
         synchronized(libraryInstance) {
             libraryInstance.closelog();
-            openlogCalled = false;
+            UnixSyslog.setOpenlogCalled();
         }
     }
 

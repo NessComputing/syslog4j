@@ -30,6 +30,8 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 
 import com.google.common.base.Charsets;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
 * SyslogServerEvent provides an implementation of the SyslogServerEventIF interface.
 *
@@ -194,6 +196,7 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         this.facility = facility;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public byte[] getRaw() {
         if (this.rawString != null) {
             byte[] rawStringBytes = SyslogUtility.getBytes(this,this.rawString);
@@ -215,10 +218,12 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         return this.rawLength;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public Date getDate() {
         return this.date;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public void setDate(Date date) {
         this.date = date;
     }

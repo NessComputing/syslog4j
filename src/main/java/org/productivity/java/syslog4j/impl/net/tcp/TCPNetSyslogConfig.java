@@ -28,6 +28,10 @@ import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.AbstractNetSyslogConfig;
 import org.productivity.java.syslog4j.util.SyslogUtility;
+
+import com.google.common.base.Charsets;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 /**
 * TCPNetSyslogConfig is an extension of AbstractNetSyslogConfig that provides
 * configuration support for TCP/IP-based syslog clients.
@@ -40,16 +44,18 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: TCPNetSyslogConfig.java,v 1.18 2010/10/29 03:14:12 cvs Exp $
 */
 public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNetSyslogConfigIF {
-    public static byte[] SYSTEM_DELIMITER_SEQUENCE = null;
+    static final byte[] SYSTEM_DELIMITER_SEQUENCE;
 
     static {
         String delimiterSequence = System.getProperty("line.separator");
 
-        SYSTEM_DELIMITER_SEQUENCE = delimiterSequence.getBytes();
+        byte [] systemDelimiterSequence  = delimiterSequence.getBytes(Charsets.UTF_8);
 
-        if (SYSTEM_DELIMITER_SEQUENCE == null || SYSTEM_DELIMITER_SEQUENCE.length < 1) {
-            SYSTEM_DELIMITER_SEQUENCE = SyslogConstants.TCP_DELIMITER_SEQUENCE_DEFAULT;
+        if (systemDelimiterSequence == null || systemDelimiterSequence.length < 1) {
+            systemDelimiterSequence = SyslogConstants.TCP_DELIMITER_SEQUENCE_DEFAULT;
         }
+
+        SYSTEM_DELIMITER_SEQUENCE = systemDelimiterSequence;
     }
 
     protected byte[] delimiterSequence = SYSTEM_DELIMITER_SEQUENCE;
@@ -104,10 +110,12 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
         return TCPNetSyslog.class;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP")
     public byte[] getDelimiterSequence() {
         return this.delimiterSequence;
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public void setDelimiterSequence(byte[] delimiterSequence) {
         this.delimiterSequence = delimiterSequence;
     }
