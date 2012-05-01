@@ -1,0 +1,127 @@
+/**
+ *
+ * (C) Copyright 2008-2011 syslog4j.org
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+package com.nesscomputing.syslog4j.server.impl;
+
+import static com.nesscomputing.syslog4j.SyslogConstants.THREAD_PRIORITY_DEFAULT;
+import static com.nesscomputing.syslog4j.SyslogConstants.USE_DAEMON_THREAD_DEFAULT;
+import static com.nesscomputing.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
+
+import java.nio.charset.Charset;
+import java.util.List;
+
+
+import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
+import com.nesscomputing.syslog4j.SyslogConstants;
+import com.nesscomputing.syslog4j.server.SyslogServerConfigIF;
+import com.nesscomputing.syslog4j.server.SyslogServerEventHandlerIF;
+import com.nesscomputing.syslog4j.server.SyslogServerIF;
+/**
+* AbstractSyslogServerConfig provides a base abstract implementation of the SyslogServerConfigIF
+* configuration interface.
+*
+* <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
+* of the LGPL license is available in the META-INF folder in all
+* distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
+*
+* @author &lt;syslog4j@productivity.org&gt;
+* @version $Id: AbstractSyslogServerConfig.java,v 1.9 2011/01/11 05:11:13 cvs Exp $
+*/
+public abstract class AbstractSyslogServerConfig implements SyslogServerConfigIF {
+    public abstract Class<? extends SyslogServerIF> getSyslogServerClass();
+
+    protected Charset charSet = Charsets.UTF_8;
+
+    protected long shutdownWait = SyslogConstants.SERVER_SHUTDOWN_WAIT_DEFAULT;
+
+    protected List<SyslogServerEventHandlerIF> eventHandlers = Lists.newArrayList();
+
+    protected boolean useStructuredData = USE_STRUCTURED_DATA_DEFAULT;
+
+    protected Object dateTimeFormatter = null;
+
+    protected boolean useDaemonThread = USE_DAEMON_THREAD_DEFAULT;
+    protected int threadPriority = THREAD_PRIORITY_DEFAULT;
+
+    @Override
+    public Charset getCharSet() {
+        return this.charSet;
+    }
+
+    @Override
+    public void setCharSet(Charset charSet) {
+        this.charSet = charSet;
+    }
+
+    public long getShutdownWait() {
+        return this.shutdownWait;
+    }
+
+    public void setShutdownWait(long shutdownWait) {
+        this.shutdownWait = shutdownWait;
+    }
+
+    public List<? extends SyslogServerEventHandlerIF> getEventHandlers() {
+        return this.eventHandlers;
+    }
+
+    public void addEventHandler(SyslogServerEventHandlerIF eventHandler) {
+        this.eventHandlers.add(eventHandler);
+    }
+
+    public void insertEventHandler(int pos, SyslogServerEventHandlerIF eventHandler) {
+        this.eventHandlers.add(pos, eventHandler);
+    }
+
+    public void removeEventHandler(SyslogServerEventHandlerIF eventHandler) {
+        this.eventHandlers.remove(eventHandler);
+    }
+
+    public void removeAllEventHandlers() {
+        this.eventHandlers.clear();
+    }
+
+    public boolean isUseStructuredData() {
+        return useStructuredData;
+    }
+
+    public void setUseStructuredData(boolean useStructuredData) {
+        this.useStructuredData = useStructuredData;
+    }
+
+    public boolean isUseDaemonThread() {
+        return useDaemonThread;
+    }
+
+    public Object getDateTimeFormatter() {
+        return dateTimeFormatter;
+    }
+
+    public void setDateTimeFormatter(Object dateTimeFormatter) {
+        this.dateTimeFormatter = dateTimeFormatter;
+    }
+
+    public void setUseDaemonThread(boolean useDaemonThread) {
+        this.useDaemonThread = useDaemonThread;
+    }
+
+    public int getThreadPriority() {
+        return threadPriority;
+    }
+
+    public void setThreadPriority(int threadPriority) {
+        this.threadPriority = threadPriority;
+    }
+}

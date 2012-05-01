@@ -7,11 +7,11 @@
     <version>7</version>
   </parent>
 
-  <groupId>org.syslog4j</groupId>
-  <artifactId>syslog4j</artifactId>
+  <groupId>com.nesscomputing</groupId>
+  <artifactId>ness-syslog4j</artifactId>
   <version>0.9.47-NESS-2-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>syslog4j</name>
+  <name>syslog4j, Ness Computing style</name>
   <url>http://www.syslog4j.org</url>
 
   <licenses>
@@ -60,7 +60,7 @@
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
-      <version>1.5.4</version>
+      <version>1.6</version>
       <optional>true</optional>
     </dependency>
 

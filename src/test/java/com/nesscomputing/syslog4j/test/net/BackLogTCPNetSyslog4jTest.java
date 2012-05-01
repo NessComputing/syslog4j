@@ -1,0 +1,110 @@
+/**
+ *
+ * (C) Copyright 2008-2011 syslog4j.org
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+package com.nesscomputing.syslog4j.test.net;
+
+import java.util.List;
+
+import org.junit.Ignore;
+
+import com.google.common.collect.Lists;
+import com.nesscomputing.syslog4j.AbstractNetSyslog4jTest;
+import com.nesscomputing.syslog4j.Syslog;
+import com.nesscomputing.syslog4j.SyslogBackLogHandlerIF;
+import com.nesscomputing.syslog4j.SyslogIF;
+import com.nesscomputing.syslog4j.SyslogLevel;
+import com.nesscomputing.syslog4j.SyslogRuntimeException;
+import com.nesscomputing.syslog4j.impl.AbstractSyslogConfigIF;
+import com.nesscomputing.syslog4j.server.SyslogServer;
+import com.nesscomputing.syslog4j.util.SyslogUtility;
+
+@Ignore
+public class BackLogTCPNetSyslog4jTest extends AbstractNetSyslog4jTest {
+    public static class TestBackLogHandler implements SyslogBackLogHandlerIF {
+        protected List<String> events = null;
+
+        public TestBackLogHandler(List<String> events) {
+            this.events = events;
+        }
+
+        @Override
+        public void initialize() throws SyslogRuntimeException {
+            LOG.info(this.getClass().getName() + ": READY");
+        }
+
+        @Override
+        public void down(SyslogIF syslog, String reason) {
+            LOG.info(this.getClass().getName() + ": DOWN");
+        }
+
+        @Override
+        public void up(SyslogIF syslog) {
+            LOG.info(this.getClass().getName() + ": UP");
+        }
+
+        @Override
+        public void log(SyslogIF syslog, SyslogLevel level, String message, String reason) throws SyslogRuntimeException {
+            String _message = message.substring(message.toUpperCase().indexOf("[TEST]"));
+
+            this.events.add(_message);
+        }
+    }
+
+    public static class ThreadStarter implements Runnable {
+        protected long pause = -1;
+        protected String protocol = null;
+
+        public ThreadStarter(long pause, String protocol) {
+            this.pause = pause;
+            this.protocol = protocol;
+
+            SyslogServer.getInstance(this.protocol).shutdown();
+        }
+
+        public void run() {
+            SyslogUtility.sleep(this.pause);
+
+            SyslogServer.getThreadedInstance(this.protocol);
+        }
+    }
+
+    protected int getMessageCount() {
+        return 1200;
+    }
+
+    protected String getClientProtocol() {
+        return "tcp";
+    }
+
+    protected String getServerProtocol() {
+        return "tcp";
+    }
+
+    public void testSendReceive() {
+        Thread t = new Thread(new ThreadStarter(2500,"tcp"));
+        t.start();
+
+        List<String> backLogEvents = Lists.newArrayList();
+
+        TestBackLogHandler bh = new TestBackLogHandler(backLogEvents);
+        bh.initialize();
+
+        Syslog.getInstance("tcp").getConfig().addBackLogHandler(bh);
+        ((AbstractSyslogConfigIF) Syslog.getInstance("tcp").getConfig()).setThreaded(false);
+
+        SyslogServer.getInstance("tcp").getConfig().setShutdownWait(0);
+
+        _testThreadedSendReceive(1,true,true,backLogEvents);
+    }
+}

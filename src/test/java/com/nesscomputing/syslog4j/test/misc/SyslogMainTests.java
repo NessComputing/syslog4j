@@ -1,0 +1,169 @@
+/**
+ *
+ * (C) Copyright 2008-2011 syslog4j.org
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+package com.nesscomputing.syslog4j.test.misc;
+
+import junit.framework.TestCase;
+
+import com.nesscomputing.syslog4j.SyslogFacility;
+import com.nesscomputing.syslog4j.SyslogMain;
+import com.nesscomputing.syslog4j.server.SyslogServerMain;
+
+public class SyslogMainTests extends TestCase {
+    public void testSyslogMainSuccesses() {
+        SyslogMain.Options options = null;
+
+        options = SyslogMain.parseOptions(new String[] { "udp" });
+        assertNull(options.usage);
+        assertEquals("udp",options.protocol);
+        assertNull(options.message);
+        assertFalse(options.quiet);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "message" });
+        assertNull(options.usage);
+        assertEquals("udp",options.protocol);
+        assertEquals("message",options.message);
+        assertFalse(options.quiet);
+
+        options = SyslogMain.parseOptions(new String[] { "-h", "host", "tcp", "message" });
+        assertNull(options.usage);
+        assertEquals("tcp",options.protocol);
+        assertEquals("host",options.host);
+        assertEquals("message",options.message);
+
+        options = SyslogMain.parseOptions(new String[] { "-p", "1234", "udp", "message" });
+        assertNull(options.usage);
+        assertEquals("udp",options.protocol);
+        assertEquals("1234",options.port);
+        assertEquals("message",options.message);
+
+        options = SyslogMain.parseOptions(new String[] { "-q", "udp", "message" });
+        assertEquals("udp",options.protocol);
+        assertNull(options.usage);
+        assertTrue(options.quiet);
+        assertEquals("message",options.message);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-l", "WARN", "message" });
+        assertEquals("udp",options.protocol);
+        assertEquals("WARN",options.level.name());
+        assertNull(options.usage);
+        assertEquals("message",options.message);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-f", "LOCAL0" });
+        assertEquals("udp",options.protocol);
+        assertEquals(SyslogFacility.local0,options.facility);
+        assertNull(options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-i", "file.txt" });
+        assertEquals("udp",options.protocol);
+        assertEquals("file.txt",options.fileName);
+        assertNull(options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "-q", "udp", "message word 1", "message word 2" });
+        assertEquals("udp",options.protocol);
+        assertEquals("message word 1 message word 2",options.message);
+        assertNull(options.usage);
+        assertTrue(options.quiet);
+    }
+
+    public void testSyslogMainFailures() {
+        SyslogMain.Options options = null;
+
+        options = SyslogMain.parseOptions(new String[] { });
+        assertEquals("Must specify protocol",options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-h" });
+        assertEquals("Must specify host with -h",options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-p" });
+        assertEquals("Must specify port with -p",options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-l" });
+        assertEquals("Must specify level with -l",options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-f" });
+        assertEquals("Must specify facility with -f",options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-i" });
+        assertEquals("Must specify file with -i",options.usage);
+
+        options = SyslogMain.parseOptions(new String[] { "udp", "-i", "file.txt", "message" });
+        assertEquals("Must specify either -i <file> or <message>, not both",options.usage);
+    }
+
+    public void testSyslogMainUsage() {
+        SyslogMain.usage(null);
+        SyslogMain.usage("Problem (Ignore)");
+    }
+
+    public void testSyslogServerMainSuccesses() {
+        SyslogServerMain.Options options = null;
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp" });
+        assertNull(options.usage);
+        assertEquals("udp",options.protocol);
+        assertFalse(options.quiet);
+
+        options = SyslogServerMain.parseOptions(new String[] { "-h", "host", "tcp" });
+        assertNull(options.usage);
+        assertEquals("tcp",options.protocol);
+        assertEquals("host",options.host);
+
+        options = SyslogServerMain.parseOptions(new String[] { "-p", "1234", "udp" });
+        assertNull(options.usage);
+        assertEquals("udp",options.protocol);
+        assertEquals("1234",options.port);
+
+        options = SyslogServerMain.parseOptions(new String[] { "-q", "udp" });
+        assertEquals("udp",options.protocol);
+        assertNull(options.usage);
+        assertTrue(options.quiet);
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp", "-o", "file.txt" });
+        assertEquals("udp",options.protocol);
+        assertEquals("file.txt",options.fileName);
+        assertNull(options.usage);
+        assertFalse(options.append);
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp", "-o", "file.txt", "-a" });
+        assertEquals("udp",options.protocol);
+        assertEquals("file.txt",options.fileName);
+        assertNull(options.usage);
+        assertTrue(options.append);
+    }
+
+    public void testSyslogServerMainFailures() {
+        SyslogServerMain.Options options = null;
+
+        options = SyslogServerMain.parseOptions(new String[] { });
+        assertEquals("Must specify protocol",options.usage);
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp", "-h" });
+        assertEquals("Must specify host with -h",options.usage);
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp", "-p" });
+        assertEquals("Must specify port with -p",options.usage);
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp", "-o" });
+        assertEquals("Must specify file with -o",options.usage);
+
+        options = SyslogServerMain.parseOptions(new String[] { "udp", "-a" });
+        assertEquals("Cannot specify -a without specifying -f <file>",options.usage);
+    }
+
+    public void testSyslogServerMainUsage() {
+        SyslogServerMain.usage(null);
+        SyslogServerMain.usage("Problem (Ignore)");
+    }
+}

@@ -1,0 +1,31 @@
+/**
+ *
+ * (C) Copyright 2008-2011 syslog4j.org
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Lesser General Public License
+ * (LGPL) version 2.1 which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/lgpl-2.1.html
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ */
+package com.nesscomputing.syslog4j.test.log4j;
+
+import com.nesscomputing.syslog4j.AbstractLog4jSyslog4jTest;
+
+public class Log4jSyslog4jTest extends AbstractLog4jSyslog4jTest {
+    protected int getMessageCount() {
+        return 100;
+    }
+
+    protected String getServerProtocol() {
+        return "udp";
+    }
+
+    public void testSendReceive() {
+        super._testSendReceive();
+    }
+}
