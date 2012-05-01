@@ -384,7 +384,7 @@ public class SyslogParameterTest extends TestCase {
             Syslog.createInstance(null,null);
             fail("Syslog should not accept null parameters");
 
-        } catch (SyslogRuntimeException sre) {
+        } catch (IllegalArgumentException sre) {
             assertTrue(true);
         }
 
@@ -392,7 +392,7 @@ public class SyslogParameterTest extends TestCase {
             Syslog.createInstance("udp",null);
             fail("Syslog should not accept a null config parameter");
 
-        } catch (SyslogRuntimeException sre) {
+        } catch (IllegalArgumentException sre) {
             assertTrue(true);
         }
 
@@ -402,7 +402,7 @@ public class SyslogParameterTest extends TestCase {
             Syslog.createInstance("udp",config);
             fail("Syslog should not be able to override an already existing protocol");
 
-        } catch (SyslogRuntimeException sre) {
+        } catch (IllegalStateException sre) {
             assertTrue(true);
         }
 

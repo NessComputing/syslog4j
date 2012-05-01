@@ -98,17 +98,6 @@ public class SyslogCreateAndDestroyTest extends TestCase {
         } catch (SyslogRuntimeException sre) {
             //
         }
-
-
-        assertNull(Syslog.getInstance("udpToDestroy"));
-
-        try {
-            Syslog.destroyInstance(syslog);
-            fail();
-        }
-        catch (SyslogRuntimeException sre) {
-            // expected.
-        }
     }
 
     public void testCreateAndDestroyServerByProtocol() {
