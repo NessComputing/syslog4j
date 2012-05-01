@@ -89,14 +89,6 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
 
             } catch (SocketException se) {
                 AbstractSyslogServer.handleException(this.sessions,this.server,this.socket.getRemoteSocketAddress(),se);
-
-                if ("Socket closed".equals(se.getMessage())) {
-                    //
-
-                } else {
-                    //
-                }
-
             } catch (IOException ioe) {
                 AbstractSyslogServer.handleException(this.sessions,this.server,this.socket.getRemoteSocketAddress(),ioe);
             }
@@ -230,7 +222,7 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
                             socket.close();
 
                         } catch (Exception e) {
-                            //
+                            LOG.trace("While closing socket", e);
                         }
 
                         socket = null;
@@ -253,13 +245,10 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
             } catch (SocketException se) {
                 if ("Socket closed".equals(se.getMessage())) {
                     this.shutdown = true;
-
-                } else {
-                    //
                 }
 
             } catch (IOException ioe) {
-                //
+                LOG.trace("While running accept", ioe);
             }
         }
 

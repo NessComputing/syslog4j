@@ -14,6 +14,7 @@
  */
 package org.productivity.java.syslog4j.impl.net.tcp.pool;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslog;
@@ -32,6 +33,8 @@ import org.productivity.java.syslog4j.impl.pool.generic.GenericSyslogPoolFactory
 * @version $Id: PooledTCPNetSyslog.java,v 1.5 2008/12/10 04:30:15 cvs Exp $
 */
 public class PooledTCPNetSyslog extends TCPNetSyslog {
+    private final Logger LOG = Logger.getLogger(PooledTCPNetSyslog.class);
+
     protected AbstractSyslogPoolFactory poolFactory = null;
 
     public void initialize() throws SyslogRuntimeException {
@@ -73,7 +76,7 @@ public class PooledTCPNetSyslog extends TCPNetSyslog {
             this.poolFactory.clear();
 
         } catch (Exception e) {
-            //
+            LOG.trace("While flushing", e);
         }
     }
 
@@ -82,7 +85,7 @@ public class PooledTCPNetSyslog extends TCPNetSyslog {
             this.poolFactory.close();
 
         } catch (Exception e) {
-            //
+            LOG.trace("While shutdown", e);
         }
     }
 }

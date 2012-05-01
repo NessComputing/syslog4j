@@ -19,6 +19,7 @@ import static org.productivity.java.syslog4j.SyslogConstants.IDENT_SUFFIX_DEFAUL
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogFacility;
@@ -46,6 +47,8 @@ import com.google.common.collect.Lists;
 * @version $Id: AbstractSyslog.java,v 1.29 2011/01/11 04:58:52 cvs Exp $
 */
 public abstract class AbstractSyslog implements SyslogIF {
+    private static final Logger LOG = Logger.getLogger(AbstractSyslog.class);
+
     protected String syslogProtocol = null;
 
     protected AbstractSyslogConfigIF syslogConfig = null;
@@ -266,10 +269,8 @@ public abstract class AbstractSyslog implements SyslogIF {
 
         int availableLen = this.syslogConfig.getMaxMessageLength() - h.length;
 
-        if (this.syslogConfig.isTruncateMessage()) {
-            if (availableLen > 0 && mLength > availableLen) {
-                mLength = availableLen;
-            }
+        if (this.syslogConfig.isTruncateMessage() && (availableLen > 0 && mLength > availableLen)) {
+            mLength = availableLen;
         }
 
         if (mLength <= availableLen) {
@@ -363,7 +364,7 @@ public abstract class AbstractSyslog implements SyslogIF {
                 break;
 
             } catch (Exception e) {
-                // Ignore this Exception and go onto next backLogHandler
+                LOG.trace("Ignoring Exception, next logger", e);
             }
         }
     }

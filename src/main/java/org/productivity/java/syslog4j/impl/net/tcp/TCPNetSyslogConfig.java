@@ -14,14 +14,6 @@
  */
 package org.productivity.java.syslog4j.impl.net.tcp;
 
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_FRESH_CONNECTION_INTERVAL_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_KEEP_ALIVE_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_PERSISTENT_CONNECTION_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_REUSE_ADDRESS_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_SET_BUFFER_SIZE_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_SO_LINGER_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP_SO_LINGER_SECONDS_DEFAULT;
-
 import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
@@ -60,18 +52,18 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 
     protected byte[] delimiterSequence = SYSTEM_DELIMITER_SEQUENCE;
 
-    protected boolean persistentConnection = TCP_PERSISTENT_CONNECTION_DEFAULT;
+    protected boolean persistentConnection = SyslogConstants.TCP_PERSISTENT_CONNECTION_DEFAULT;
 
-    protected boolean soLinger = TCP_SO_LINGER_DEFAULT;
-    protected int soLingerSeconds = TCP_SO_LINGER_SECONDS_DEFAULT;
+    protected boolean soLinger = SyslogConstants.TCP_SO_LINGER_DEFAULT;
+    protected int soLingerSeconds = SyslogConstants.TCP_SO_LINGER_SECONDS_DEFAULT;
 
-    protected boolean keepAlive = TCP_KEEP_ALIVE_DEFAULT;
+    protected boolean keepAlive = SyslogConstants.TCP_KEEP_ALIVE_DEFAULT;
 
-    protected boolean reuseAddress = TCP_REUSE_ADDRESS_DEFAULT;
+    protected boolean reuseAddress = SyslogConstants.TCP_REUSE_ADDRESS_DEFAULT;
 
-    protected boolean setBufferSize = TCP_SET_BUFFER_SIZE_DEFAULT;
+    protected boolean setBufferSize = SyslogConstants.TCP_SET_BUFFER_SIZE_DEFAULT;
 
-    protected int freshConnectionInterval = TCP_FRESH_CONNECTION_INTERVAL_DEFAULT;
+    protected int freshConnectionInterval = SyslogConstants.TCP_FRESH_CONNECTION_INTERVAL_DEFAULT;
 
     public TCPNetSyslogConfig() {
         initialize();

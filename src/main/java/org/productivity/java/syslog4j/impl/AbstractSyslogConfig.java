@@ -14,27 +14,11 @@
  */
 package org.productivity.java.syslog4j.impl;
 
-import static org.productivity.java.syslog4j.SyslogConstants.INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_NAME_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SEND_LOCAL_TIMESTAMP_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SPLIT_MESSAGE_END_TEXT_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.THREADED_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.THREAD_PRIORITY_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.THROW_EXCEPTION_ON_INITIALIZE_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.THROW_EXCEPTION_ON_WRITE_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.TRUNCATE_MESSAGE_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.USE_DAEMON_THREAD_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.WRITE_RETRIES_DEFAULT;
-
 import java.nio.charset.Charset;
 import java.util.List;
 
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
+import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
@@ -72,30 +56,30 @@ public abstract class AbstractSyslogConfig implements AbstractSyslogConfigIF {
 
     protected String localName = null;
 
-    protected boolean sendLocalTimestamp = SEND_LOCAL_TIMESTAMP_DEFAULT;
-    protected boolean sendLocalName = SEND_LOCAL_NAME_DEFAULT;
+    protected boolean sendLocalTimestamp = SyslogConstants.SEND_LOCAL_TIMESTAMP_DEFAULT;
+    protected boolean sendLocalName = SyslogConstants.SEND_LOCAL_NAME_DEFAULT;
 
-    protected boolean includeIdentInMessageModifier = INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT;
-    protected boolean throwExceptionOnWrite = THROW_EXCEPTION_ON_WRITE_DEFAULT;
-    protected boolean throwExceptionOnInitialize = THROW_EXCEPTION_ON_INITIALIZE_DEFAULT;
+    protected boolean includeIdentInMessageModifier = SyslogConstants.INCLUDE_IDENT_IN_MESSAGE_MODIFIER_DEFAULT;
+    protected boolean throwExceptionOnWrite = SyslogConstants.THROW_EXCEPTION_ON_WRITE_DEFAULT;
+    protected boolean throwExceptionOnInitialize = SyslogConstants.THROW_EXCEPTION_ON_INITIALIZE_DEFAULT;
 
-    protected int maxMessageLength = MAX_MESSAGE_LENGTH_DEFAULT;
-    protected byte[] splitMessageBeginText = SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT.getBytes(Charsets.UTF_8);
-    protected byte[] splitMessageEndText = SPLIT_MESSAGE_END_TEXT_DEFAULT.getBytes(Charsets.UTF_8);
+    protected int maxMessageLength = SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT;
+    protected byte[] splitMessageBeginText = SyslogConstants.SPLIT_MESSAGE_BEGIN_TEXT_DEFAULT.getBytes(Charsets.UTF_8);
+    protected byte[] splitMessageEndText = SyslogConstants.SPLIT_MESSAGE_END_TEXT_DEFAULT.getBytes(Charsets.UTF_8);
 
     protected List<SyslogMessageModifierIF> messageModifiers = null;
     protected List<SyslogBackLogHandlerIF> backLogHandlers = null;
 
-    protected boolean threaded = THREADED_DEFAULT;
-    protected boolean useDaemonThread = USE_DAEMON_THREAD_DEFAULT;
-    protected int threadPriority = THREAD_PRIORITY_DEFAULT;
-    protected long threadLoopInterval = THREAD_LOOP_INTERVAL_DEFAULT;
+    protected boolean threaded = SyslogConstants.THREADED_DEFAULT;
+    protected boolean useDaemonThread = SyslogConstants.USE_DAEMON_THREAD_DEFAULT;
+    protected int threadPriority = SyslogConstants.THREAD_PRIORITY_DEFAULT;
+    protected long threadLoopInterval = SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT;
 
-    protected int writeRetries = WRITE_RETRIES_DEFAULT;
-    protected long maxShutdownWait = MAX_SHUTDOWN_WAIT_DEFAULT;
+    protected int writeRetries = SyslogConstants.WRITE_RETRIES_DEFAULT;
+    protected long maxShutdownWait = SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT;
 
-    protected boolean truncateMessage = TRUNCATE_MESSAGE_DEFAULT;
-    protected boolean useStructuredData = USE_STRUCTURED_DATA_DEFAULT;
+    protected boolean truncateMessage = SyslogConstants.TRUNCATE_MESSAGE_DEFAULT;
+    protected boolean useStructuredData = SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
 
     public abstract Class<? extends SyslogIF> getSyslogClass();
 

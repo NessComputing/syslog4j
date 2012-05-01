@@ -78,14 +78,14 @@ public class PCISyslogMessage extends AbstractSyslogMessage implements PCISyslog
     }
 
     protected void init(Map<String, Object> fields) {
-        if (fields.containsKey(USER_ID)) { this.userId = (String) fields.get(USER_ID); };
-        if (fields.containsKey(EVENT_TYPE)) { this.eventType = (String) fields.get(EVENT_TYPE); };
-        if (fields.containsKey(DATE) && fields.get(DATE) instanceof String) { this.date = (String) fields.get(DATE); };
-        if (fields.containsKey(DATE) && fields.get(DATE) instanceof Date) { setDate((Date) fields.get(DATE)); };
-        if (fields.containsKey(TIME)) { this.time = (String) fields.get(TIME); };
-        if (fields.containsKey(STATUS)) { this.status = (String) fields.get(STATUS); };
-        if (fields.containsKey(ORIGINATION)) { this.origination = (String) fields.get(ORIGINATION); };
-        if (fields.containsKey(AFFECTED_RESOURCE)) { this.affectedResource = (String) fields.get(AFFECTED_RESOURCE); };
+        if (fields.containsKey(USER_ID)) { this.userId = (String) fields.get(USER_ID); }
+        if (fields.containsKey(EVENT_TYPE)) { this.eventType = (String) fields.get(EVENT_TYPE); }
+        if (fields.containsKey(DATE) && fields.get(DATE) instanceof String) { this.date = (String) fields.get(DATE); }
+        if (fields.containsKey(DATE) && fields.get(DATE) instanceof Date) { setDate((Date) fields.get(DATE)); }
+        if (fields.containsKey(TIME)) { this.time = (String) fields.get(TIME); }
+        if (fields.containsKey(STATUS)) { this.status = (String) fields.get(STATUS); }
+        if (fields.containsKey(ORIGINATION)) { this.origination = (String) fields.get(ORIGINATION); }
+        if (fields.containsKey(AFFECTED_RESOURCE)) { this.affectedResource = (String) fields.get(AFFECTED_RESOURCE); }
     }
 
     public PCISyslogMessage(String userId, String eventType, String status, String affectedResource) {

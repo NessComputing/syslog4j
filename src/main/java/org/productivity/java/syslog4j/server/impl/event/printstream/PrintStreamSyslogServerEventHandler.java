@@ -40,14 +40,16 @@ public class PrintStreamSyslogServerEventHandler implements SyslogServerSessionE
         this.stream = stream;
     }
 
+    @Override
     public void initialize(SyslogServerIF syslogServer) {
-        return;
     }
 
+    @Override
     public Object sessionOpened(SyslogServerIF syslogServer, SocketAddress socketAddress) {
         return null;
     }
 
+    @Override
     public void event(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, SyslogServerEventIF event) {
         String date = (event.getDate() == null ? new Date() : event.getDate()).toString();
         String facility = event.getFacility().name();
@@ -56,15 +58,15 @@ public class PrintStreamSyslogServerEventHandler implements SyslogServerSessionE
         this.stream.println("{" + facility + "} " + date + " " + level + " " + event.getMessage());
     }
 
+    @Override
     public void exception(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, Exception exception) {
-        //
     }
 
+    @Override
     public void sessionClosed(Object session, SyslogServerIF syslogServer, SocketAddress socketAddress, boolean timeout) {
-        //
     }
 
+    @Override
     public void destroy(SyslogServerIF syslogServer) {
-        return;
     }
 }

@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogLevel;
 import org.productivity.java.syslog4j.server.SyslogServerEventIF;
@@ -43,6 +44,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 * @version $Id: SyslogServerEvent.java,v 1.9 2011/01/11 06:21:15 cvs Exp $
 */
 public class SyslogServerEvent implements SyslogServerEventIF {
+    private static final Logger LOG = Logger.getLogger(SyslogServerEvent.class);
+
     public static final String DATE_FORMAT = "MMM dd HH:mm:ss yyyy";
 
     protected Charset charSet = Charsets.UTF_8;
@@ -172,7 +175,7 @@ public class SyslogServerEvent implements SyslogServerEventIF {
                     parseDate();
 
                 } catch (NumberFormatException nfe) {
-                    //
+                    LOG.trace("While parsing priority", nfe);
                 }
 
                 parseHost();

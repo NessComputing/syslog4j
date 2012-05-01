@@ -84,7 +84,7 @@ public class HTMLEntityEscapeSyslogMessageModifier implements SyslogMessageModif
             } else if (Character.isWhitespace(ch)) {
                 b.append("&#").append((int) ch).append(";");
             } else if (Character.isISOControl(ch)) {
-                // Ignore character
+                continue; // Ignore character
             } else if (Character.isDefined(ch)) {
                 b.append("&#").append((int) ch).append(";");
             }

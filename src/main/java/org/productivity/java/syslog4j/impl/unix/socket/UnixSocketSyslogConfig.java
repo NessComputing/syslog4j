@@ -14,16 +14,8 @@
  */
 package org.productivity.java.syslog4j.impl.unix.socket;
 
-import static org.productivity.java.syslog4j.SyslogConstants.AF_UNIX;
-import static org.productivity.java.syslog4j.SyslogConstants.SOCK_DGRAM;
-import static org.productivity.java.syslog4j.SyslogConstants.SOCK_STREAM;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_FAMILY_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_LIBRARY_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_PATH_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_PROTOCOL_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SOCKET_TYPE_DEFAULT;
-
 import org.apache.commons.lang3.StringUtils;
+import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.SyslogFacility;
 import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
@@ -40,11 +32,11 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 * @version $Id: UnixSocketSyslogConfig.java,v 1.8 2010/11/12 03:43:12 cvs Exp $
 */
 public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
-    protected int type = SYSLOG_SOCKET_TYPE_DEFAULT;
-    protected short family = SYSLOG_SOCKET_FAMILY_DEFAULT;
-    protected int protocol = SYSLOG_SOCKET_PROTOCOL_DEFAULT;
-    protected String library = SYSLOG_SOCKET_LIBRARY_DEFAULT;
-    protected String path = SYSLOG_SOCKET_PATH_DEFAULT;
+    protected int type = SyslogConstants.SYSLOG_SOCKET_TYPE_DEFAULT;
+    protected short family = SyslogConstants.SYSLOG_SOCKET_FAMILY_DEFAULT;
+    protected int protocol = SyslogConstants.SYSLOG_SOCKET_PROTOCOL_DEFAULT;
+    protected String library = SyslogConstants.SYSLOG_SOCKET_LIBRARY_DEFAULT;
+    protected String path = SyslogConstants.SYSLOG_SOCKET_PATH_DEFAULT;
 
     public UnixSocketSyslogConfig() {
         // Unix-based socket does not need localName sent
@@ -115,10 +107,10 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
         }
 
         if ("SOCK_STREAM".equalsIgnoreCase(StringUtils.trimToEmpty(type))) {
-            this.type = SOCK_STREAM;
+            this.type = SyslogConstants.SOCK_STREAM;
 
         } else if ("SOCK_DGRAM".equalsIgnoreCase(StringUtils.trimToEmpty(type))) {
-            this.type = SOCK_DGRAM;
+            this.type = SyslogConstants.SOCK_DGRAM;
 
         } else {
             throw new SyslogRuntimeException("Type must be \"SOCK_STREAM\" or \"SOCK_DGRAM\" for class \"%s\"", this.getClass().getName());
@@ -139,7 +131,7 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
         }
 
         if ("AF_UNIX".equalsIgnoreCase(StringUtils.trimToEmpty(family))) {
-            this.family = AF_UNIX;
+            this.family = SyslogConstants.AF_UNIX;
 
         } else {
             throw new SyslogRuntimeException("Family must be \"AF_UNIX\" for class \"%s\"", this.getClass().getName());

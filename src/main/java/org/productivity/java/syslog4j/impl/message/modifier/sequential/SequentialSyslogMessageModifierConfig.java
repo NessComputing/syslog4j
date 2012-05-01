@@ -14,13 +14,7 @@
  */
 package org.productivity.java.syslog4j.impl.message.modifier.sequential;
 
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_FIRST_NUMBER_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_LAST_NUMBER_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PAD_CHAR_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PREFIX_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_SUFFIX_DEFAULT;
-import static org.productivity.java.syslog4j.SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_USE_PADDING_DEFAULT;
-
+import org.productivity.java.syslog4j.SyslogConstants;
 import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessageModifierConfig;
 /**
 * SequentialSyslogMessageModifierConfig is an implementation of AbstractSyslogMessageModifierConfig
@@ -34,10 +28,10 @@ import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessag
 * @version $Id: SequentialSyslogMessageModifierConfig.java,v 1.4 2009/03/29 17:38:58 cvs Exp $
 */
 public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessageModifierConfig {
-    protected long firstNumber = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_FIRST_NUMBER_DEFAULT;
-    protected long lastNumber = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_LAST_NUMBER_DEFAULT;
-    protected char padChar = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PAD_CHAR_DEFAULT;
-    protected boolean usePadding = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_USE_PADDING_DEFAULT;
+    protected long firstNumber = SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_FIRST_NUMBER_DEFAULT;
+    protected long lastNumber = SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_LAST_NUMBER_DEFAULT;
+    protected char padChar = SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PAD_CHAR_DEFAULT;
+    protected boolean usePadding = SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_USE_PADDING_DEFAULT;
 
     public static final SequentialSyslogMessageModifierConfig createDefault() {
         SequentialSyslogMessageModifierConfig modifierConfig = new SequentialSyslogMessageModifierConfig();
@@ -46,8 +40,8 @@ public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessage
     }
 
     public SequentialSyslogMessageModifierConfig() {
-        setPrefix(SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PREFIX_DEFAULT);
-        setSuffix(SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_SUFFIX_DEFAULT);
+        setPrefix(SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PREFIX_DEFAULT);
+        setSuffix(SyslogConstants.SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_SUFFIX_DEFAULT);
     }
 
     public long getLastNumberDigits() {

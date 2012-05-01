@@ -963,8 +963,8 @@ public class Base64
                 }   // end try
                 catch( java.io.IOException e )
                 {
-                    // Just return originally-decoded bytes
-                }   // end catch
+                    LOG.trace("While decoding bytes", e);
+                }
                 finally
                 {
                     Closeables.closeQuietly(baos);

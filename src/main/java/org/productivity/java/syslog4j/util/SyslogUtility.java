@@ -37,7 +37,7 @@ public final class SyslogUtility {
         //
     }
 
-    public static final InetAddress getInetAddress(String host) throws SyslogRuntimeException
+    public static InetAddress getInetAddress(String host) throws SyslogRuntimeException
     {
         try {
             return InetAddress.getByName(host);
@@ -47,44 +47,40 @@ public final class SyslogUtility {
         }
     }
 
-    public static final boolean isClassExists(String className) {
+    public static boolean isClassExists(String className) {
         try {
             Class.forName(className);
             return true;
 
         } catch (ClassNotFoundException cnfe) {
-            //
+            return false;
         }
-
-        return false;
     }
 
-    public static final String getLocalName() {
+    public static String getLocalName() {
         String localName = SEND_LOCAL_NAME_DEFAULT_VALUE;
 
         try {
             InetAddress addr = InetAddress.getLocalHost();
-            localName = addr.getHostName();
+            return addr.getHostName();
 
         } catch (UnknownHostException uhe) {
-            //
+            return localName;
         }
-
-        return localName;
     }
 
-    public static final byte[] getBytes(SyslogCharSetIF syslogCharSet, String data)
+    public static byte[] getBytes(SyslogCharSetIF syslogCharSet, String data)
     {
         return data.getBytes(syslogCharSet.getCharSet());
     }
 
-    public static final String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes) {
+    public static String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes) {
         String data = newString(syslogCharSet,dataBytes,dataBytes.length);
 
         return data;
     }
 
-    public static final String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes, int dataLength) {
+    public static String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes, int dataLength) {
         return new String(dataBytes, 0, dataLength,syslogCharSet.getCharSet());
     }
 

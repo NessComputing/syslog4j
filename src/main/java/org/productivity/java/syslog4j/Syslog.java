@@ -14,12 +14,6 @@
  */
 package org.productivity.java.syslog4j;
 
-import static org.productivity.java.syslog4j.SyslogConstants.JNA_NATIVE_CLASS;
-import static org.productivity.java.syslog4j.SyslogConstants.TCP;
-import static org.productivity.java.syslog4j.SyslogConstants.UDP;
-import static org.productivity.java.syslog4j.SyslogConstants.UNIX_SOCKET;
-import static org.productivity.java.syslog4j.SyslogConstants.UNIX_SYSLOG;
-
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -84,7 +78,7 @@ public final class Syslog
      * @return Returns an instance of SyslogIF.
      * @throws SyslogRuntimeException
      */
-    public static final SyslogIF getInstance(String protocol) throws SyslogRuntimeException {
+    public static SyslogIF getInstance(String protocol) throws SyslogRuntimeException {
         String _protocol = protocol.toLowerCase();
 
         if (instances.containsKey(_protocol)) {
@@ -129,7 +123,7 @@ public final class Syslog
      * @return Returns an instance of SyslogIF.
      * @throws SyslogRuntimeException
      */
-    public static final SyslogIF createInstance(String protocol, SyslogConfigIF config) throws SyslogRuntimeException
+    public static SyslogIF createInstance(String protocol, SyslogConfigIF config) throws SyslogRuntimeException
     {
         Preconditions.checkArgument(!StringUtils.isBlank(protocol), "Instance protocol cannot be null or empty");
         Preconditions.checkArgument(config != null, "SyslogConfig cannot be null");
@@ -183,7 +177,7 @@ public final class Syslog
      * @param protocol - Syslog protocol
      * @return Returns whether the protocol has been previously defined.
      */
-    public static final boolean exists(String protocol) {
+    public static boolean exists(String protocol) {
         if (StringUtils.isBlank(protocol)) {
             return false;
         }
@@ -196,7 +190,7 @@ public final class Syslog
      * which includes flushing all queues and connections and finally
      * clearing all instances (including those initialized by default).
      */
-    public synchronized static final void shutdown() {
+    public synchronized static void shutdown() {
         Set<String> protocols = instances.keySet();
 
         if (protocols.size() > 0) {
@@ -216,17 +210,17 @@ public final class Syslog
         }
     }
 
-    private synchronized static final void initialize() {
-        createInstance(UDP,new UDPNetSyslogConfig());
-        createInstance(TCP,new TCPNetSyslogConfig());
+    private synchronized static void initialize() {
+        createInstance(SyslogConstants.UDP,new UDPNetSyslogConfig());
+        createInstance(SyslogConstants.TCP,new TCPNetSyslogConfig());
 
-        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
-            createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
-            createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
+        if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(SyslogConstants.JNA_NATIVE_CLASS)) {
+            createInstance(SyslogConstants.UNIX_SYSLOG,new UnixSyslogConfig());
+            createInstance(SyslogConstants.UNIX_SOCKET,new UnixSocketSyslogConfig());
         }
     }
 
-    static final void reset() throws InterruptedException
+    static void reset() throws InterruptedException
     {
         shutdown();
         Thread.sleep(200L);
@@ -241,7 +235,7 @@ public final class Syslog
      * @param protocol - the Syslog protocol to destroy
      * @throws SyslogRuntimeException
      */
-    public synchronized static final void destroyInstance(String protocol) throws SyslogRuntimeException {
+    public synchronized static void destroyInstance(String protocol) throws SyslogRuntimeException {
         if (StringUtils.isBlank(protocol)) {
             return;
         }
@@ -272,7 +266,7 @@ public final class Syslog
      * @param syslog - the Syslog instance to destroy
      * @throws SyslogRuntimeException
      */
-    public synchronized static final void destroyInstance(SyslogIF syslog) throws SyslogRuntimeException {
+    public synchronized static void destroyInstance(SyslogIF syslog) throws SyslogRuntimeException {
         if (syslog == null) {
             return;
         }

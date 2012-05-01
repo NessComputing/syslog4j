@@ -19,6 +19,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogMessageIF;
 
 /**
@@ -37,6 +38,8 @@ import org.productivity.java.syslog4j.SyslogMessageIF;
 * @version $Id: AbstractSyslogMessage.java,v 1.2 2009/04/17 02:37:04 cvs Exp $
 */
 public abstract class AbstractSyslogMessage implements SyslogMessageIF {
+    private static final Logger LOG = Logger.getLogger(AbstractSyslogMessage.class);
+
     public static final String UNDEFINED = "undefined";
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
@@ -89,7 +92,7 @@ public abstract class AbstractSyslogMessage implements SyslogMessageIF {
             localHostName = InetAddress.getLocalHost().getHostName();
 
         } catch (UnknownHostException uhe) {
-            //
+            LOG.warn("While finding host name: ", uhe);
         }
 
         return localHostName;

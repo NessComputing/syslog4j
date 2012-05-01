@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.productivity.java.syslog4j.SyslogCharSetIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.server.SyslogServerConfigIF;
@@ -48,6 +49,8 @@ import com.google.common.collect.Maps;
 * @version $Id: AbstractSyslogServer.java,v 1.12 2011/01/11 05:11:13 cvs Exp $
 */
 public abstract class AbstractSyslogServer implements SyslogServerIF {
+    private static final Logger LOG = Logger.getLogger(AbstractSyslogServer.class);
+
     public static class Sessions extends HashMap<Socket, Map<SyslogServerEventHandlerIF, Object>> {
         public static final Object syncObject = new Object();
 
@@ -169,11 +172,8 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
     protected static boolean isStructuredMessage(SyslogCharSetIF syslogCharSet, String receiveData) {
         int idx = receiveData.indexOf('>');
 
-        if (idx != -1) {
-            // If there's a numerical VERSION field after the <priority>, return true.
-            if (receiveData.length() > idx + 1 && Character.isDigit(receiveData.charAt(idx + 1))) {
-                return true;
-            }
+        if (idx != -1 && ((receiveData.length() > idx + 1 && Character.isDigit(receiveData.charAt(idx + 1))))) {
+            return true;
         }
 
         return false;
@@ -219,7 +219,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                 eventHandler.initialize(syslogServer);
 
             } catch (Exception exception) {
-                //
+                LOG.warn("While initializing", exception);
             }
         }
     }
@@ -233,7 +233,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                 eventHandler.destroy(syslogServer);
 
             } catch (Exception exception) {
-                //
+                LOG.warn("While destroying", exception);
             }
         }
     }
@@ -257,7 +257,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                         ((SyslogServerSessionEventHandlerIF) eventHandler).exception(null,syslogServer,socket.getRemoteSocketAddress(),exception);
 
                     } catch (Exception e) {
-                        //
+                        LOG.trace("While handling exception", exception);
                     }
                 }
             }
@@ -281,7 +281,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                         ((SyslogServerSessionEventHandlerIF) eventHandler).exception(session,syslogServer,socket.getRemoteSocketAddress(),exception);
 
                     } catch (Exception e) {
-                        //
+                        LOG.trace("While handling exception", exception);
                     }
                 }
             }
@@ -313,7 +313,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                         ((SyslogServerSessionEventHandlerIF) eventHandler).exception(session,syslogServer,socketAddress,exception);
 
                     } catch (Exception e) {
-                        //
+                        LOG.trace("While handling exception", exception);
                     }
                 }
 
@@ -326,7 +326,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                         ((SyslogServerSessionlessEventHandlerIF) eventHandler).exception(syslogServer,socketAddress,exception);
 
                     } catch (Exception e) {
-                        //
+                        LOG.trace("While handling exception", exception);
                     }
                 }
             }
@@ -344,7 +344,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                     ((SyslogServerSessionEventHandlerIF) eventHandler).exception(session,syslogServer,socketAddress,exception);
 
                 } catch (Exception e) {
-                    //
+                    LOG.trace("While handling exception", exception);
                 }
 
             } else if (eventHandler instanceof SyslogServerSessionlessEventHandlerIF) {
@@ -352,7 +352,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                     ((SyslogServerSessionlessEventHandlerIF) eventHandler).exception(syslogServer,socketAddress,exception);
 
                 } catch (Exception e) {
-                    //
+                    LOG.trace("While handling exception", exception);
                 }
             }
         }
