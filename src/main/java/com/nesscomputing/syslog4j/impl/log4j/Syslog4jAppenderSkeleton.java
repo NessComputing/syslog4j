@@ -267,7 +267,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
     }
 
     public boolean requiresLayout() {
-        return false;
+        return true;
     }
 
     public String getThreadLoopInterval() {
