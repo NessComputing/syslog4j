@@ -14,8 +14,11 @@
  */
 package com.nesscomputing.syslog4j.impl.unix;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.Maps;
 import com.nesscomputing.syslog4j.SyslogFacility;
 import com.nesscomputing.syslog4j.SyslogLevel;
 import com.nesscomputing.syslog4j.SyslogMessageProcessorIF;
@@ -54,6 +57,7 @@ public class UnixSyslog extends AbstractSyslog {
     private static boolean openlogCalled = false;
 
     private static CLibrary libraryInstance = null;
+    private static Map<String, Memory> identMap = Maps.newHashMap();
 
     protected static synchronized void loadLibrary(UnixSyslogConfig config) throws SyslogRuntimeException {
         if (!OSDetectUtility.isUnix()) {
@@ -99,11 +103,12 @@ public class UnixSyslog extends AbstractSyslog {
                     ident = null;
                 }
 
-                Memory identBuffer = null;
+				Memory identBuffer = ident == null ? null : (Memory) identMap.get(ident);
 
-                if (ident != null) {
+				if (ident != null && identBuffer == null) {
                     identBuffer = new Memory(128);
                     identBuffer.setString(0, ident, false);
+                    identMap.put(ident, identBuffer);
                 }
 
                 libraryInstance.openlog(identBuffer,config.getOption(),currentFacility.getValue());
