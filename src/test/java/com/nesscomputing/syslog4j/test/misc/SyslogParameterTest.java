@@ -779,7 +779,7 @@ public class SyslogParameterTest extends TestCase {
         appender.setThreaded("true");
         assertTrue(new Boolean(appender.getThreaded()).booleanValue());
 
-        assertFalse(appender.requiresLayout());
+        assertTrue(appender.requiresLayout());
 
         assertFalse(appender.getHeader());
         appender.setHeader(true);
