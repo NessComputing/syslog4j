@@ -60,8 +60,6 @@ public class SyslogServerEvent implements SyslogServerEventIF {
     protected String message = null;
     protected InetAddress inetAddress = null;
 
-    protected SyslogServerEvent() { }
-
     public SyslogServerEvent(final String message, InetAddress inetAddress) {
         initialize(message,inetAddress);
     }
@@ -84,6 +82,9 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         this.rawBytes = message;
         this.rawLength = length;
         this.inetAddress = inetAddress;
+
+        this.message = SyslogUtility.newString(this,this.rawBytes,this.rawLength);
+
         parse();
     }
 
@@ -175,14 +176,11 @@ public class SyslogServerEvent implements SyslogServerEventIF {
         }
     }
 
-    protected void parse() {
-        if (this.message == null) {
-            this.message = SyslogUtility.newString(this,this.rawBytes,this.rawLength);
-        }
-
-        parseHost();
-        parseDate();
+    protected void parse()
+    {
         parsePriority();
+        parseDate();
+        parseHost();
     }
 
     public SyslogFacility getFacility() {

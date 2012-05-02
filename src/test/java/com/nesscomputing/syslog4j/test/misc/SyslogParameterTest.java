@@ -1376,7 +1376,7 @@ public class SyslogParameterTest extends TestCase {
         StructuredSyslogServerEvent event2 = new StructuredSyslogServerEvent(message2.getBytes(),message2.length(),localhost);
 
         StructuredSyslogMessage sm2 = event2.getStructuredMessage();
-        assertEquals(message2,sm2.getMessage());
+        assertEquals(event2.getMessage(),sm2.getMessage());
     }
 
     public void testUnixSocketSyslogConfigParameters() {

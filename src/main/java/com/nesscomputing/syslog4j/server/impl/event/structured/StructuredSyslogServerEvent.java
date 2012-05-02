@@ -44,23 +44,29 @@ import com.nesscomputing.syslog4j.server.impl.event.SyslogServerEvent;
  * @version $Id: StructuredSyslogServerEvent.java,v 1.6 2011/01/11 05:11:13 cvs Exp $
  */
 public class StructuredSyslogServerEvent extends SyslogServerEvent {
-    protected String applicationName = SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
-    protected String processId = null;
-    protected DateTime dateTime = null;
-    protected DateTimeFormatter dateTimeFormatter = null;
+    private String applicationName;
+    private String processId;
+    private DateTime dateTime;
+    private DateTimeFormatter dateTimeFormatter;
 
     public StructuredSyslogServerEvent(final byte[] message, int length, InetAddress inetAddress) {
-        super();
-
-        initialize(message,length,inetAddress);
-        parse();
+        super(message, length, inetAddress);
     }
 
     public StructuredSyslogServerEvent(final String message, InetAddress inetAddress) {
-        super();
+        super(message, inetAddress);
+    }
 
-        initialize(message,inetAddress);
-        parse();
+    protected void parse()
+    {
+        applicationName = SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
+        processId = null;
+        dateTime = null;
+        dateTimeFormatter = null;
+
+        super.parse();
+        parseApplicationName();
+        parseProcessId();
     }
 
     public DateTimeFormatter getDateTimeFormatter() {
@@ -81,7 +87,6 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
         if (i > -1) {
             this.applicationName = StringUtils.trimToEmpty(this.message.substring(0, i));
             this.message = this.message.substring(i + 1);
-            parseProcessId();
         }
 
         if (SyslogConstants.STRUCTURED_DATA_NILVALUE.equals(this.applicationName)) {
@@ -134,8 +139,6 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
         if (i > -1) {
             this.host = StringUtils.trimToEmpty(this.message.substring(0,i));
             this.message = this.message.substring(i+1);
-
-            parseApplicationName();
         }
     }
 
