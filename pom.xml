@@ -9,7 +9,7 @@
 
   <groupId>com.nesscomputing</groupId>
   <artifactId>ness-syslog4j</artifactId>
-  <version>0.9.47-NESS-2</version>
+  <version>0.9.47-NESS-3-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>syslog4j, Ness Computing style</name>
   <url>http://www.syslog4j.org</url>
