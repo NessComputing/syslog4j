@@ -1329,10 +1329,10 @@ public class SyslogParameterTest extends TestCase {
         syslog.setStructuredMessageProcessor(messageProcessor);
         assertEquals(messageProcessor,syslog.getStructuredMessageProcessor());
 
-        SyslogMessageIF m1 = new StructuredSyslogMessage("test1",Maps.<String, Map<String, String>>newHashMap(),"test2");
-        SyslogMessageIF m2 = new StructuredSyslogMessage("test1",Maps.<String, Map<String, String>>newHashMap(),"test2");
-        SyslogMessageIF m3 = new StructuredSyslogMessage("test3",Maps.<String, Map<String, String>>newHashMap(),"test2");
-        SyslogMessageIF m4 = new StructuredSyslogMessage("test1",Maps.<String, Map<String, String>>newHashMap(),"test4");
+        SyslogMessageIF m1 = new StructuredSyslogMessage("test1",null, Maps.<String, Map<String, String>>newHashMap(),"test2");
+        SyslogMessageIF m2 = new StructuredSyslogMessage("test1",null, Maps.<String, Map<String, String>>newHashMap(),"test2");
+        SyslogMessageIF m3 = new StructuredSyslogMessage("test3",null, Maps.<String, Map<String, String>>newHashMap(),"test2");
+        SyslogMessageIF m4 = new StructuredSyslogMessage("test1",null, Maps.<String, Map<String, String>>newHashMap(),"test4");
 
         assertFalse(m1.equals(null));
         assertFalse(m1.equals("Wrong Class"));

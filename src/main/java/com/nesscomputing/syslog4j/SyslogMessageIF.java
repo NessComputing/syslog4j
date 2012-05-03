@@ -26,5 +26,7 @@ package com.nesscomputing.syslog4j;
 * @version $Id: SyslogMessageIF.java,v 1.1 2008/11/10 04:38:37 cvs Exp $
 */
 public interface SyslogMessageIF {
-    public String createMessage();
+    String createMessage();
+
+    String getProcId();
 }

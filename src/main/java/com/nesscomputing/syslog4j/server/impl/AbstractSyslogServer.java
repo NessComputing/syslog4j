@@ -52,6 +52,9 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
     private static final Logger LOG = Logger.getLogger(AbstractSyslogServer.class);
 
     public static class Sessions extends HashMap<Socket, Map<SyslogServerEventHandlerIF, Object>> {
+
+        private static final long serialVersionUID = 1L;
+
         public static final Object syncObject = new Object();
 
         public void addSocket(Socket socket) {

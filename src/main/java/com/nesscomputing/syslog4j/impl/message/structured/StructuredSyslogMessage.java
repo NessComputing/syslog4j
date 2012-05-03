@@ -47,10 +47,12 @@ public class StructuredSyslogMessage extends AbstractSyslogMessage implements St
     private String messageId;
     private Map<String, Map<String, String>> structuredData;
     private String message;
+    private String procId;
 
     private StructuredSyslogMessage() {
         this.messageId = null;
         this.message = null;
+        this.procId = null;
         this.structuredData = null;
     }
 
@@ -70,9 +72,12 @@ public class StructuredSyslogMessage extends AbstractSyslogMessage implements St
      * @param message
      */
     public StructuredSyslogMessage(final String messageId,
-            final Map<String, Map<String, String>> structuredData, final String message) {
+                                   final String procId,
+                                   final Map<String, Map<String, String>> structuredData,
+                                   final String message) {
         super();
         this.messageId = messageId;
+        this.procId = procId;
         this.structuredData = structuredData;
         this.message = message;
     }
@@ -209,6 +214,11 @@ public class StructuredSyslogMessage extends AbstractSyslogMessage implements St
      */
     public String getMessage() {
         return this.message;
+    }
+
+    public String getProcId()
+    {
+        return procId;
     }
 
     /*

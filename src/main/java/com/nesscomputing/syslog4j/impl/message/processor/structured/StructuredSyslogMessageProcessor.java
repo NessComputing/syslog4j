@@ -17,6 +17,7 @@ package com.nesscomputing.syslog4j.impl.message.processor.structured;
 import static com.nesscomputing.syslog4j.SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
 import static com.nesscomputing.syslog4j.SyslogConstants.STRUCTURED_DATA_PROCESS_ID_DEFAULT_VALUE;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -102,7 +103,8 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
         this.processId = processId;
     }
 
-    public String createSyslogHeader(final SyslogFacility facility, final SyslogLevel level, String localName, final boolean sendLocalTimestamp, final boolean sendLocalName) {
+    @Override
+    public String createSyslogHeader(final SyslogFacility facility, final SyslogLevel level, String localName, String localProcessId, final boolean sendLocalTimestamp, final boolean sendLocalName) {
         final StringBuffer buffer = new StringBuffer();
 
         appendPriority(buffer,facility,level);
@@ -117,7 +119,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
         buffer.append(StructuredSyslogMessage.nilProtect(this.applicationName))
                 .append(' ');
 
-        buffer.append(StructuredSyslogMessage.nilProtect(this.processId)).append(' ');
+        buffer.append(StructuredSyslogMessage.nilProtect(ObjectUtils.firstNonNull(localProcessId, this.processId))).append(' ');
 
         return buffer.toString();
     }

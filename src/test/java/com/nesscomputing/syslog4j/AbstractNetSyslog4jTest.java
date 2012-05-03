@@ -339,7 +339,7 @@ public abstract class AbstractNetSyslog4jTest extends AbstractBaseTest {
         Map<String, Map<String, String>> m1 = Maps.newHashMap();
         m1.put("testa",m2);
 
-        StructuredSyslogMessageIF message = new StructuredSyslogMessage("[TEST]",m1,"testb");
+        StructuredSyslogMessageIF message = new StructuredSyslogMessage("[TEST]", null, m1, "testb");
 
         syslog.debug(message);
         events.add(message.createMessage());

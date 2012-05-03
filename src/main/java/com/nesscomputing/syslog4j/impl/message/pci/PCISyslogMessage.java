@@ -245,6 +245,13 @@ public class PCISyslogMessage extends AbstractSyslogMessage implements PCISyslog
         this.affectedResource = affectedResource;
     }
 
+    @Override
+    public String getProcId()
+    {
+        return null;
+    }
+
+    @Override
     public String createMessage() {
         StringBuffer buffer = new StringBuffer();
 

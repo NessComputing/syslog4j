@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.nesscomputing.syslog4j.SyslogBackLogHandlerIF;
 import com.nesscomputing.syslog4j.SyslogConfigIF;
@@ -135,26 +136,26 @@ public abstract class AbstractSyslog implements SyslogIF {
 
     public void log(SyslogLevel level, String message) {
         if (this.syslogConfig.isUseStructuredData()) {
-            StructuredSyslogMessageIF structuredMessage = new StructuredSyslogMessage(null,null,message);
+            StructuredSyslogMessageIF structuredMessage = new StructuredSyslogMessage(null,null,null,message);
 
-            log(getStructuredMessageProcessor(),level,structuredMessage.createMessage());
+            log(getStructuredMessageProcessor(),level, null, structuredMessage.createMessage());
 
         } else {
-            log(getMessageProcessor(),level,message);
+            log(getMessageProcessor(),level, null, message);
         }
     }
 
     public void log(SyslogLevel level, SyslogMessageIF message) {
         if (message instanceof StructuredSyslogMessageIF) {
             if (getMessageProcessor() instanceof StructuredSyslogMessageProcessor) {
-                log(getMessageProcessor(),level,message.createMessage());
+                log(getMessageProcessor(),level,message.getProcId(), message.createMessage());
 
             } else {
-                log(getStructuredMessageProcessor(),level,message.createMessage());
+                log(getStructuredMessageProcessor(),level, message.getProcId(), message.createMessage());
             }
 
         } else {
-            log(getMessageProcessor(),level,message.createMessage());
+            log(getMessageProcessor(),level,message.getProcId(), message.createMessage());
         }
     }
 
@@ -230,7 +231,7 @@ public abstract class AbstractSyslog implements SyslogIF {
         return _message;
     }
 
-    public void log(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String message) {
+    public void log(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String localProcId, String message) {
         String _message = null;
 
         if (this.syslogConfig.isIncludeIdentInMessageModifier()) {
@@ -243,7 +244,7 @@ public abstract class AbstractSyslog implements SyslogIF {
         }
 
         try {
-            write(messageProcessor, level,_message);
+            write(messageProcessor, level, localProcId, _message);
 
         } catch (SyslogRuntimeException sre) {
             if (sre.getCause() != null) {
@@ -259,8 +260,8 @@ public abstract class AbstractSyslog implements SyslogIF {
         }
     }
 
-    protected void write(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String message) throws SyslogRuntimeException {
-        String header = messageProcessor.createSyslogHeader(this.syslogConfig.getFacility(),level,this.syslogConfig.getLocalName(),this.syslogConfig.isSendLocalTimestamp(),this.syslogConfig.isSendLocalName());
+    protected void write(SyslogMessageProcessorIF messageProcessor, SyslogLevel level, String localProcId, String message) throws SyslogRuntimeException {
+        String header = messageProcessor.createSyslogHeader(this.syslogConfig.getFacility(),level,this.syslogConfig.getLocalName(), localProcId, this.syslogConfig.isSendLocalTimestamp(),this.syslogConfig.isSendLocalName());
 
         byte[] h = SyslogUtility.getBytes(this.syslogConfig,header);
         byte[] m = SyslogUtility.getBytes(this.syslogConfig,message);

@@ -20,7 +20,6 @@ import java.nio.charset.Charset;
 
 import junit.framework.TestCase;
 
-
 import com.google.common.base.Charsets;
 import com.nesscomputing.syslog4j.Syslog;
 import com.nesscomputing.syslog4j.SyslogBackLogHandlerIF;
@@ -196,6 +195,11 @@ public class MultipleSyslogCreateTest extends TestCase {
     public static class FakeSyslogMessage implements SyslogMessageIF {
         public String createMessage() {
             return "fake message";
+        }
+
+        public String getProcId()
+        {
+            return null;
         }
     }
 

@@ -116,7 +116,7 @@ public abstract class AbstractSyslogMessageProcessor implements SyslogMessagePro
     }
 
     @Override
-    public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, boolean sendLocalTimestamp, boolean sendLocalName) {
+    public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, String localProcessId, boolean sendLocalTimestamp, boolean sendLocalName) {
         StringBuffer buffer = new StringBuffer();
 
         appendPriority(buffer,facility,level);

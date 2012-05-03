@@ -27,6 +27,8 @@ package com.nesscomputing.syslog4j;
 */
 public class SyslogRuntimeException extends RuntimeException
 {
+    private static final long serialVersionUID = 1L;
+
     public SyslogRuntimeException(String format, Object ... args) {
         super(String.format(format, args));
     }

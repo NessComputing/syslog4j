@@ -27,7 +27,7 @@ package com.nesscomputing.syslog4j;
 * @version $Id: SyslogMessageProcessorIF.java,v 1.4 2010/11/28 04:15:18 cvs Exp $
 */
 public interface SyslogMessageProcessorIF {
-    public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, boolean sendLocalTimestamp, boolean sendLocalName);
+    public String createSyslogHeader(SyslogFacility facility, SyslogLevel level, String localName, String localProcessId, boolean sendLocalTimestamp, boolean sendLocalName);
 
     public byte[] createPacketData(byte[] header, byte[] message, int start, int length);
 

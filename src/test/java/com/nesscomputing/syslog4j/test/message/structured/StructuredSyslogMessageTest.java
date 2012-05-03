@@ -158,21 +158,21 @@ public class StructuredSyslogMessageTest extends TestCase
 
    public void testCreateMessage1()
    {
-      final StructuredSyslogMessage message = new StructuredSyslogMessage("msgId", null, null);
+      final StructuredSyslogMessage message = new StructuredSyslogMessage("msgId", null, null, null);
       assertEquals("msgId [0@0]", message.createMessage());
    }
 
    public void testCreateMessage2()
    {
       final StructuredSyslogMessage message =
-            new StructuredSyslogMessage("msgId", null, "my message");
+            new StructuredSyslogMessage("msgId", null, null, "my message");
       assertEquals("msgId [0@0] my message", message.createMessage());
    }
 
    public void testCreateMessage3()
    {
       final StructuredSyslogMessage message =
-            new StructuredSyslogMessage("msgId", Maps.<String, Map<String, String>>newHashMap(), "my message");
+            new StructuredSyslogMessage("msgId", null, Maps.<String, Map<String, String>>newHashMap(), "my message");
       assertEquals("msgId [0@0] my message", message.createMessage());
    }
 
@@ -180,7 +180,7 @@ public class StructuredSyslogMessageTest extends TestCase
    {
       final Map<String, Map<String, String>> map = Maps.newHashMap();
       final StructuredSyslogMessage message =
-            new StructuredSyslogMessage("msgId", map, "my message");
+            new StructuredSyslogMessage("msgId", null, map, "my message");
       assertEquals("msgId [0@0] my message", message.createMessage());
    }
 }
