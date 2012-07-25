@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
+import org.junit.Test;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
@@ -1343,15 +1344,9 @@ public class SyslogParameterTest extends TestCase {
         assertFalse(m1.equals(m4));
     }
 
-    public void testStructuredSyslogEvent() {
-        InetAddress localhost = null;
-
-        try {
-            localhost = InetAddress.getLocalHost();
-
-        } catch (Exception e) {
-            //
-        }
+    public void testStructuredSyslogEvent() throws Exception
+    {
+        InetAddress localhost = InetAddress.getLocalHost();
 
         String message = "<165> 2003-10-11T22:14:15.003Z hostname appname process-id message-id [id@1234 test1=\"test2\"] test3";
 
@@ -1371,12 +1366,18 @@ public class SyslogParameterTest extends TestCase {
         Map<String, String> item = map.get("id@1234");
         assertTrue(item.containsKey("test1"));
         assertEquals("test2",item.get("test1"));
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testLetItBleed() throws Exception
+    {
+        InetAddress localhost = InetAddress.getLocalHost();
 
         String message2 = "3 junk ab [ [ ]";
         StructuredSyslogServerEvent event2 = new StructuredSyslogServerEvent(message2.getBytes(),message2.length(),localhost);
 
-        StructuredSyslogMessage sm2 = event2.getStructuredMessage();
-        assertEquals(event2.getMessage(),sm2.getMessage());
+        // Srsly? You expected that to succeed? What are you smoking?
+        event2.getStructuredMessage();
     }
 
     public void testUnixSocketSyslogConfigParameters() {

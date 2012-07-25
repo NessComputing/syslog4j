@@ -48,13 +48,16 @@ package com.nesscomputing.syslog4j.test.message.structured;
 // Date: Jul 15, 2009
 // ---------------------
 
+import java.net.InetAddress;
 import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.junit.Assert;
 
 import com.google.common.collect.Maps;
 import com.nesscomputing.syslog4j.impl.message.structured.StructuredSyslogMessage;
+import com.nesscomputing.syslog4j.server.impl.event.structured.StructuredSyslogServerEvent;
 
 public class StructuredSyslogMessageTest extends TestCase
 {
@@ -183,4 +186,29 @@ public class StructuredSyslogMessageTest extends TestCase
             new StructuredSyslogMessage("msgId", null, map, "my message");
       assertEquals("msgId [0@0] my message", message.createMessage());
    }
+
+   public void testMessageWithNulls() throws Exception
+   {
+       final String message = "<134>1 2012-07-25T21:32:08.887+00:00 some-server.some.domain noprog qtp583592918-80437 95d42b22c48e4eadb59e61a182c102d4 [l@2 si=\"some-server-s4\" sc=\"/a/b-c/d\" ip=\"1.2.3.4\" m=\"GET\" u=\"http://1.2.3.4:8081/path/PATH:12345/path\" q=\"source=SERVICE\" rc=\"200\" t=\"12\"][co@2 auth-cookie=\"jskldjskldjasskljlaskjas\"][rs@2 some-header=\"4054630f-8d31-457c-b1ff-2f2b465d69ef\"] nomsg";
+       final StructuredSyslogServerEvent ev = new StructuredSyslogServerEvent(message, InetAddress.getLocalHost());
+       final StructuredSyslogMessage msg = ev.getStructuredMessage();
+       Assert.assertEquals("95d42b22c48e4eadb59e61a182c102d4", msg.getMessageId());
+       Assert.assertNotNull(msg.getStructuredData());
+       Assert.assertNotNull(msg.getStructuredData().get("l@2"));
+       Assert.assertEquals("/a/b-c/d", msg.getStructuredData().get("l@2").get("sc"));
+   }
+
+   public void testMessageWithEmptyStruct() throws Exception
+   {
+       final String message = "<134>1 2012-07-25T21:32:08.887+00:00 some-server.some.domain noprog qtp583592918-80437 95d42b22c48e4eadb59e61a182c102d4 [l@2][a@3 a=\"b\\\"c\"]";
+       final StructuredSyslogServerEvent ev = new StructuredSyslogServerEvent(message, InetAddress.getLocalHost());
+       final StructuredSyslogMessage msg = ev.getStructuredMessage();
+       Assert.assertEquals("95d42b22c48e4eadb59e61a182c102d4", msg.getMessageId());
+       Assert.assertNotNull(msg.getStructuredData());
+       Assert.assertNotNull(msg.getStructuredData().get("l@2"));
+       Assert.assertNotNull(msg.getStructuredData().get("a@3"));
+       Assert.assertEquals("b\"c", msg.getStructuredData().get("a@3").get("a"));
+   }
+
+
 }
