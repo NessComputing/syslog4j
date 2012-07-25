@@ -154,15 +154,8 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
         return this.dateTime;
     }
 
-    public StructuredSyslogMessage getStructuredMessage() {
-        try {
-            return StructuredSyslogMessage.fromString(getMessage());
-
-        } catch (IllegalArgumentException e) {
-            // throw new SyslogRuntimeException(
-            // "Message received is not a valid structured message: "
-            // + getMessage(), e);
-            return new StructuredSyslogMessage(null, null, null, getMessage());
-        }
+    public StructuredSyslogMessage getStructuredMessage()
+    {
+        return StructuredSyslogMessage.fromString(getMessage());
     }
 }
