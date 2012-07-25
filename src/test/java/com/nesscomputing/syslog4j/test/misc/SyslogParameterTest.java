@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
-import org.junit.Test;
+import org.junit.Assert;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
@@ -1368,7 +1368,6 @@ public class SyslogParameterTest extends TestCase {
         assertEquals("test2",item.get("test1"));
     }
 
-    @Test(expected=IllegalArgumentException.class)
     public void testLetItBleed() throws Exception
     {
         InetAddress localhost = InetAddress.getLocalHost();
@@ -1376,8 +1375,15 @@ public class SyslogParameterTest extends TestCase {
         String message2 = "3 junk ab [ [ ]";
         StructuredSyslogServerEvent event2 = new StructuredSyslogServerEvent(message2.getBytes(),message2.length(),localhost);
 
-        // Srsly? You expected that to succeed? What are you smoking?
-        event2.getStructuredMessage();
+        try {
+            // Srsly? You expected that to succeed? What are you smoking?
+            event2.getStructuredMessage();
+            fail();
+        }
+        catch(IllegalArgumentException e)
+        {
+            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
+        }
     }
 
     public void testUnixSocketSyslogConfigParameters() {
