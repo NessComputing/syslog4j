@@ -20,6 +20,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 
@@ -44,11 +45,14 @@ public class UDPNetSyslogServer extends AbstractSyslogServer {
 
     protected DatagramSocket ds = null;
 
+    private final AtomicBoolean started = new AtomicBoolean(false);
+    
     public void initialize() throws SyslogRuntimeException {
         //
     }
 
     public void shutdown() {
+        started.set(false);
         super.shutdown();
 
         if (this.syslogServerConfig.getShutdownWait() > 0) {
@@ -75,6 +79,11 @@ public class UDPNetSyslogServer extends AbstractSyslogServer {
         return datagramSocket;
     }
 
+    @Override
+    public boolean isStarted(){
+        return started.get();
+    }
+
     public void run() {
         try {
             this.ds = createDatagramSocket();
@@ -93,6 +102,7 @@ public class UDPNetSyslogServer extends AbstractSyslogServer {
 
         handleInitialize(this);
 
+        started.set(true);
         while(!this.shutdown) {
             DatagramPacket dp = null;
 
@@ -116,7 +126,12 @@ public class UDPNetSyslogServer extends AbstractSyslogServer {
                 handleException(null,this,dp.getSocketAddress(),ioe);
             }
         }
-
+        started.set(false);
         handleDestroy(this);
+    }
+
+    @Override
+    public int getActualPort(){
+        return this.ds.getLocalPort();
     }
 }

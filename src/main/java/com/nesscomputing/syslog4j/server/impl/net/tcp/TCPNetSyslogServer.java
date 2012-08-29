@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.net.ServerSocketFactory;
 
@@ -106,6 +107,8 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
         }
     }
 
+    private final AtomicBoolean started = new AtomicBoolean(false);
+    
     protected ServerSocket serverSocket = null;
 
     protected final Sessions sessions = new Sessions();
@@ -136,6 +139,7 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
     }
 
     public void shutdown() {
+        started.set(false);
         super.shutdown();
 
         try {
@@ -194,6 +198,11 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
         return newServerSocket;
     }
 
+    @Override
+    public boolean isStarted(){
+        return started.get();
+    }
+    
     public void run() {
         try {
             this.serverSocket = createServerSocket();
@@ -208,6 +217,8 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
 
         handleInitialize(this);
 
+        started.set(true);
+        
         while(!this.shutdown) {
             try {
                 Socket socket = this.serverSocket.accept();
@@ -253,5 +264,10 @@ public class TCPNetSyslogServer extends AbstractSyslogServer {
         }
 
         handleDestroy(this);
+    }
+
+    @Override
+    public int getActualPort() {
+        return this.serverSocket.getLocalPort();
     }
 }
