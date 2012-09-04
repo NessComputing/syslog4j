@@ -22,10 +22,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.google.common.collect.Maps;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.collect.Maps;
 import com.nesscomputing.syslog4j.SyslogCharSetIF;
 import com.nesscomputing.syslog4j.SyslogRuntimeException;
 import com.nesscomputing.syslog4j.server.SyslogServerConfigIF;
@@ -121,6 +123,9 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
 
     protected boolean shutdown = false;
 
+    private final AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicBoolean stopped = new AtomicBoolean(false);
+
     public void initialize(String protocol, SyslogServerConfigIF config) throws SyslogRuntimeException {
         this.syslogProtocol = protocol;
 
@@ -162,6 +167,16 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
             this.thread.interrupt();
             this.thread = null;
         }
+    }
+
+    @Override
+    public boolean isStarted(){
+        return started.get();
+    }
+
+    @Override
+    public boolean isStopped(){
+        return stopped.get();
     }
 
     protected static boolean isStructuredMessage(SyslogCharSetIF syslogCharSet, byte[] receiveData) {
@@ -212,7 +227,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
         return event;
     }
 
-    public static void handleInitialize(SyslogServerIF syslogServer) {
+    public void handleInitialize(SyslogServerIF syslogServer) {
         List<? extends SyslogServerEventHandlerIF> eventHandlers = syslogServer.getConfig().getEventHandlers();
 
         for(int i=0; i<eventHandlers.size(); i++) {
@@ -225,9 +240,10 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                 LOG.warn("While initializing", exception);
             }
         }
+        started.set(true);
     }
 
-    public static void handleDestroy(SyslogServerIF syslogServer) {
+    public void handleDestroy(SyslogServerIF syslogServer) {
         List<? extends SyslogServerEventHandlerIF> eventHandlers = syslogServer.getConfig().getEventHandlers();
         for(int i=0; i<eventHandlers.size(); i++) {
             SyslogServerEventHandlerIF eventHandler = eventHandlers.get(i);
@@ -239,6 +255,7 @@ public abstract class AbstractSyslogServer implements SyslogServerIF {
                 LOG.warn("While destroying", exception);
             }
         }
+        stopped.set(true);
     }
 
     public static void handleSessionOpen(Sessions sessions, SyslogServerIF syslogServer, Socket socket) {
