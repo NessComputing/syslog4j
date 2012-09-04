@@ -53,9 +53,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import com.google.common.collect.Maps;
+
 import org.junit.Assert;
 
-import com.google.common.collect.Maps;
 import com.nesscomputing.syslog4j.impl.message.structured.StructuredSyslogMessage;
 import com.nesscomputing.syslog4j.server.impl.event.structured.StructuredSyslogServerEvent;
 
@@ -210,5 +211,12 @@ public class StructuredSyslogMessageTest extends TestCase
        Assert.assertEquals("b\"c", msg.getStructuredData().get("a@3").get("a"));
    }
 
-
+    public void testMessageWithSpace() throws Exception
+    {
+    final String message = "<134>1 2012-07-25T21:32:08.887+00:00 some-server.some.domain noprog qtp583592918-80437 95d42b22c48e4eadb59e61a182c102d4 [rh@12345 xxx=\"hell0 7|133454|00022f444ad7fe10ef5d0d536ae879f1\"]'";
+       final StructuredSyslogServerEvent ev = new StructuredSyslogServerEvent(message, InetAddress.getLocalHost());
+       final StructuredSyslogMessage msg = ev.getStructuredMessage();
+       Assert.assertNotNull(msg.getStructuredData().get("rh@12345"));
+       Assert.assertEquals("hell0 7|133454|00022f444ad7fe10ef5d0d536ae879f1", msg.getStructuredData().get("rh@12345").get("xxx"));
+    }
 }

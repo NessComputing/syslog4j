@@ -19,10 +19,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.nesscomputing.syslog4j.SyslogConstants;
 import com.nesscomputing.syslog4j.impl.message.AbstractSyslogMessage;
 
@@ -301,20 +303,25 @@ public class StructuredSyslogMessage extends AbstractSyslogMessage implements St
             String key = null;
             Map<String, String> keyMap = Maps.newHashMap();
             while (start < end) {
-                int keyEnd = matchChar(data, ++start, ']', ' ');
                 if (key == null) {
+                    final int keyEnd = matchChar(data, ++start, ']', ' '); // Key can be terminated by a space (then more fields to follow) or a ]
                     key = data.substring(start, keyEnd);
-                    start = keyEnd;
+                    start = keyEnd; // start either points after the end (then the while terminates) or at the first char of the first field.
                 }
                 else {
-                    int equalsIndex = data.indexOf('=', start);
-                    Preconditions.checkArgument(equalsIndex != -1 && equalsIndex < keyEnd, "Invalid structured data in syslog message '%s'", data);
+                    Preconditions.checkArgument(start < data.length() && data.charAt(start) == ' ', "Invalid structured data in syslog message '%s'", data);
+                    start = start + 1; // Start points at the space behind either the key or the previous value
                     Preconditions.checkArgument(key != null, "Invalid structured data in syslog message '%s'", data);
+                    final int equalsIndex = data.indexOf('=', start); // Equals terminates the field name.
+                    Preconditions.checkArgument(equalsIndex != -1, "Invalid structured data in syslog message '%s'", data);
                     Preconditions.checkArgument(data.charAt(equalsIndex + 1) == '"', "Invalid structured data in syslog message '%s'", data);
-                    Preconditions.checkArgument(data.charAt(keyEnd - 1) == '"', "Invalid structured data in syslog message '%s'", data);
 
-                    keyMap.put(data.substring(start, equalsIndex), unescape(data.substring(equalsIndex + 2, keyEnd - 1)));
-                    start = keyEnd;
+                    // Look for the end of the value. It needs to be terminated by "
+                    final int valueEnd = matchChar(data, equalsIndex + 2, '"');
+                    Preconditions.checkArgument(valueEnd !=  -1 && data.charAt(valueEnd) == '"', "Invalid structured data in syslog message '%s'", data);
+
+                    keyMap.put(data.substring(start, equalsIndex), unescape(data.substring(equalsIndex + 2, valueEnd)));
+                    start = valueEnd + 1;
                 }
             }
             start++;
@@ -323,16 +330,25 @@ public class StructuredSyslogMessage extends AbstractSyslogMessage implements St
         return structuredDataMap;
     }
 
-    private int matchChar(final String data, final int start, final char ... matchChars)
+    @VisibleForTesting
+    static int matchChar(final String data, final int start, final char ... matchChars)
     {
         int ptr = start;
         for(;;) {
-            if (data.charAt(ptr) == '\\') {
-                ptr++;
-            }
             if (ptr >= data.length()) {
                 return -1;
             }
+
+            if (data.charAt(ptr) == '\\') {
+                ptr++;
+                ptr++;
+                continue;
+            }
+
+            if (ptr >= data.length()) {
+                return -1;
+            }
+
             for (int i = 0; i < matchChars.length; i++) {
                 if (data.charAt(ptr) == matchChars[i]) {
                     return ptr;
