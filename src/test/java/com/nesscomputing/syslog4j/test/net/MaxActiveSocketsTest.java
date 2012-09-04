@@ -60,7 +60,7 @@ public class MaxActiveSocketsTest extends TestCase {
         SyslogServer.createThreadedInstance("tcp_maxactivesockets",serverConfig);
 
         TCPNetSyslogConfigIF config = new TCPNetSyslogConfig();
-        config.setPort(8888);
+        config.setPort(38888);
 
         SyslogIF syslog1 = Syslog.createInstance("tcp_maxactivesockets1",config);
         syslog1.info("test1");
@@ -92,7 +92,7 @@ public class MaxActiveSocketsTest extends TestCase {
     }
 
     public void testMaxActiveSocketsWithBlock() {
-        TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig(8888);
+        TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig(38888);
         serverConfig.setMaxActiveSocketsBehavior(TCPNetSyslogServerConfigIF.MAX_ACTIVE_SOCKETS_BEHAVIOR_BLOCK);
         int count = _testMaxActiveSockets(serverConfig);
 
@@ -100,7 +100,7 @@ public class MaxActiveSocketsTest extends TestCase {
     }
 
     public void testMaxActiveSocketsWithReject() {
-        TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig(8888);
+        TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig(38888);
         serverConfig.setMaxActiveSocketsBehavior(TCPNetSyslogServerConfigIF.MAX_ACTIVE_SOCKETS_BEHAVIOR_REJECT);
         int count = _testMaxActiveSockets(serverConfig);
 
