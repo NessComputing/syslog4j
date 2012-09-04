@@ -624,8 +624,8 @@ public class SyslogParameterTest extends TestCase {
         assertEquals(!SyslogConstants.SEND_LOCAL_TIMESTAMP_DEFAULT,config.isSendLocalTimestamp());
 
         assertEquals(SyslogConstants.THREAD_LOOP_INTERVAL_DEFAULT,config.getThreadLoopInterval());
-        config.setThreadLoopInterval(8888);
-        assertEquals(8888,config.getThreadLoopInterval());
+        config.setThreadLoopInterval(38888);
+        assertEquals(38888,config.getThreadLoopInterval());
 
         assertEquals(SyslogConstants.WRITE_RETRIES_DEFAULT,config.getWriteRetries());
         config.setWriteRetries(7777);
@@ -679,8 +679,8 @@ public class SyslogParameterTest extends TestCase {
     public void testTcpNetSyslogServerConfigCreate() {
         TCPNetSyslogServerConfig tcpServerConfig = new TCPNetSyslogServerConfig(9999);
         assertEquals(9999,tcpServerConfig.getPort());
-        tcpServerConfig.setPort(8888);
-        assertEquals(8888,tcpServerConfig.getPort());
+        tcpServerConfig.setPort(38888);
+        assertEquals(38888,tcpServerConfig.getPort());
 
         tcpServerConfig = new TCPNetSyslogServerConfig("hostname1",7777);
         assertEquals("hostname1",tcpServerConfig.getHost());
@@ -737,8 +737,8 @@ public class SyslogParameterTest extends TestCase {
     public void testUdpNetSyslogServerConfigCreate() {
         UDPNetSyslogServerConfig udpServerConfig = new UDPNetSyslogServerConfig(9999);
         assertEquals(9999,udpServerConfig.getPort());
-        udpServerConfig.setPort(8888);
-        assertEquals(8888,udpServerConfig.getPort());
+        udpServerConfig.setPort(38888);
+        assertEquals(38888,udpServerConfig.getPort());
 
         udpServerConfig = new UDPNetSyslogServerConfig("hostname1",7777);
         assertEquals("hostname1",udpServerConfig.getHost());
@@ -796,8 +796,8 @@ public class SyslogParameterTest extends TestCase {
         appender.setMaxShutdownWait("120000");
         assertEquals("120000",appender.getMaxShutdownWait());
 
-        appender.setThreadLoopInterval("8888");
-        assertEquals("8888",appender.getThreadLoopInterval());
+        appender.setThreadLoopInterval("38888");
+        assertEquals("38888",appender.getThreadLoopInterval());
 
         appender.setSplitMessageBeginText(";;;");
         assertEquals(";;;",appender.getSplitMessageBeginText());

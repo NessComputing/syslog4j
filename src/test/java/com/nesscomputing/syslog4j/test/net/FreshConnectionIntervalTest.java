@@ -69,20 +69,20 @@ public class FreshConnectionIntervalTest extends TestCase {
 
     public void testFreshConnectionInterval() {
         TCPNetSyslogServerConfigIF serverConfig = new TCPNetSyslogServerConfig();
-        serverConfig.setPort(8888);
+        serverConfig.setPort(38888);
 
         SocketCounter counter = new SocketCounter();
         serverConfig.addEventHandler(counter);
 
-        SyslogServerIF server = SyslogServer.createThreadedInstance("tcp_8888",serverConfig);
+        SyslogServerIF server = SyslogServer.createThreadedInstance("tcp_38888",serverConfig);
 
         SyslogUtility.sleep(100);
 
         TCPNetSyslogConfigIF config = new TCPNetSyslogConfig();
-        config.setPort(8888);
+        config.setPort(38888);
         config.setFreshConnectionInterval(300);
 
-        SyslogIF syslog = Syslog.createInstance("tcp_8888",config);
+        SyslogIF syslog = Syslog.createInstance("tcp_38888",config);
 
         for(int i=0; i<10; i++) {
             syslog.info("message " + i);
