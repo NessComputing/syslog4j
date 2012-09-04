@@ -38,6 +38,10 @@ public interface SyslogServerIF extends Runnable {
     public void setThread(Thread thread);
 
     public void shutdown();
+
     public int getActualPort();
+
     public boolean isStarted();
+
+    public boolean isStopped();
 }
