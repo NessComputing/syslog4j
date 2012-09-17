@@ -28,6 +28,22 @@
     <url>https://gtihub.com/NessComputing/syslog4j</url>
   </scm>
 
+  <!-- The Syslog4J library uses an evil static registry, and not every test cleans up properly after itself -->
+  <!-- Fork every test so they can't stomp on each other -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <forkMode>always</forkMode>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>log4j</groupId>
