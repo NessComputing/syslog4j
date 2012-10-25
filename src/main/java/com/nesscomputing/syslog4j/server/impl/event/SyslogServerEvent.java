@@ -165,8 +165,8 @@ public class SyslogServerEvent implements SyslogServerEventIF {
                 int priority = 0;
                 try {
                     priority = Integer.parseInt(priorityStr);
-                    this.facility = SyslogFacility.forValue(priority >> 3);
-                    this.level = SyslogLevel.values()[priority & 7];
+                    this.facility = SyslogFacility.forValue(priority & ~7);
+                    this.level = SyslogLevel.forValue(priority & 7);
 
                     this.message = this.message.substring(i+1);
                 } catch (NumberFormatException nfe) {

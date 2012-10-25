@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.nesscomputing</groupId>
     <artifactId>ness-oss-parent</artifactId>
-    <version>13</version>
+    <version>20</version>
   </parent>
 
   <artifactId>ness-syslog4j</artifactId>
@@ -28,6 +28,10 @@
     <url>https://gtihub.com/NessComputing/syslog4j</url>
   </scm>
 
+  <properties>
+    <ness.skip.check-build>true</ness.skip.check-build> <!-- Ugly, but PMD / FindBugs are very unhappy with the syslog4j code. -->
+  </properties>
+
   <!-- The Syslog4J library uses an evil static registry, and not every test cleans up properly after itself -->
   <!-- Fork every test so they can't stomp on each other -->
   <build>
@@ -48,7 +52,6 @@
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.16</version>
     </dependency>
 
     <dependency>
@@ -98,7 +101,7 @@
       <dependency>
         <groupId>com.nesscomputing.testing</groupId>
         <artifactId>kawala-lessio</artifactId>
-        <version>2.0.1</version>
+        <version>2.1.1</version>
         <exclusions>
           <exclusion>
             <groupId>com.nesscomputing</groupId>

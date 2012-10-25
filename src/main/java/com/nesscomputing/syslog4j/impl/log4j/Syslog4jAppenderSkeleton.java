@@ -189,7 +189,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton {
         }
 
         if (this.initialized) {
-            SyslogLevel level = SyslogLevel.values()[event.getLevel().getSyslogEquivalent()];
+            SyslogLevel level = SyslogLevel.forValue(event.getLevel().getSyslogEquivalent());
 
             if (this.layout != null) {
                 String message = this.layout.format(event);
