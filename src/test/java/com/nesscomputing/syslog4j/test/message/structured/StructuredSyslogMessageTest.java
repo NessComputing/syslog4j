@@ -75,7 +75,48 @@ public class StructuredSyslogMessageTest extends TestCase
       assertEquals("msgId1", message.getMessageId());
       assertTrue(message.getStructuredData().size() == 0);
    }
+   
+   
+   public void testFromString1a()
+   {
+      final String messageStr = "msgId1 [type a=\"[xx\\] xx\"] [first] my message!!";
 
+      final StructuredSyslogMessage message = StructuredSyslogMessage.fromString(messageStr);
+
+      assertEquals("msgId1 [type a=\"[xx\\] xx\"] [first] my message!!",message.toString());
+
+
+      assertEquals("[first] my message!!", message.getMessage());
+      assertEquals("msgId1", message.getMessageId());
+      assertEquals("[xx] xx", (message.getStructuredData().get("type")).get("a"));
+   }
+   
+   public void testFromString1b()
+   {
+      final String messageStr = "msgId1 [type a=\"[xx\\] xx\"] my [second] message!!";
+
+      final StructuredSyslogMessage message = StructuredSyslogMessage.fromString(messageStr);
+
+      assertEquals("msgId1 [type a=\"[xx\\] xx\"] my [second] message!!",message.toString());
+
+
+      assertEquals("my [second] message!!", message.getMessage());
+      assertEquals("msgId1", message.getMessageId());
+      assertEquals("[xx] xx", (message.getStructuredData().get("type")).get("a"));
+   }
+   
+   public void testFromString1c()
+   {
+      final String messageStr = "msgId1 [type a=\"[xx\\] xx\"][value b=\"c\"] my message!! [last]";
+
+      final StructuredSyslogMessage message = StructuredSyslogMessage.fromString(messageStr);
+
+      assertEquals("my message!! [last]", message.getMessage());
+      assertEquals("msgId1", message.getMessageId());
+      assertEquals("[xx] xx", (message.getStructuredData().get("type")).get("a"));
+      assertEquals("c", (message.getStructuredData().get("value")).get("b"));
+   }
+   
    public void testFromString2()
    {
       final String messageStr = "msgId1 [invalid SD] my message!!";
