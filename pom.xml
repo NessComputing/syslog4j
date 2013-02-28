@@ -8,7 +8,7 @@
   </parent>
 
   <artifactId>ness-syslog4j</artifactId>
-  <version>0.9.47-NESS-8-SNAPSHOT</version>
+  <version>0.9.47-NESS-8</version>
   <packaging>jar</packaging>
   <name>syslog4j, Ness Computing style</name>
   <url>http://www.syslog4j.org</url>
@@ -26,6 +26,7 @@
     <connection>scm:git:git@github.com:NessComputing/syslog4j.git</connection>
     <developerConnection>scm:git:git@github.com:NessComputing/syslog4j.git</developerConnection>
     <url>https://gtihub.com/NessComputing/syslog4j</url>
+    <tag>ness-syslog4j-0.9.47-NESS-8</tag>
   </scm>
 
   <properties>
