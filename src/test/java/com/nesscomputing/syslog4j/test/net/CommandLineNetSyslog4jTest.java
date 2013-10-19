@@ -78,7 +78,7 @@ public class CommandLineNetSyslog4jTest extends TestCase {
 
         try {
             if (useSyslogClass) {
-                Syslog.main(new String[] { "-p", "1514", protocol, message });
+                Syslog.main(new String[] { "-p", "1514", protocol, message }, false);
 
             } else {
                 SyslogMain.main(new String[] { "-p", "1514", protocol, message }, false);

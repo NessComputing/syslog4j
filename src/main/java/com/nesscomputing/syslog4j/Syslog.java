@@ -289,4 +289,8 @@ public final class Syslog
     public static void main(String[] args) throws Exception {
         SyslogMain.main(args);
     }
+
+    public static void main(String[] args, boolean shutdown) throws Exception {
+        SyslogMain.main(args, shutdown);
+    }
 }
