@@ -68,6 +68,7 @@ public class SplitSyslogTest extends TestCase {
         setMessageLength(18);
 
         SyslogIF syslog = Syslog.getInstance("split");
+        syslog.getConfig().setTruncateMessage(false);
 
         syslog.info("For now is the tim");
         assertSyslog(syslog,new String[] { "For now is the tim" });

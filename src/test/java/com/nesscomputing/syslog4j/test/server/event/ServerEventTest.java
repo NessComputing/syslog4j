@@ -42,7 +42,7 @@ public class ServerEventTest extends TestCase {
         assertEquals("test",event.getMessage());
         assertTrue(event.isHostStrippedFromMessage());
 
-        InetAddress mirrorInetAddress = InetAddress.getByName("mirror.productivity.org");
+        InetAddress mirrorInetAddress = InetAddress.getByAddress("mirror.productivity.org", new byte [] { -72, 22, -86, -77 });
         String mirrorHostName = "mirror";
 
         message = (baseMessage + mirrorHostName + " test").getBytes();
