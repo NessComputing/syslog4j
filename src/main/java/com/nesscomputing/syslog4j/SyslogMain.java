@@ -183,18 +183,19 @@ public class SyslogMain {
                 is = System.in;
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8));
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8))) {
 
-            String line = br.readLine();
+                String line = br.readLine();
 
-            while(line != null && line.length() > 0) {
-                if (!options.quiet) {
-                    System.out.println("Sending " + options.facility + "." + options.level + " message \"" + line + "\"");
+                while(line != null && line.length() > 0) {
+                    if (!options.quiet) {
+                        System.out.println("Sending " + options.facility + "." + options.level + " message \"" + line + "\"");
+                    }
+
+                    syslog.log(options.level,line);
+
+                    line = br.readLine();
                 }
-
-                syslog.log(options.level,line);
-
-                line = br.readLine();
             }
         }
 
