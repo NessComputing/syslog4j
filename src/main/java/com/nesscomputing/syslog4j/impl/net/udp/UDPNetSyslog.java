@@ -87,8 +87,10 @@ public class UDPNetSyslog extends AbstractNetSyslog {
                 attempts = -1;
 
             } catch (IOException ioe) {
-                if (attempts == (this.netSyslogConfig.getWriteRetries() + 1)) {
+                if (attempts >= (this.netSyslogConfig.getWriteRetries() + 1)) {
                     throw new SyslogRuntimeException(ioe);
+                } else {
+                    attempts++;
                 }
             }
         }
