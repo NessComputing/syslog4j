@@ -15,6 +15,7 @@
 package com.nesscomputing.syslog4j.test.server.event;
 
 import java.net.InetAddress;
+import java.util.Locale;
 
 import com.nesscomputing.syslog4j.server.impl.event.SyslogServerEvent;
 
@@ -24,7 +25,9 @@ public class ServerEventTest extends TestCase {
     public void testServerEvent() throws Exception {
         InetAddress inetAddress = InetAddress.getLocalHost();
         String hostName = inetAddress.getHostName();
-
+        
+        Locale.setDefault(Locale.ENGLISH);
+        
         int i = hostName.indexOf('.');
         if (i > -1) {
             hostName = hostName.substring(0,i);

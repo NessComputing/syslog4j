@@ -15,7 +15,8 @@
 package com.nesscomputing.syslog4j.impl.unix.socket;
 
 import java.nio.ByteBuffer;
-
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.common.base.Charsets;
 import com.nesscomputing.syslog4j.SyslogLevel;
@@ -55,6 +56,10 @@ public class UnixSocketSyslog extends AbstractSyslog {
         public void setSunPath(String sunPath) {
             System.arraycopy(sunPath.getBytes(Charsets.UTF_8), 0,this.sun_path, 0, sunPath.length());
             System.arraycopy(ZERO_BYTE,0,this.sun_path,sunPath.length(),1);
+        }
+
+        protected List getFieldOrder() {
+            return Arrays.asList("sun_family", "sun_path");
         }
     }
 
